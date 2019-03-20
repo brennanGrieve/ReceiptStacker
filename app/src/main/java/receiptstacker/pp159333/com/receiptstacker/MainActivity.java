@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+
 public class  MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
@@ -17,17 +18,22 @@ public class  MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                case R.id.navigation_scan:
+                    mTextMessage.setText(R.string.title_scan);
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                case R.id.navigation_browse:
+                    mTextMessage.setText(R.string.title_browse);
                     return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                case R.id.navigation_gstcal:
+                    mTextMessage.setText(R.string.title_gstcalc);
+                    return true;
+                case R.id.navigation_options:
+                    mTextMessage.setText(R.string.title_options);
                     return true;
             }
             return false;
+
+
         }
     };
 
