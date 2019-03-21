@@ -1,5 +1,6 @@
 package receiptstacker.pp159333.com.receiptstacker;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,8 @@ public class  MainActivity extends AppCompatActivity {
                 case R.id.navigation_gstcal:
                     return true;
                 case R.id.navigation_options:
+                    Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                    startActivity(settingsIntent);
                     return true;
             }
             return false;
