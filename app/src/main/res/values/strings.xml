@@ -15,26 +15,17 @@
 
     <!-- Strings related to Settings -->
 
-    <string name="pref_header_scanSettings">Scan Settings</string>
+    <string name="pref_summary_enabled">Enabled</string>
+    <string name="pref_summary_disabled">Disabled</string>
 
+    <!-- Strings related to Scan Settings-->
+
+    <string name="pref_header_scanSettings">Scan Settings</string>
     <string name="pref_title_toggle_duplicate_readings">Enable Record Redundancy Prevention</string>
     <string name="pref_description_toggle_duplicate_readings">Prevents Receipt Stacker from recording
         a transaction twice while in multi-capture mode.
     </string>
-    <string name="pref_summary_enabled">Enabled</string>
-    <string name="pref_summary_disabled">Disabled</string>
 
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
 
     <!-- Settings for Personalization -->
     <string name="pref_header_personalization">Personalization</string>
@@ -50,13 +41,13 @@
         <item>Glamorous Gold</item>
     </string-array>
     <string-array name="pref_color_scheme_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
+        <item>default</item>
+        <item>default</item>
+        <item>silverTheme</item>
+        <item>default</item>
+        <item>default</item>
+        <item>default</item>
+        <item>default</item>
     </string-array>
 
     <string-array name="list_preference_entries">

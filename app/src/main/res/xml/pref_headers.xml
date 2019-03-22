@@ -4,12 +4,12 @@
 
     <header
         android:fragment="receiptstacker.pp159333.com.receiptstacker.SettingsActivity$ScanSettingsPreferenceFragment"
-        android:icon="@drawable/ic_info_black_24dp"
+        android:icon="@drawable/ic_scan_black"
         android:title="@string/pref_header_scanSettings" />
 
     <header
         android:fragment="receiptstacker.pp159333.com.receiptstacker.SettingsActivity$PersonalizationPreferenceFragment"
-        android:icon="@drawable/ic_sync_black_24dp"
+        android:icon="@drawable/ic_baseline_color_lens_24px"
         android:title="@string/pref_header_personalization" />
     <header
         android:fragment="receiptstacker.pp159333.com.receiptstacker.SettingsActivity$PlaceholderPreferenceFragment"
