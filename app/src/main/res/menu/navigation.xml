@@ -19,9 +19,4 @@
         android:title="@string/title_gstcalc" />
 
 
-    <item
-        android:id="@+id/navigation_options"
-        android:icon="@drawable/ic_options"
-        android:title="@string/title_options" />
-
 </menu>

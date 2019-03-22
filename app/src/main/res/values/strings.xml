@@ -15,12 +15,11 @@
 
     <!-- Strings related to Settings -->
 
-    <!-- Example General settings -->
     <string name="pref_header_scanSettings">Scan Settings</string>
 
-    <string name="pref_title_toggle_duplicate_readings">Enable Duplicate Reading Prevention</string>
-    <string name="pref_description_toggle_duplicate_readings">Enable Receipt Stacker
-        discarding re-occurring transactions on multi-capture receipts.
+    <string name="pref_title_toggle_duplicate_readings">Enable Record Redundancy Prevention</string>
+    <string name="pref_description_toggle_duplicate_readings">Prevents Receipt Stacker from recording
+        a transaction twice while in multi-capture mode.
     </string>
 
     <string name="pref_title_display_name">Display name</string>
@@ -39,11 +38,11 @@
     </string-array>
 
     <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Color Scheme</string>
+    <string name="pref_header_personalization">Personalization</string>
 
     <string name="pref_title_color_scheme">Color Scheme</string>
     <string-array name="pref_sync_color_scheme_titles">
-        <item>Default</item>
+        <item>Basic Blue</item>
         <item>Bubblegum Pink</item>
         <item>Speedy Silver</item>
         <item>Nebulous Noire</item>

@@ -8,6 +8,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,10 +30,6 @@ public class  MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_gstcal:
                     return true;
-                case R.id.navigation_options:
-                    Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivity(settingsIntent);
-                    return true;
             }
             return false;
 
@@ -48,6 +46,11 @@ public class  MainActivity extends AppCompatActivity {
             camera.setBackgroundColor(Color.BLACK);
         }
     };
+
+    public void openSettingsActivity(View v){
+        Intent settingIntent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(settingIntent);
+    }
 
 
     @Override
