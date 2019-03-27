@@ -49,6 +49,21 @@
             app:layout_constraintVertical_bias="0.9"
             app:srcCompat="@drawable/ic_camerashutter" />
 
+        <ImageButton
+            android:id="@+id/settingButton"
+            android:layout_width="38dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:adjustViewBounds="false"
+            android:background="@null"
+            android:contentDescription="@string/optionbutton"
+            android:onClick="openSettingsActivity"
+            android:scaleType="fitEnd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_options" />
+
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

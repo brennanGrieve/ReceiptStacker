@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Receipt Stacker</string>
-    <string name="title_options">Options</string>
-    <string name="title_gstcalc">GTS Calc</string>
+    <string name="title_options">Settings</string>
+    <string name="title_gstcalc">GST Calc</string>
     <string name="title_browse">Browse</string>
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
@@ -11,4 +11,68 @@
     <string name="capButton">capture</string>
     <string name="optionbutton">Options</string>
     <string name="title_scan">Scan</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <string name="pref_summary_enabled">Enabled</string>
+    <string name="pref_summary_disabled">Disabled</string>
+
+    <!-- Strings related to Scan Settings-->
+
+    <string name="pref_header_scanSettings">Scan Settings</string>
+    <string name="pref_title_toggle_duplicate_readings">Enable Record Redundancy Prevention</string>
+    <string name="pref_description_toggle_duplicate_readings">Prevents Receipt Stacker from recording
+        a transaction twice while in multi-capture mode.
+    </string>
+
+
+    <!-- Settings for Personalization -->
+    <string name="pref_header_personalization">Personalization</string>
+
+    <string name="pref_title_color_scheme">Color Scheme</string>
+    <string-array name="pref_sync_color_scheme_titles">
+        <item>Basic Blue</item>
+        <item>Bubblegum Pink</item>
+        <item>Speedy Silver</item>
+        <item>Powder Snow</item>
+        <item>Gleeful Green</item>
+        <item>Righteous Red</item>
+        <item>Glamorous Gold</item>
+    </string-array>
+    <string-array name="pref_color_scheme_values">
+        <item>default</item>
+        <item>default</item>
+        <item>silverTheme</item>
+        <item>default</item>
+        <item>default</item>
+        <item>default</item>
+        <item>default</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
 </resources>

@@ -6,10 +6,6 @@
         android:icon="@drawable/ic_scan"
         android:title="@string/title_scan" />
 
-    <item
-        android:id="@+id/navigation_options"
-        android:icon="@drawable/ic_options"
-        android:title="@string/title_options" />
 
     <item
         android:id="@+id/navigation_browse"
@@ -21,5 +17,6 @@
         android:id="@+id/navigation_gstcal"
         android:icon="@drawable/ic_gstcalc"
         android:title="@string/title_gstcalc" />
+
 
 </menu>
