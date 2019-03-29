@@ -7,6 +7,7 @@
     <color name="silver">#C0C0C0</color>
     <color name="silverDark">#8C8C8C</color>
     <color name="silverAccent">#FFFFFF</color>
+    <color name="dark_gray1">#303030</color>
 
     <color name="black_overlay">#66000000</color>
 </resources>
