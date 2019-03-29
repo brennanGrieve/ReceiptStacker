@@ -9,18 +9,32 @@ import android.widget.EditText;
 
 public class BrowseActivity extends AppCompatActivity {
 
-    Button btn1;
+    Button searchButton, selectButton, deleteButton;
     static String TAG = "BrowseActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "Running");
         setContentView(R.layout.activity_browse);
-        btn1 = (Button) findViewById(R.id.button);
-        btn1.setOnClickListener(new View.OnClickListener() {
+        searchButton = (Button) findViewById(R.id.searchBtn);
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //add the search stuff here.
+            }
+        });
+        selectButton = (Button) findViewById(R.id.selectBtn);
+        selectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //add code for selecting photos
+            }
+        });
+        deleteButton = (Button) findViewById(R.id.deleteBtn);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //add code for deleting photos
             }
         });
     }
