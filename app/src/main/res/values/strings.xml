@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Receipt Stacker</string>
+<<<<<<< HEAD
     <string name="title_options">Settings</string>
     <string name="title_gstcalc">GST Calc</string>
     <string name="title_browse">Browse</string>
@@ -75,4 +76,11 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+=======
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="imageDescription">This is a test.</string>
+    <string name="browseName">My Receipts:</string>
+>>>>>>> origin/BrowseScreen
 </resources>

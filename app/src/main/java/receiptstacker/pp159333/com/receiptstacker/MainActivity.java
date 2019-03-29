@@ -1,7 +1,10 @@
 package receiptstacker.pp159333.com.receiptstacker;
 
 import android.content.Intent;
+<<<<<<< HEAD
 import android.graphics.Color;
+=======
+>>>>>>> origin/BrowseScreen
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -26,7 +29,12 @@ public class  MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_scan:
                     return true;
+<<<<<<< HEAD
                 case R.id.navigation_browse:
+=======
+                case R.id.navigation_dashboard:
+                    startActivity(new Intent(MainActivity.this, BrowseActivity.class));
+>>>>>>> origin/BrowseScreen
                     return true;
                 case R.id.navigation_gstcal:
                     return true;
