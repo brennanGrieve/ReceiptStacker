@@ -1,17 +1,47 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="SilverTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="pinkTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/pink</item>
+        <item name="colorPrimaryDark">@color/pinkDark</item>
+        <item name="colorAccent">@color/pinkAccent</item>
+    </style>
+
+    <style name="SilverTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/silver</item>
         <item name="colorPrimaryDark">@color/silverDark</item>
         <item name="colorAccent">@color/silverAccent</item>
+    </style>
+
+    <style name="snowTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/snow</item>
+        <item name="colorPrimaryDark">@color/snowDark</item>
+        <item name="colorAccent">@color/snowAccent</item>
+    </style>
+
+    <style name="greenTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryDark">@color/greenDark</item>
+        <item name="colorAccent">@color/greenAccent</item>
+    </style>
+
+    <style name="redTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryDark">@color/redDark</item>
+        <item name="colorAccent">@color/redAccent</item>
+    </style>
+
+    <style name="goldTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/gold</item>
+        <item name="colorPrimaryDark">@color/goldDark</item>
+        <item name="colorAccent">@color/goldAccent</item>
     </style>
 
 

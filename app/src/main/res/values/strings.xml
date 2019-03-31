@@ -42,12 +42,12 @@
     </string-array>
     <string-array name="pref_color_scheme_values">
         <item>default</item>
-        <item>default</item>
+        <item>pinkTheme</item>
         <item>silverTheme</item>
-        <item>default</item>
-        <item>default</item>
-        <item>default</item>
-        <item>default</item>
+        <item>snowTheme</item>
+        <item>greenTheme</item>
+        <item>redTheme</item>
+        <item>goldTheme</item>
     </string-array>
 
     <string-array name="list_preference_entries">
