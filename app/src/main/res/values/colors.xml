@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="navigationBarColor">#FFFFFF</color>
     <color name="colorPrimary">#3B5998</color>
     <color name="colorPrimaryDark">#c8000000</color>
     <color name="colorAccent">#FFFFFF</color>
 
+    <color name="pink">#ffa5ee</color>
+    <color name="pinkDark">#ff70e4</color>
+    <color name="pinkAccent">#FFFFFF</color>
+
+
     <color name="silver">#C0C0C0</color>
     <color name="silverDark">#8C8C8C</color>
     <color name="silverAccent">#FFFFFF</color>
+
+    <color name="snow">#ccf1ff</color>
+    <color name="snowDark">#b9dbe8</color>
+    <color name="snowAccent">#FFFFFF</color>
+
+    <color name="green">#27d624</color>
+    <color name="greenDark">#0b5b29</color>
+    <color name="greenAccent">#23332e</color>
+
+    <color name="red">#d62411</color>
+    <color name="redDark">#9b1a0c</color>
+    <color name="redAccent">#3d3635</color>
+
+    <color name="gold">#e2b018</color>
+    <color name="goldDark">#bc9212</color>
+    <color name="goldAccent">#3d3635</color>
+
     <color name="dark_gray1">#303030</color>
 
     <color name="black_overlay">#66000000</color>
