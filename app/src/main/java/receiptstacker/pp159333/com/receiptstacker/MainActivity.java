@@ -2,19 +2,15 @@ package receiptstacker.pp159333.com.receiptstacker;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -34,72 +30,74 @@ public class  MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_scan:
-                    return true;
-
+                    selectedFragment = ScanFragment.newInstance();
+                    break;
                 case R.id.navigation_browse:
-                    startActivity(new Intent(MainActivity.this, BrowseActivity.class));
-                    return true;
+                    selectedFragment = BrowseFragment.newInstance();
+                    break;
                 case R.id.navigation_gstcal:
-                    return true;
+
             }
-            return false;
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            if (selectedFragment != null) {
+                transaction.replace(R.id.frame_layout, selectedFragment);
+            }
+            transaction.commit();
+            return true;
 
 
         }
     };
-
-    private ImageView.OnClickListener mOnClickListener = new ImageView.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            //This is where the camera will take a photo
-            System.out.print("Camera Click");
-            ImageView camera = findViewById(R.id.imageView_Camera);
-            camera.setBackgroundColor(Color.BLACK);
-        }
-    };
-
-    public void openSettingsActivity(View v){
-        Intent settingIntent = new Intent(MainActivity.this, SettingsActivity.class);
-        startActivity(settingIntent);
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, ScanFragment.newInstance());
+        transaction.commit();
+
+        changeTheme(navigation);
+    }
+
+    /*
+    Changes theme to the prefered user theme
+     */
+    void changeTheme (BottomNavigationView navigation) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         preferences.registerOnSharedPreferenceChangeListener(sUpdateThemeView);
         String currentTheme = preferences.getString("themeSelection", "default");
         switch(currentTheme){
-                case "pinkTheme":
-                    setTheme(R.style.pinkTheme);
-                    break;
+            case "pinkTheme":
+                setTheme(R.style.pinkTheme);
+                break;
 
-                case "silverTheme":
-                    setTheme(R.style.SilverTheme);
-                    break;
+            case "silverTheme":
+                setTheme(R.style.SilverTheme);
+                break;
 
-                case "snowTheme":
-                    setTheme(R.style.snowTheme);
-                    break;
+            case "snowTheme":
+                setTheme(R.style.snowTheme);
+                break;
 
-                case "greenTheme":
-                    setTheme(R.style.greenTheme);
-                    break;
+            case "greenTheme":
+                setTheme(R.style.greenTheme);
+                break;
 
-                case "redTheme":
-                    setTheme(R.style.redTheme);
-                    break;
+            case "redTheme":
+                setTheme(R.style.redTheme);
+                break;
 
-                case "goldTheme":
-                    setTheme(R.style.goldTheme);
+            case "goldTheme":
+                setTheme(R.style.goldTheme);
                 break;
         }
-        setContentView(R.layout.activity_main);
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         switch(currentTheme){
             case "pinkTheme":
                 navigation.setBackgroundResource(0);
@@ -137,9 +135,11 @@ public class  MainActivity extends AppCompatActivity {
                 navigation.setItemBackgroundResource(R.color.gold);
                 break;
         }
-        ImageView cameraShutter = findViewById(R.id.imageViewCameraShutter);
-        cameraShutter.setOnClickListener(mOnClickListener);
 
     }
 
+    public void openSettingsActivity(View v){
+        Intent settingIntent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(settingIntent);
+    }
 }
