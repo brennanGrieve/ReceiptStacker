@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 public class BrowseFragment extends Fragment {
     Button searchButton, selectButton, deleteButton;
+    ImageView image1;
     public static BrowseFragment newInstance() {
         return new BrowseFragment();
     }
@@ -48,6 +49,14 @@ public class BrowseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //add code for deleting photos
+            }
+        });
+        image1 = (ImageView)view.findViewById(R.id.imageView12);
+        image1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent photoIntent = new Intent(getActivity(), PhotoActivity.class);
+                startActivity(photoIntent);
             }
         });
 

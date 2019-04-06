@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:windowSoftInputMode="stateVisible|adjustResize"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,19 +18,16 @@
 
         <EditText
             android:id="@+id/editText"
-            android:layout_width="264dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text=""
             android:textColor="@color/silver"
             android:transitionName="@string/searchInput"
-            app:layout_constraintEnd_toStartOf="@+id/searchBtn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/searchBtn" />
 
         <Button
             android:id="@+id/searchBtn"
@@ -43,17 +43,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
+            android:windowSoftInputMode="adjustPan"
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="80dp"
-            android:layout_marginEnd="8dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="110dp"
             android:background="@color/dark_gray1"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.488"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/editText">
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
@@ -348,6 +351,7 @@
         </ScrollView>
 
         <Button
+
             android:id="@+id/selectBtn"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
