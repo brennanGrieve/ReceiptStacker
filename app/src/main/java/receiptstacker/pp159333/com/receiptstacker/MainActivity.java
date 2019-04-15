@@ -62,12 +62,14 @@ public class  MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, ScanFragment.newInstance());
         transaction.commit();
+        getSupportActionBar().hide();
+
 
         changeTheme(navigation);
     }
 
     /*
-    Changes theme to the prefered user theme
+    Changes theme to the preferred user theme
      */
     void changeTheme (BottomNavigationView navigation) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
