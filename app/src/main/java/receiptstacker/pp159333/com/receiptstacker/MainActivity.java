@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 
 
@@ -62,12 +63,14 @@ public class  MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, ScanFragment.newInstance());
         transaction.commit();
+        getSupportActionBar().hide();
+
 
         changeTheme(navigation);
     }
 
     /*
-    Changes theme to the prefered user theme
+    Changes theme to the preferred user theme
      */
     void changeTheme (BottomNavigationView navigation) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
