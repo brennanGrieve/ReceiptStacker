@@ -33,7 +33,7 @@ public class  MainActivity extends AppCompatActivity {
             Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_scan:
-                    selectedFragment = ScanFragment.newInstance();
+                    selectedFragment = ScanFragment.newInstance(getApplicationContext());
                     break;
                 case R.id.navigation_browse:
                     selectedFragment = BrowseFragment.newInstance();
@@ -60,7 +60,7 @@ public class  MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, ScanFragment.newInstance());
+        transaction.replace(R.id.frame_layout, ScanFragment.newInstance(getApplicationContext()));
         transaction.commit();
 
         changeTheme(navigation);

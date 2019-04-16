@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".ScanFragment">
 
-    <ImageView
-        android:id="@+id/imageView_Camera"
+    <SurfaceView
+        android:id="@+id/surfaceView_Camera"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"
@@ -54,6 +54,15 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.01999998"
             app:srcCompat="@drawable/ic_options" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="169dp"
+            tools:layout_editor_absoluteY="533dp"
+            tools:text="OCRTEST" />
 
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>
