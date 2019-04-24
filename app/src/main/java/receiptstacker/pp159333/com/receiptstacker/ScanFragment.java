@@ -129,7 +129,7 @@ public class ScanFragment extends Fragment {
                                     for (int i = 0; (i < items.size()); i++) {
                                         TextBlock item = items.valueAt(i);
                                         stringBuilder.append(item.getValue());
-                                        stringBuilder.append(" "); 
+                                        stringBuilder.append(" ");
                                     }
                                     String rawString = stringBuilder.toString();
                                     textView.setText(rawString);

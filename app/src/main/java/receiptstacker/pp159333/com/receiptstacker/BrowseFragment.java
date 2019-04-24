@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 
 public class BrowseFragment extends Fragment {
     Button searchButton, selectButton, deleteButton;
     ImageView image1;
+    ScrollView scrollView;
     public static BrowseFragment newInstance() {
         return new BrowseFragment();
     }
@@ -59,6 +61,7 @@ public class BrowseFragment extends Fragment {
                 startActivity(photoIntent);
             }
         });
+        scrollView= view.findViewById(R.id.scrollView2);
 
     }
 

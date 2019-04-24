@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 
 public class  MainActivity extends AppCompatActivity {
+    int  currentFrag; //0 Scan, 1 Browse, 2 GstCalc
 
     private SharedPreferences.OnSharedPreferenceChangeListener sUpdateThemeView = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
@@ -31,17 +32,37 @@ public class  MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             switch (item.getItemId()) {
                 case R.id.navigation_scan:
+                    if (currentFrag==0) {
+                        return false;
+                    }
+                    transaction.setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right);
+                    currentFrag=0;
                     selectedFragment = ScanFragment.newInstance(getApplicationContext());
                     break;
                 case R.id.navigation_browse:
+                    if (currentFrag==1){
+                        return false;
+                    }
+                    if(currentFrag==0){
+                        transaction.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left);
+                    }
+                    if(currentFrag==2){
+                        transaction.setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right);
+                    }
+                    currentFrag=1;
                     selectedFragment = BrowseFragment.newInstance();
                     break;
                 case R.id.navigation_gstcal:
+                    if (currentFrag==2){
+                        return false;
+                    }
+                    currentFrag=2;
+                    transaction.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left);
 
             }
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             if (selectedFragment != null) {
                 transaction.replace(R.id.frame_layout, selectedFragment);
             }
@@ -62,7 +83,7 @@ public class  MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, ScanFragment.newInstance(getApplicationContext()));
         transaction.commit();
-
+        currentFrag=0;
         changeTheme(navigation);
     }
 
