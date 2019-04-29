@@ -63,7 +63,9 @@ public class  MainActivity extends AppCompatActivity {
         transaction.replace(R.id.frame_layout, ScanFragment.newInstance(getApplicationContext()));
         transaction.commit();
 
+        getSupportActionBar().hide();
         changeTheme(navigation);
+
     }
 
     /*
