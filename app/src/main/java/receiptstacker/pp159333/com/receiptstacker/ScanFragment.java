@@ -1,16 +1,18 @@
 package receiptstacker.pp159333.com.receiptstacker;
 import android.Manifest;
-import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -18,13 +20,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.logging.Logger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static android.support.constraint.Constraints.TAG;
 
 
 public class ScanFragment extends Fragment {
@@ -32,6 +40,9 @@ public class ScanFragment extends Fragment {
     static Context appContext;
     final int RequestCameraPermissionID = 1001;
     TextView textView;
+    static CameraSource cameraSource;
+    private String rawOCRString;
+
 
 
     public static ScanFragment newInstance(Context context) {
@@ -43,6 +54,7 @@ public class ScanFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -62,21 +74,72 @@ public class ScanFragment extends Fragment {
 
     }
 
+    private String getCurrentTimeStamp(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+        String timeStamp = simpleDateFormat.format(new Date());
+        return timeStamp;
+    }
+
+    private String saveImageToFileSystem(Bitmap receiptPic){
+        ContextWrapper appWrap = new ContextWrapper(getActivity().getApplicationContext());
+        FileOutputStream receiptStream = null;
+        File dir = appWrap.getDir("receiptImages", Context.MODE_PRIVATE);
+        File newReceiptImage = new File(dir, getCurrentTimeStamp());
+        try{
+            receiptStream = new FileOutputStream(newReceiptImage);
+            receiptPic.compress(Bitmap.CompressFormat.PNG, 100, receiptStream);
+        }catch(Exception FileOpenException){
+            FileOpenException.printStackTrace();
+        }finally{
+            try{
+                receiptStream.close();
+            }catch(IOException fileCloseException){
+                fileCloseException.printStackTrace();
+            }
+        }
+        Log.d(TAG, "saveImageToFileSystem: File Path is:" + newReceiptImage.getAbsolutePath());
+        return newReceiptImage.getAbsolutePath();
+    }
+
+    CameraSource.PictureCallback pCallBack = new CameraSource.PictureCallback() {
+        @Override
+        public void onPictureTaken(byte[] bytes) {
+            //handle loading the image into the receipt here
+            Bitmap pic = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+            //MUST be run before Accessing Database!
+              dbSingleton.initDB(getActivity().getApplicationContext());
+              String filename = saveImageToFileSystem(pic);
+              dbSingleton.commitToDB(filename, rawOCRString);
+
+            //ImageView image = new ImageView(getActivity());
+
+   //         image.setImageBitmap(pic);
+//
+//            AlertDialog.Builder builder =
+//                    new AlertDialog.Builder(getActivity()).
+//                            setMessage("Message above the image").
+//                            setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.dismiss();
+//                                }
+//                            }).
+//                            setView(image);
+//            builder.create().show();
+        }
+    };
+
     private ImageView.OnClickListener mOnClickListener = new ImageView.OnClickListener() {
         @Override
         public void onClick(View v) {
-            /*This is where the camera will take a photo
-            System.out.print("Camera Click");
-            ImageView camera = getView().findViewById(R.id.surfaceView_Camera);
-            camera.setBackgroundColor(Color.BLACK);*/
+            //Camera takes a picture here
+            cameraSource.takePicture(null, pCallBack);
         }
     };
 
     public void getCamera(View v) {
         cameraView = v.findViewById(R.id.surfaceView_Camera);
         textView = v.findViewById(R.id.textView);
-        final CameraSource cameraSource;
-
         TextRecognizer textRecognizer = new TextRecognizer.Builder(appContext).build();
         if (!textRecognizer.isOperational()) {
             Log.w("MainActivity", "Dependencies are not available");
@@ -131,8 +194,8 @@ public class ScanFragment extends Fragment {
                                         stringBuilder.append(item.getValue());
                                         stringBuilder.append(" "); 
                                     }
-                                    String rawString = stringBuilder.toString();
-                                    textView.setText(rawString);
+                                    rawOCRString = stringBuilder.toString();
+                                    textView.setText(rawOCRString);
                                 }
                             });
                         }
