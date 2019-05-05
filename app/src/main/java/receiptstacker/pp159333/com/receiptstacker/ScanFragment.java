@@ -1,17 +1,13 @@
 package receiptstacker.pp159333.com.receiptstacker;
-import android.content.Intent;
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -25,7 +21,6 @@ import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 
 public class ScanFragment extends Fragment {
@@ -57,7 +52,7 @@ public class ScanFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ImageView cameraShutter = view.findViewById(R.id.imageViewCameraShutter);
         cameraShutter.setOnClickListener(mOnClickListener);
-        ImageView cameraView = view.findViewById(R.id.surfaceView_Camera);
+        cameraView = view.findViewById(R.id.surfaceView_Camera);
         getCamera(getView());
 
 
