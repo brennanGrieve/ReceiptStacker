@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 
 public class  MainActivity extends AppCompatActivity {
@@ -24,7 +23,6 @@ public class  MainActivity extends AppCompatActivity {
         }
     };
 
-    private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -83,8 +81,14 @@ public class  MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, ScanFragment.newInstance(getApplicationContext()));
         transaction.commit();
+<<<<<<< HEAD
         currentFrag=0;
+=======
+
+        getSupportActionBar().hide();
+>>>>>>> 01668107cda7a6fb5c424496ba7cea833abf2043
         changeTheme(navigation);
+
     }
 
     /*
