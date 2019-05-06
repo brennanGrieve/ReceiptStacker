@@ -81,12 +81,8 @@ public class  MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, ScanFragment.newInstance(getApplicationContext()));
         transaction.commit();
-<<<<<<< HEAD
         currentFrag=0;
-=======
-
         getSupportActionBar().hide();
->>>>>>> 01668107cda7a6fb5c424496ba7cea833abf2043
         changeTheme(navigation);
 
     }
