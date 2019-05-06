@@ -86,7 +86,7 @@ public class ScanFragment extends Fragment {
         File newReceiptImage = new File(dir, getCurrentTimeStamp());
         try{
             receiptStream = new FileOutputStream(newReceiptImage);
-            receiptPic.compress(Bitmap.CompressFormat.PNG, 100, receiptStream);
+            receiptPic.compress(Bitmap.CompressFormat.JPEG, 100, receiptStream);
         }catch(Exception FileOpenException){
             FileOpenException.printStackTrace();
         }finally{
