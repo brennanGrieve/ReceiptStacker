@@ -1,18 +1,12 @@
 package receiptstacker.pp159333.com.receiptstacker;
 import android.Manifest;
-<<<<<<< HEAD
-=======
 import android.app.AlertDialog;
->>>>>>> 01668107cda7a6fb5c424496ba7cea833abf2043
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-<<<<<<< HEAD
-=======
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
->>>>>>> 01668107cda7a6fb5c424496ba7cea833abf2043
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -35,14 +29,10 @@ import com.google.android.gms.vision.text.TextRecognizer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-<<<<<<< HEAD
-=======
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static android.support.constraint.Constraints.TAG;
->>>>>>> 01668107cda7a6fb5c424496ba7cea833abf2043
-
 
 public class ScanFragment extends Fragment {
     SurfaceView cameraView;
