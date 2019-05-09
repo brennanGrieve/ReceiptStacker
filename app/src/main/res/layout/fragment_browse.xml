@@ -67,6 +67,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/layoutRow1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
@@ -119,21 +120,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/imageView15"
-                        android:layout_width="81dp"
-                        android:layout_height="116dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="68dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:background="@android:color/black"
-                        android:contentDescription="@string/imageDescription"
-                        android:src="@drawable/sample"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.746"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
                 </LinearLayout>
 
                 <LinearLayout
