@@ -2,6 +2,7 @@ package receiptstacker.pp159333.com.receiptstacker;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 public class dbSingleton {
@@ -54,6 +55,11 @@ public class dbSingleton {
             }
         }
         return arrayOfItems;
+    }
+
+    public static int getNumberOfPhotos(){
+        int numRows = (int)DatabaseUtils.longForQuery(receiptDB, "SELECT COUNT(*) FROM Receipts", null);
+        return numRows;
     }
 
 }
