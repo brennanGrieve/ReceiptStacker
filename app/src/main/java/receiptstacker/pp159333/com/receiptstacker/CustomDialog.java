@@ -86,7 +86,7 @@ public class CustomDialog{
         dbSingleton.initDB(context.getApplicationContext());
         String filename = saveImageToFileSystem(receipt.getImage());
         //This method will need to be changed once commitToDB handles more then 1 string.
-        dbSingleton.commitToDB(filename, receipt.getProductName());
+        dbSingleton.commitToDB(receipt);
     }
 
     private String saveImageToFileSystem(Bitmap receiptPic){

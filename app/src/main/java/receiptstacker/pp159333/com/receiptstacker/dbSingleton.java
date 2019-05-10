@@ -12,12 +12,19 @@ public class dbSingleton {
     public static void initDB(Context appContext){
         if(receiptDB == null){
             receiptDB = appContext.openOrCreateDatabase("Receipts.db", Context.MODE_PRIVATE, null);
-            receiptDB.execSQL("CREATE TABLE IF NOT EXISTS Receipts(R_IMAGE_PATH varchar2(100), R_OCR_RAW_DATA varchar2(500))");
+            receiptDB.execSQL("CREATE TABLE IF NOT EXISTS RECEIPT(" +
+                    "R_IMAGE_PATH varchar2(100), " +
+                    "R_COMPANY_NAME varchar2(20), " +
+                    "R_PURCHASE_DATE DATE)");
+            receiptDB.execSQL("CREATE TABLE IF NOT EXISTS PRODUCT(" +
+                    "P_PRODUCT_NAME varchar(20), " +
+                    "P_PRODUCT_PRICE FLOAT, " +
+                    "FOREIGN KEY (R_IMAGE_PATH) REFERENCES RECEIPT(R_IMAGE_PATH))");
         }
     }
 
-    public static void commitToDB(String imagePath, String OCRData){
-        receiptDB.execSQL("INSERT INTO Receipts(R_IMAGE_PATH, R_OCR_RAW_DATA)VALUES('" + imagePath + "','" + OCRData + "')");
+    public static void commitToDB(Receipt inputReceipt){
+        //receiptDB.execSQL("INSERT INTO Receipts(R_IMAGE_PATH, R_OCR_RAW_DATA)VALUES('" + imagePath + "','" + OCRData + "')");
     }
 
     public static void dropFromDB(String imagePath){

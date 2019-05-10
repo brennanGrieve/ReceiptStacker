@@ -43,6 +43,7 @@ public class ScanFragment extends Fragment {
     static CameraSource cameraSource;
     private String rawOCRString;
     private SparseArray<TextBlock> items;
+    private boolean multiCapFlag = false;
 
 
 
