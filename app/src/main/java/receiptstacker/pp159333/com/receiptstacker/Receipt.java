@@ -1,6 +1,7 @@
 package receiptstacker.pp159333.com.receiptstacker;
 
 import android.graphics.Bitmap;
+import android.util.SparseArray;
 
 import java.util.Date;
 
@@ -22,6 +23,8 @@ public class Receipt {
         this.dateOfPurchase = dateOfPurchase;
         this.image = image;
     }
+
+
 
     public Bitmap getImage() {
         return image;

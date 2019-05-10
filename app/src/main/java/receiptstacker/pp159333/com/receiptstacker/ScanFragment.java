@@ -75,32 +75,6 @@ public class ScanFragment extends Fragment {
 
     }
 
-    private String getCurrentTimeStamp(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
-        String timeStamp = simpleDateFormat.format(new Date());
-        return timeStamp;
-    }
-
-    private String saveImageToFileSystem(Bitmap receiptPic){
-        ContextWrapper appWrap = new ContextWrapper(getActivity().getApplicationContext());
-        FileOutputStream receiptStream = null;
-        File dir = appWrap.getDir("receiptImages", Context.MODE_PRIVATE);
-        File newReceiptImage = new File(dir, getCurrentTimeStamp());
-        try{
-            receiptStream = new FileOutputStream(newReceiptImage);
-            receiptPic.compress(Bitmap.CompressFormat.JPEG, 100, receiptStream);
-        }catch(Exception FileOpenException){
-            FileOpenException.printStackTrace();
-        }finally{
-            try{
-                receiptStream.close();
-            }catch(IOException fileCloseException){
-                fileCloseException.printStackTrace();
-            }
-        }
-        Log.d(TAG, "saveImageToFileSystem: File Path is:" + newReceiptImage.getAbsolutePath());
-        return newReceiptImage.getAbsolutePath();
-    }
 
     CameraSource.PictureCallback pCallBack = new CameraSource.PictureCallback() {
         @Override
@@ -113,10 +87,6 @@ public class ScanFragment extends Fragment {
             CustomDialog customDialog = new CustomDialog(getContext(), receipt);
             customDialog.showDialog();
 
-            //MUST be run before Accessing Database!
-            dbSingleton.initDB(getActivity().getApplicationContext());
-            String filename = saveImageToFileSystem(pic);
-            dbSingleton.commitToDB(filename, rawOCRString);
 
         }
     };
