@@ -1,12 +1,11 @@
 package receiptstacker.pp159333.com.receiptstacker;
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -31,6 +30,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Vector;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -41,6 +42,7 @@ public class ScanFragment extends Fragment {
     TextView textView;
     static CameraSource cameraSource;
     private String rawOCRString;
+    private SparseArray<TextBlock> items;
 
 
 
@@ -73,58 +75,19 @@ public class ScanFragment extends Fragment {
 
     }
 
-    private String getCurrentTimeStamp(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
-        String timeStamp = simpleDateFormat.format(new Date());
-        return timeStamp;
-    }
-
-    private String saveImageToFileSystem(Bitmap receiptPic){
-        ContextWrapper appWrap = new ContextWrapper(getActivity().getApplicationContext());
-        FileOutputStream receiptStream = null;
-        File dir = appWrap.getDir("receiptImages", Context.MODE_PRIVATE);
-        File newReceiptImage = new File(dir, getCurrentTimeStamp());
-        try{
-            receiptStream = new FileOutputStream(newReceiptImage);
-            receiptPic.compress(Bitmap.CompressFormat.JPEG, 100, receiptStream);
-        }catch(Exception FileOpenException){
-            FileOpenException.printStackTrace();
-        }finally{
-            try{
-                receiptStream.close();
-            }catch(IOException fileCloseException){
-                fileCloseException.printStackTrace();
-            }
-        }
-        Log.d(TAG, "saveImageToFileSystem: File Path is:" + newReceiptImage.getAbsolutePath());
-        return newReceiptImage.getAbsolutePath();
-    }
 
     CameraSource.PictureCallback pCallBack = new CameraSource.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] bytes) {
             //handle loading the image into the receipt here
             Bitmap pic = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-            //MUST be run before Accessing Database!
-              dbSingleton.initDB(getActivity().getApplicationContext());
-              String filename = saveImageToFileSystem(pic);
-              dbSingleton.commitToDB(filename, rawOCRString);
 
-            //ImageView image = new ImageView(getActivity());
+            Receipt receipt = new Receipt("Shirt", "The Warehouse", 9 , new Date(34439393), pic);
+            //Show dialog
+            CustomDialog customDialog = new CustomDialog(getContext(), receipt);
+            customDialog.showDialog();
 
-   //         image.setImageBitmap(pic);
-//
-//            AlertDialog.Builder builder =
-//                    new AlertDialog.Builder(getActivity()).
-//                            setMessage("Message above the image").
-//                            setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    dialog.dismiss();
-//                                }
-//                            }).
-//                            setView(image);
-//            builder.create().show();
+
         }
     };
 
@@ -140,7 +103,7 @@ public class ScanFragment extends Fragment {
         cameraView = v.findViewById(R.id.surfaceView_Camera);
         textView = v.findViewById(R.id.textView);
         TextRecognizer textRecognizer = new TextRecognizer.Builder(appContext).build();
-        if (!textRecognizer.isOperational()) {
+    if (!textRecognizer.isOperational()) {
             Log.w("MainActivity", "Dependencies are not available");
 
         } else {
@@ -150,6 +113,10 @@ public class ScanFragment extends Fragment {
                     .setRequestedFps(60)
                     .setAutoFocusEnabled(true)
                     .build();
+
+
+
+
             cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
                 @Override
                 public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -182,14 +149,14 @@ public class ScanFragment extends Fragment {
 
                 @Override
                 public void receiveDetections(Detector.Detections<TextBlock> detections) {
-                    final SparseArray<TextBlock> items = detections.getDetectedItems();
-                        if (items.size() != 0) {
+                    final SparseArray<TextBlock> OCRitems = detections.getDetectedItems();
+                        if (OCRitems.size() != 0) {
                             textView.post(new Runnable() {
                                 @Override
                                 public void run() {
                                     StringBuilder stringBuilder = new StringBuilder();
-                                    for (int i = 0; (i < items.size()); i++) {
-                                        TextBlock item = items.valueAt(i);
+                                    for (int i = 0; (i < OCRitems.size()); i++) {
+                                        TextBlock item = OCRitems.valueAt(i);
                                         stringBuilder.append(item.getValue());
                                         stringBuilder.append(" ");
                                     }
@@ -202,6 +169,5 @@ public class ScanFragment extends Fragment {
             });
         }
     }
-
 
 }
