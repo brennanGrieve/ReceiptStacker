@@ -20,6 +20,9 @@ public class BrowseFragment extends Fragment {
     Button searchButton, selectButton, deleteButton;
     ImageView image1;
     ScrollView scrollView;
+    int max = dbSingleton.getNumberOfPhotos();
+    int[] arrayOfIds = new int[max];
+
     public static BrowseFragment newInstance() {
         return new BrowseFragment();
     }
@@ -38,36 +41,33 @@ public class BrowseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String [] allPhotos;
-        int [] arrayOfIds = new int [1000]; // change me
-        //arrayOfIds[0] = R.id.imageView0;
+        String[] allPhotos;
         File newImage;
-        ImageView [] imageViews = new ImageView[1000]; // change me
-        LinearLayout [] layouts = new LinearLayout [1000]; // change me
+
+        ImageView[] imageViews = new ImageView[1000]; // change me
+        LinearLayout[] layouts = new LinearLayout[1000]; // change me
+
         allPhotos = dbSingleton.loadPhotos();
-        int max = dbSingleton.getNumberOfPhotos();
-        System.out. println("max = "+max);
-        //LinearLayout layout1 = view.findViewById(R.id.layoutRow1);
         LinearLayout verticalLayout = view.findViewById(R.id.verticalLayout);
         int layoutId = 0;
-        int layoutNumber =0;
-        //got to set the number of photos to smaller than how many photos there are for some reason haha
-        for(int i =0; i< max; i++){ // change me
-            System.out.println(allPhotos[i]);
 
-            if(allPhotos[i] != null) {
+        int layoutNumber = 0;
+        for (int i = 0; i < max; i++) {
+            System.out.println(allPhotos[i]);
+            if (allPhotos[i] != null) {
                 newImage = new File(allPhotos[i]);
-            }else{
+            } else {
                 newImage = null;
             }
-            if(newImage != null){
+            if (newImage != null) {
                 Bitmap b = BitmapFactory.decodeFile(newImage.getAbsolutePath());
                 imageViews[i] = new ImageView(getActivity());
                 imageViews[i].setImageBitmap(b);
                 imageViews[i].setId(View.generateViewId());
                 int imageId = imageViews[i].getId();
+                arrayOfIds[i] = imageId;
                 //create a new horizontal layout for every 3 photos
-                if(i%3 == 0) {
+                if (i % 3 == 0) {
                     //add a new layout to the scrollView
                     layouts[layoutNumber] = new LinearLayout(getActivity());
                     verticalLayout.addView(layouts[layoutNumber]);
@@ -79,7 +79,9 @@ public class BrowseFragment extends Fragment {
                 //add the image to the layout
                 LinearLayout currentLayout = view.findViewById(layoutId);
                 currentLayout.addView(imageViews[i]);
-
+                currentLayout.setPadding(0, 5, 0, 5);
+                currentLayout.setY(0);
+                currentLayout.setX(0);
 
                 //resize the image
                 ImageView currentImage = view.findViewById(imageId);
@@ -87,16 +89,13 @@ public class BrowseFragment extends Fragment {
                 currentImage.getLayoutParams().width = 150; //change me
                 currentImage.getLayoutParams().height = 150; // change me
                 currentImage.setRotation(90);
-                // change me
-                currentImage.setY(10);
+                currentImage.setY(0);
                 currentImage.setX(0);
-                currentImage.setPadding(0, 40, 0, 5);
-                //image.setImageBitmap(b);
-            }else{
-                System.out.println("Cant load image "+ i);
+                currentImage.setPadding(0, 25, 0, 25);
+            } else {
+                System.out.println("Cant load image " + i);
             }
         }
-
 
 
         searchButton = (Button) view.findViewById(R.id.searchBtn);
@@ -120,17 +119,21 @@ public class BrowseFragment extends Fragment {
                 //add code for deleting photos
             }
         });
-        //image1 = (ImageView)view.findViewById(R.id.imageView12);
-//        image1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent photoIntent = new Intent(getActivity(), PhotoActivity.class);
-//                startActivity(photoIntent);
-//            }
-//        });
-        scrollView= view.findViewById(R.id.scrollView);
 
+        ImageView []allImages = new ImageView[max];
+        for (int i = 0; i < max; i++) {
+
+            allImages[i] = (ImageView) view.findViewById(arrayOfIds[i]);
+
+            allImages[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent photoIntent = new Intent(getActivity(), PhotoActivity.class);
+                    startActivity(photoIntent);
+
+                }
+            });
+        }
     }
-
 
 }
