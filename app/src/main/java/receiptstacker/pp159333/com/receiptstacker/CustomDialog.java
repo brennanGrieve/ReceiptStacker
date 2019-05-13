@@ -50,7 +50,8 @@ public class CustomDialog{
         okaybutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commitToDB();
+                saveReceiptToStorage();
+
                 dialog.dismiss();
             }
         });
@@ -77,16 +78,17 @@ public class CustomDialog{
 
         pname.setText(receipt.getProductName());
         pdate.setText(receipt.getDateOfPurchase().toString());
-        pplace.setText(receipt.getBussinessName());
+        pplace.setText(receipt.getBusinessName());
         pprice.setText(price);
-        image.setImageBitmap(receipt.getImage());
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(receipt.getImage(), 150, 150, false);
+        image.setImageBitmap(scaledBitmap);
     }
 
-    private void commitToDB(){
+    private void saveReceiptToStorage(){
         dbSingleton.initDB(context.getApplicationContext());
         String filename = saveImageToFileSystem(receipt.getImage());
-        //This method will need to be changed once commitToDB handles more then 1 string.
-        dbSingleton.commitToDB(filename, receipt.getProductName());
+        //This method will need to be changed once saveReceiptToStorage handles more then 1 string.
+        dbSingleton.commitToDB(receipt, filename);
     }
 
     private String saveImageToFileSystem(Bitmap receiptPic){
@@ -111,6 +113,8 @@ public class CustomDialog{
         Log.d(TAG, "saveImageToFileSystem: File Path is:" + newReceiptImage.getAbsolutePath());
         return newReceiptImage.getAbsolutePath();
     }
+
+
 
     private String getCurrentTimeStamp(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
