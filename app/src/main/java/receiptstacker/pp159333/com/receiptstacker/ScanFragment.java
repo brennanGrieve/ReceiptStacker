@@ -44,6 +44,9 @@ public class ScanFragment extends Fragment {
     private String rawOCRString;
     private SparseArray<TextBlock> items;
     private boolean multiCapFlag = false;
+    private int multiCapSequence = 1;
+    ImageView multiCapIndicator;
+    private Receipt multiCapReceipt;
 
 
 
@@ -69,7 +72,10 @@ public class ScanFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ImageView cameraShutter = view.findViewById(R.id.imageViewCameraShutter);
+        ImageView multiCap = view.findViewById(R.id.multiCapView);
+        multiCapIndicator = view.findViewById(R.id.imageViewMulticapActiveIndicator);
         cameraShutter.setOnClickListener(mOnClickListener);
+        multiCap.setOnClickListener(mMultiCapOnClickListener);
         cameraView = view.findViewById(R.id.surfaceView_Camera);
         getCamera(getView());
 
@@ -81,14 +87,59 @@ public class ScanFragment extends Fragment {
         @Override
         public void onPictureTaken(byte[] bytes) {
             //handle loading the image into the receipt here
-            Bitmap pic = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
 
-            Receipt receipt = new Receipt("Shirt", "The Warehouse", 9 , new Date(34439393), pic);
-            //Show dialog
-            CustomDialog customDialog = new CustomDialog(getContext(), receipt);
-            customDialog.showDialog();
+            //Split the procedure for either Single or Multi-Capture operations
+
+            if(!multiCapFlag) {
+                Bitmap pic = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                Receipt receipt = new Receipt("Shirt", "The Warehouse", 9, new Date(34439393), pic);
+                //Show dialog
+                CustomDialog customDialog = new CustomDialog(getContext(), receipt);
+                customDialog.showDialog();
+            }
+            if(multiCapFlag){
+                //add to the multiCapture object
+                Bitmap multiPic = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                if(multiCapSequence == 1) {
+                    ++multiCapSequence;
+                    if(multiCapReceipt == null) {
+                        multiCapReceipt = new Receipt("Shirt", "The Warehouse", 9, new Date(34439393), multiPic);
+                    }else{
+                        multiCapReceipt.reinitialize("Shirt", "The Warehouse", 9, new Date(34439393), multiPic);
+                    }
+                }
+                else{
+                    ++multiCapSequence;
+                    //add to lists
+                    multiCapReceipt.mergeBitmaps(multiPic);
+                    multiCapReceipt.addTags();
+                }
+
+            }
 
 
+        }
+    };
+
+    private ImageView.OnClickListener mMultiCapOnClickListener = new ImageView.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            if(!multiCapFlag) {
+                multiCapFlag = true;
+                multiCapIndicator.setVisibility(View.VISIBLE);
+            }
+            else{
+                //finalize image stitching + commit to db
+                multiCapFlag = false;
+                if(multiCapReceipt != null) {
+                    CustomDialog customDialog = new CustomDialog(getContext(), multiCapReceipt);
+                    customDialog.showDialog();
+                    multiCapReceipt.reset();
+                }
+                multiCapSequence = 1;
+                multiCapIndicator.setVisibility(View.INVISIBLE);
+            }
         }
     };
 
@@ -106,7 +157,6 @@ public class ScanFragment extends Fragment {
         TextRecognizer textRecognizer = new TextRecognizer.Builder(appContext).build();
     if (!textRecognizer.isOperational()) {
             Log.w("MainActivity", "Dependencies are not available");
-
         } else {
             cameraSource = new CameraSource.Builder(appContext, textRecognizer)
                     .setFacing(CameraSource.CAMERA_FACING_BACK)
@@ -114,8 +164,6 @@ public class ScanFragment extends Fragment {
                     .setRequestedFps(60)
                     .setAutoFocusEnabled(true)
                     .build();
-
-
 
 
             cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
