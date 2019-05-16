@@ -42,7 +42,7 @@ public class ScanFragment extends Fragment {
     TextView textView;
     static CameraSource cameraSource;
     private String rawOCRString;
-    private SparseArray<TextBlock> items;
+    private SparseArray<TextBlock> OCRitems;
 
 
 
@@ -82,10 +82,11 @@ public class ScanFragment extends Fragment {
             //handle loading the image into the receipt here
             Bitmap pic = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
 
-            Receipt receipt = new Receipt("Shirt", "The Warehouse", 9 , new Date(34439393), pic);
+            //Receipt receipt = new Receipt("Shirt", "The Warehouse", 9 , new Date(34439393), pic);
+            Receipt receipt = new Receipt(OCRitems, pic);
             //Show dialog
-            CustomDialog customDialog = new CustomDialog(getContext(), receipt);
-            customDialog.showDialog();
+//            CustomDialog customDialog = new CustomDialog(getContext(), receipt);
+  //          customDialog.showDialog();
 
 
         }
@@ -110,7 +111,7 @@ public class ScanFragment extends Fragment {
             cameraSource = new CameraSource.Builder(appContext, textRecognizer)
                     .setFacing(CameraSource.CAMERA_FACING_BACK)
                     .setRequestedPreviewSize(1080, 1920)
-                    .setRequestedFps(60)
+                    .setRequestedFps(30)
                     .setAutoFocusEnabled(true)
                     .build();
 
@@ -149,7 +150,7 @@ public class ScanFragment extends Fragment {
 
                 @Override
                 public void receiveDetections(Detector.Detections<TextBlock> detections) {
-                    final SparseArray<TextBlock> OCRitems = detections.getDetectedItems();
+                     OCRitems = detections.getDetectedItems();
                         if (OCRitems.size() != 0) {
                             textView.post(new Runnable() {
                                 @Override

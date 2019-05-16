@@ -72,7 +72,7 @@ public class CustomDialog{
         ImageView image = dialog.findViewById(R.id.imageview_ReceiptImage);
 
         String price;
-        price = String.format("%.02f", receipt.getPrice());
+        price = String.format("%.02f", receipt.getTotalPrice());
         price = "$" + price;
 
         pname.setText(receipt.getProductName());
