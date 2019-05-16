@@ -1,6 +1,8 @@
 package receiptstacker.pp159333.com.receiptstacker;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.List;
@@ -57,6 +59,35 @@ public class dbSingleton {
 
     public static void searchInDB(){
 
+    }
+
+    /***************************************
+     * loadPhotos
+     * gathers all the paths to the photos and returns them as an array of strings
+     * @return arrayOfItems
+     */
+    public static String [] loadPhotos(){
+        String [] arrayOfItems = new String[50]; //change the size of this
+        int i =0;
+        String sql = "SELECT R_IMAGE_PATH FROM Receipts WHERE R_IMAGE_PATH = R_IMAGE_PATH";
+        if(receiptDB != null) {
+            Cursor c = receiptDB.rawQuery(sql, new String[]{});
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+                do {
+                    System.out.println("ROW[" + i + "]: " + c.getString(0));
+                    arrayOfItems[i] = c.getString(0);
+                    i++;
+                } while (c.moveToNext());
+                c.close();
+            }
+        }
+        return arrayOfItems;
+    }
+
+    public static int getNumberOfPhotos(){
+        int numRows = (int)DatabaseUtils.longForQuery(receiptDB, "SELECT COUNT(*) FROM Receipts", null);
+        return numRows;
     }
 
 }
