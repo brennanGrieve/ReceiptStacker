@@ -18,10 +18,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".PhotoDialog"></activity>
+        <activity
+            android:name=".PictureActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_picture"
+            android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".CustomDialog"
             android:label="@string/title_activity_custom_dialog"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PhotoActivity"
             android:label="@string/title_activity_photo"
