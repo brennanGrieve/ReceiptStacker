@@ -76,9 +76,12 @@ public class CustomDialog{
         price = String.format("%.02f", receipt.getTotalPrice());
         price = "$" + price;
 
-        pname.setText(receipt.getProductName());
-        pdate.setText(receipt.getDateOfPurchase().toString());
-        pplace.setText(receipt.getBusinessName());
+        //pname.setText(receipt.getProductName());
+        //[changes]
+        if(receipt.getDateOfPurchase() != null) {
+            pdate.setText(receipt.getDateOfPurchase().toString());
+        }
+        pplace.setText(receipt.getBussinessName());
         pprice.setText(price);
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(receipt.getImage(), 150, 150, false);
         image.setImageBitmap(scaledBitmap);
