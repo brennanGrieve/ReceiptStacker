@@ -88,7 +88,7 @@ public class  MainActivity extends AppCompatActivity {
     }
 
     /*
-    Changes theme to the prefered user theme
+    Changes theme to the preferred user theme
      */
     void changeTheme (BottomNavigationView navigation) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);

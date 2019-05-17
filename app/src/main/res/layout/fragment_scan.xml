@@ -64,5 +64,32 @@
             tools:layout_editor_absoluteY="533dp"
             tools:text="OCRTEST" />
 
+        <ImageView
+            android:id="@+id/imageViewMulticapActiveIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginTop="595dp"
+            android:layout_marginEnd="124dp"
+            android:layout_marginBottom="119dp"
+            android:src="@drawable/ic_multicap_active"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/multiCapView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/multiCapView"
+            android:layout_width="34dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="594dp"
+            android:layout_marginEnd="148dp"
+            android:layout_marginBottom="104dp"
+            android:src="@drawable/ic_multicap"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageViewCameraShutter"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

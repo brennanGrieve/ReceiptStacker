@@ -1,0 +1,22 @@
+<svg width="55" height="34" xmlns="http://www.w3.org/2000/svg" clip-rule="evenodd">
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="36" width="57" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g id="CameraShutter">
+   <circle id="svg_1" fill="#aaa" stroke="#aaa" stroke-width="2px" r="15.868" cy="16.868" cx="16.868"/>
+   <circle id="svg_2" fill="#fff" stroke="#fff" stroke-width="2px" r="14.447" cy="16.868" cx="16.868"/>
+  </g>
+  <g id="svg_5">
+   <circle id="svg_3" fill="#aaa" stroke="#aaa" stroke-width="2px" r="15.868" cy="16.868" cx="26.243"/>
+   <circle id="svg_4" fill="#fff" stroke="#fff" stroke-width="2px" r="14.447" cy="16.868" cx="26.243"/>
+  </g>
+  <g id="svg_8">
+   <circle id="svg_6" fill="#aaa" stroke="#aaa" stroke-width="2px" r="15.868" cy="16.868" cx="35.743"/>
+   <circle id="svg_7" fill="#fff" stroke="#fff" stroke-width="2px" r="14.447" cy="16.868" cx="35.743"/>
+  </g>
+ </g>
+</svg>

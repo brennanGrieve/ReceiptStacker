@@ -1,17 +1,24 @@
 package receiptstacker.pp159333.com.receiptstacker;
 
 import android.graphics.Bitmap;
-import android.util.SparseArray;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 
 import com.google.android.gms.vision.text.TextBlock;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+<<<<<<< HEAD
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.lang.StrictMath.max;
+=======
+import java.util.List;
+
+import static android.graphics.Bitmap.createBitmap;
+>>>>>>> 00348f05ded7312faaa5ca8be12e3573df6eb3f9
 
 /*
 A class representing a Receipt.
@@ -23,6 +30,7 @@ image is the same, a the image taken
  */
 
 public class Receipt {
+<<<<<<< HEAD
     private String bussinessName;
     private double totalPrice;
     private Date dateOfPurchase;
@@ -32,6 +40,21 @@ public class Receipt {
     //For creation after capture
     public Receipt(SparseArray<TextBlock> OCR, Bitmap image){
         this.OCR = OCR;
+=======
+    private String ProductName;
+    private String businessName;
+    private Float price;
+    private Date dateOfPurchase;
+    private Bitmap image;
+    private List<String> nameList;
+    private List<Float> priceList;
+
+    public Receipt(String productName, String businessName, float price, Date dateOfPurchase, Bitmap image) {
+        ProductName = productName;
+        this.businessName = businessName;
+        this.price = price;
+        this.dateOfPurchase = dateOfPurchase;
+>>>>>>> 00348f05ded7312faaa5ca8be12e3573df6eb3f9
         this.image = image;
         int key;
         double maxPrice = -1;
@@ -95,8 +118,13 @@ public class Receipt {
     }
 
 
+<<<<<<< HEAD
     public String getBussinessName() {
         return bussinessName;
+=======
+    public String getBusinessName() {
+        return businessName;
+>>>>>>> 00348f05ded7312faaa5ca8be12e3573df6eb3f9
     }
 
     public double getTotalPrice() {
@@ -106,7 +134,56 @@ public class Receipt {
     public Date getDateOfPurchase() {
         return dateOfPurchase;
     }
+<<<<<<< HEAD
     public SparseArray<TextBlock> getOCR() {
         return OCR;
+=======
+
+    public List<String> getNameList() {
+        return nameList;
+    }
+
+    public List<Float> getPriceList() {
+        return priceList;
+    }
+
+    public void reset(){
+        ProductName = null;
+        businessName = null;
+        image = null;
+        dateOfPurchase = null;
+        if(nameList != null) {
+            nameList.clear();
+            priceList.clear();
+        }
+    }
+
+    public void reinitialize(String newPName, String newBName, float newPrice, Date newDate, Bitmap newPic){
+        ProductName = newPName;
+        businessName = newBName;
+        price = newPrice;
+        dateOfPurchase = newDate;
+        image = newPic;
+    }
+
+    public void mergeBitmaps(Bitmap newImage){
+        if(image == null){
+            image = newImage;
+        }
+        else{
+            Bitmap mergedImage = createBitmap(image.getWidth(), image.getHeight() + newImage.getHeight(), image.getConfig());
+            //merge the images here
+            Rect originalImageBounds = new Rect(0, 0, image.getWidth(), image.getHeight());
+            Rect mergeIntoBounds = new Rect(0, image.getHeight(), image.getWidth(), image.getHeight() + newImage.getHeight());
+            Canvas merging = new Canvas(mergedImage);
+            merging.drawBitmap(image, null, originalImageBounds, null);
+            merging.drawBitmap(newImage, null, mergeIntoBounds, null);
+            image = mergedImage;
+        }
+    }
+
+    public void addTags(){
+        //add tags to list here, change method parameters as necessary
+>>>>>>> 00348f05ded7312faaa5ca8be12e3573df6eb3f9
     }
 }
