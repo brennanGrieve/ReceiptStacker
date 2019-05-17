@@ -25,7 +25,7 @@
         app:srcCompat="@color/colorPrimary" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout_Text"
+        android:id="@+id/constraintLayout_UserInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorAccent"
@@ -43,7 +43,7 @@
             android:text="Purchase Orgin"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_ProudctName" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView_DateOfPurchase"
@@ -55,17 +55,6 @@
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_PurchaseOrgin" />
-
-        <TextView
-            android:id="@+id/textView_ProudctName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="22dp"
-            android:text="Product Name"
-            android:textSize="30sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_ReceiptImage" />
 
         <Button
             android:id="@+id/button_keep"
@@ -115,10 +104,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout_Text"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout_UserInput"
         app:layout_constraintEnd_toEndOf="@+id/imageview_ReceiptImage"
         app:layout_constraintStart_toStartOf="@+id/imageview_ReceiptImage"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout_Text"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout_UserInput"
         app:srcCompat="@android:drawable/arrow_down_float" />
 
 </android.support.constraint.ConstraintLayout>

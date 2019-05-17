@@ -4,10 +4,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.support.constraint.ConstraintLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +31,8 @@ public class CustomDialog{
     private Dialog dialog;
     private Context context;
     private Receipt receipt;
+    private Boolean pullDownState;
+    private int defaultHeight;
 
     // Takes a context and a receipt and creates a custom dialog.
     CustomDialog(Context context, Receipt receipt) {
@@ -36,6 +40,7 @@ public class CustomDialog{
         dialog.setContentView(R.layout.activity_custom_dialog);
         this.context = context;
         this.receipt = receipt;
+        pullDownState = true;
         populate(receipt);
     }
 
@@ -45,7 +50,8 @@ public class CustomDialog{
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
         dialog.getWindow().setLayout((6 * width)/7, (4 * height)/5);
-
+        ConstraintLayout inputBox = dialog.findViewById(R.id.constraintLayout_UserInput);
+        defaultHeight = inputBox.getMaxHeight();
         Button okaybutton = dialog.findViewById(R.id.button_keep);
         okaybutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,11 +67,34 @@ public class CustomDialog{
                 dialog.dismiss();
             }
         });
+
+        ImageButton pulldown = dialog.findViewById(R.id.imageButton_PullDown);
+        pulldown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pullDownAction();
+            }
+        });
         dialog.show();
     }
 
+    void pullDownAction (){
+        if(pullDownState){
+            pullDownState = false;
+            ConstraintLayout inputBox = dialog.findViewById(R.id.constraintLayout_UserInput);
+            inputBox.setMinHeight(1);
+            //Then Hide
+        } else{
+            pullDownState = true;
+            ConstraintLayout inputBox = dialog.findViewById(R.id.constraintLayout_UserInput);
+            inputBox.setMaxHeight(defaultHeight);
+            //Then Show
+        }
+
+    }
+
+
     void populate(Receipt receipt){
-        TextView pname = dialog.findViewById(R.id.textView_ProudctName);
         TextView pdate = dialog.findViewById(R.id.textView_DateOfPurchase);
         TextView pplace = dialog. findViewById(R.id.textView_PurchaseOrgin);
         TextView pprice = dialog.findViewById(R.id.textview_Price);
@@ -75,8 +104,12 @@ public class CustomDialog{
         price = String.format("%.02f", receipt.getTotalPrice());
         price = "$" + price;
 
-        pname.setText(receipt.getProductName());
-        pdate.setText(receipt.getDateOfPurchase().toString());
+        Date date = receipt.getDateOfPurchase();
+        String place = receipt.getBussinessName();
+
+        if(receipt.getDateOfPurchase() != null) {
+            pdate.setText(receipt.getDateOfPurchase().toString());
+        }
         pplace.setText(receipt.getBussinessName());
         pprice.setText(price);
         image.setImageBitmap(receipt.getImage());
@@ -86,7 +119,7 @@ public class CustomDialog{
         dbSingleton.initDB(context.getApplicationContext());
         String filename = saveImageToFileSystem(receipt.getImage());
         //This method will need to be changed once commitToDB handles more then 1 string.
-        dbSingleton.commitToDB(filename, receipt.getProductName());
+        //dbSingleton.commitToDB(filename, receipt.getProductName());
     }
 
     private String saveImageToFileSystem(Bitmap receiptPic){

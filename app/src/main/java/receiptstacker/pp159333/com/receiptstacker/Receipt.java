@@ -85,6 +85,7 @@ public class Receipt {
         if(maxPrice != -1) {
             totalPrice = maxPrice;
         }
+
     }
 
 

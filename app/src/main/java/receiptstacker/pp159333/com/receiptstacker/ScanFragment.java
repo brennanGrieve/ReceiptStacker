@@ -85,8 +85,8 @@ public class ScanFragment extends Fragment {
             //Receipt receipt = new Receipt("Shirt", "The Warehouse", 9 , new Date(34439393), pic);
             Receipt receipt = new Receipt(OCRitems, pic);
             //Show dialog
-//            CustomDialog customDialog = new CustomDialog(getContext(), receipt);
-  //          customDialog.showDialog();
+            CustomDialog customDialog = new CustomDialog(getContext(), receipt);
+             customDialog.showDialog();
 
 
         }
