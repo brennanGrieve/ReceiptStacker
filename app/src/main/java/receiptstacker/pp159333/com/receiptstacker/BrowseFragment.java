@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +17,11 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class BrowseFragment extends Fragment {
-    Button searchButton, selectButton, deleteButton;
-    ImageView image1;
-    ScrollView scrollView;
+    Button searchButton, searchByButton;
     int max = dbSingleton.getNumberOfPhotos();
     int[] arrayOfIds = new int[max];
 
@@ -37,30 +39,54 @@ public class BrowseFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_browse, container, false);
     }
+    public static Bitmap decodeFile(File f,int WIDTH,int HIGHT){
+        try {
+            //Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(new FileInputStream(f),null,o);
+
+            //The new size we want to scale to
+            final int REQUIRED_WIDTH=WIDTH;
+            final int REQUIRED_HIGHT=HIGHT;
+            //Find the correct scale value. It should be the power of 2.
+            int scale=1;
+            while(o.outWidth/scale/2>=REQUIRED_WIDTH && o.outHeight/scale/2>=REQUIRED_HIGHT)
+                scale*=2;
+
+            //Decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize=scale;
+            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+        } catch (FileNotFoundException e) {}
+        return null;
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String[] allPhotos;
+        final String[] allImagePaths;
         File newImage;
 
         ImageView[] imageViews = new ImageView[1000]; // change me
         LinearLayout[] layouts = new LinearLayout[1000]; // change me
-
-        allPhotos = dbSingleton.loadPhotos();
+        allImagePaths = dbSingleton.loadPhotos();
         LinearLayout verticalLayout = view.findViewById(R.id.verticalLayout);
+        Bitmap b = null;
         int layoutId = 0;
 
         int layoutNumber = 0;
         for (int i = 0; i < max; i++) {
-            System.out.println(allPhotos[i]);
-            if (allPhotos[i] != null) {
-                newImage = new File(allPhotos[i]);
+            System.out.println(allImagePaths[i]);
+            if (allImagePaths[i] != null) {
+                newImage = new File(allImagePaths[i]);
             } else {
                 newImage = null;
             }
             if (newImage != null) {
-                Bitmap b = BitmapFactory.decodeFile(newImage.getAbsolutePath());
+                BitmapFactory.Options o = new BitmapFactory.Options();
+                o.inSampleSize = 8; // scales down the size kinda haha
+                b = BitmapFactory.decodeFile(newImage.getAbsolutePath(), o);
                 imageViews[i] = new ImageView(getActivity());
                 imageViews[i].setImageBitmap(b);
                 imageViews[i].setId(View.generateViewId());
@@ -86,12 +112,15 @@ public class BrowseFragment extends Fragment {
                 //resize the image
                 ImageView currentImage = view.findViewById(imageId);
                 //currently 3:4
-                currentImage.getLayoutParams().width = 150; //change me
+                DisplayMetrics dm = new DisplayMetrics();
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+                currentImage.getLayoutParams().width = dm.widthPixels/3; //change me
                 currentImage.getLayoutParams().height = 150; // change me
-                currentImage.setRotation(90);
+
+                //currentImage.setRotation(90);
                 currentImage.setY(0);
                 currentImage.setX(0);
-                currentImage.setPadding(0, 25, 0, 25);
+                //currentImage.setPadding(0, 25, 0, 25);
             } else {
                 System.out.println("Cant load image " + i);
             }
@@ -105,31 +134,28 @@ public class BrowseFragment extends Fragment {
                 //add the search stuff here.
             }
         });
-        selectButton = (Button) view.findViewById(R.id.selectBtn);
-        selectButton.setOnClickListener(new View.OnClickListener() {
+        searchByButton = (Button) view.findViewById(R.id.searchByBtn);
+        searchByButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //add code for selecting photos
-            }
-        });
-        deleteButton = (Button) view.findViewById(R.id.deleteBtn);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //add code for deleting photos
+                //add code for select search by stuff
             }
         });
 
         ImageView []allImages = new ImageView[max];
-        for (int i = 0; i < max; i++) {
-
-            allImages[i] = (ImageView) view.findViewById(arrayOfIds[i]);
-
-            allImages[i].setOnClickListener(new View.OnClickListener() {
+        for (int indx = 0; indx < max; indx++) {
+            allImages[indx] = (ImageView) view.findViewById(arrayOfIds[indx]);
+            final int finalIndx = indx;
+            allImages[indx].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent photoIntent = new Intent(getActivity(), PhotoActivity.class);
+
+                    Intent photoIntent = new Intent(getActivity(), PictureActivity.class);
+                    // this may work haha
+                    // this could be used to send across OCR data
+                    photoIntent.putExtra("path",allImagePaths[finalIndx]);
                     startActivity(photoIntent);
+                    // add the image to the activity
 
                 }
             });
