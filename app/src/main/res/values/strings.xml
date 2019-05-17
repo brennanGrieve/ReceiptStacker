@@ -5,8 +5,6 @@
     <string name="title_browse">Browse</string>
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="cameraInput">Camera Input</string>
     <string name="capButton">capture</string>
     <string name="optionbutton">Options</string>
@@ -91,5 +89,5 @@
     <string name="title_activity_custom_dialog">CustomDialog</string>
     <string name="activity_custom_keep">Keep</string>
 
-    <string name="title_activity_picture">PictureActivity</string>
+    <string name="title_activity_picture">My Receipts</string>
 </resources>
