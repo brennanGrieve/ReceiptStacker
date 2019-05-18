@@ -68,28 +68,22 @@
             android:id="@+id/imageViewMulticapActiveIndicator"
             android:layout_width="wrap_content"
             android:layout_height="18dp"
-            android:layout_marginTop="595dp"
-            android:layout_marginEnd="124dp"
-            android:layout_marginBottom="119dp"
+            android:layout_marginStart="2dp"
             android:src="@drawable/ic_multicap_active"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/multiCapView"
             app:layout_constraintStart_toEndOf="@+id/multiCapView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/multiCapView" />
 
         <ImageView
             android:id="@+id/multiCapView"
-            android:layout_width="34dp"
-            android:layout_height="36dp"
-            android:layout_marginTop="594dp"
-            android:layout_marginEnd="148dp"
-            android:layout_marginBottom="104dp"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
             android:src="@drawable/ic_multicap"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewCameraShutter"
             app:layout_constraintStart_toEndOf="@+id/imageViewCameraShutter"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/imageViewCameraShutter" />
 
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

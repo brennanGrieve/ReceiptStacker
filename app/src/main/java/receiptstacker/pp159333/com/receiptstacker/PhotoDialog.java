@@ -24,11 +24,11 @@ public class PhotoDialog{
     private String name;
 
     // Takes a context and a receipt and creates a custom dialog.
-    PhotoDialog(Context context, String name) {
+    PhotoDialog(Context context, String name, String imagePath, int id) {
         this.dialog = new Dialog(context);
         dialog.setContentView(R.layout.activity_photo_dialog);
         this.context = context;
-        populate(name);
+        populate(name, imagePath, id);
     }
 
 
@@ -50,10 +50,30 @@ public class PhotoDialog{
         dialog.show();
     }
 
-    private void populate(String name){
+    private void populate(String OCR, String imagePath, int imageId){
+        OCR = "";
         // add more to this later
-        TextView pname = dialog.findViewById(R.id.textview_Price);
-        pname.setText(name);
+        TextView priceView = dialog.findViewById(R.id.textView_Price);
+        TextView dopView = dialog.findViewById(R.id.textView_DateOfPurchase);
+        TextView productNameView = dialog.findViewById(R.id.textView_ProductName);
+        TextView purchaseOriginView = dialog.findViewById(R.id.textView_PurchaseOrigin);
+        TextView idView = dialog.findViewById(R.id.textView_Id);
+        TextView pathView = dialog.findViewById(R.id.textView_Path);
+
+        String price = "Price: $1.00";
+        String dop = "Date of Purchase: 12/05/2018";
+        String productName = "Product Name: KitKat";
+        String purchaseOrigin = "Company Name: The Warehouse";
+        imagePath = "Path: "+imagePath;
+        String id = "Image ID: "+imageId;
+
+        priceView.setText(price);
+        dopView.setText(dop);
+        productNameView.setText(productName);
+        purchaseOriginView.setText(purchaseOrigin);
+        pathView.setText(imagePath);
+        idView.setText(id);
+
 
     }
 

@@ -46,28 +46,6 @@ public class BrowseFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_browse, container, false);
     }
-    public static Bitmap decodeFile(File f,int WIDTH,int HIGHT){
-        try {
-            //Decode image size
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(new FileInputStream(f),null,o);
-
-            //The new size we want to scale to
-            final int REQUIRED_WIDTH=WIDTH;
-            final int REQUIRED_HIGHT=HIGHT;
-            //Find the correct scale value. It should be the power of 2.
-            int scale=1;
-            while(o.outWidth/scale/2>=REQUIRED_WIDTH && o.outHeight/scale/2>=REQUIRED_HIGHT)
-                scale*=2;
-
-            //Decode with inSampleSize
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize=scale;
-            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
-        } catch (FileNotFoundException e) {}
-        return null;
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -159,8 +137,7 @@ public class BrowseFragment extends Fragment {
                     // this may work haha
                     // this could be used to send across OCR data
                     photoIntent.putExtra("path",allImagePaths[finalIndx]);
-                    photoIntent.putExtra("date",allImagePaths[finalIndx]);
-                    photoIntent.putExtra("total_price",allImagePaths[finalIndx]);
+                    photoIntent.putExtra("id",arrayOfIds[finalIndx]);
                     startActivity(photoIntent);
                     // add the image to the activity
 

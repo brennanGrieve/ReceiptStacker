@@ -23,6 +23,7 @@ import java.io.File;
 public class PictureActivity extends AppCompatActivity {
     String imagePath;
     File newImage;
+    int gridId;
 
     /**
      * Whether or not the system UI should be auto-hidden after
@@ -105,6 +106,7 @@ public class PictureActivity extends AppCompatActivity {
         //LinearLayout l = findViewById(R.id.fullscreen_content_controls);
         Intent picIntent = getIntent();
         imagePath = picIntent.getStringExtra("path");
+        gridId = picIntent.getIntExtra("id", 0);
         if (imagePath != null) {
             newImage = new File(imagePath);
         } else {
@@ -115,7 +117,7 @@ public class PictureActivity extends AppCompatActivity {
         imageV.setImageBitmap(b);
         imageV.setId(View.generateViewId());
         //may not need this
-        int imageVId = imageV.getId();
+        final int imageVId = imageV.getId();
         mContentView.addView(imageV);
 
 
@@ -136,7 +138,7 @@ public class PictureActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoDialog p = new PhotoDialog(PictureActivity.this, "this is a test");
+                PhotoDialog p = new PhotoDialog(PictureActivity.this, "Add stuff here", newImage.getAbsolutePath(), gridId);
                 p.showDialog();
             }
         });

@@ -51,7 +51,7 @@ public class Receipt {
         int height = 0;
         int tempHeight = 0;
         int heightkey = -1;
-
+        System.out.println("OCR SIZE ="+OCR.size());
         for(int i = 0; i < OCR.size(); i++) {
             key = OCR.keyAt(i);
             TextBlock element = OCR.get(key);
@@ -89,9 +89,17 @@ public class Receipt {
         }
         if(heightkey != -1) {
             bussinessName = OCR.get(heightkey).getValue();
+        }else{
+            bussinessName = "Test name";
         }
         if(maxPrice != -1) {
             totalPrice = maxPrice;
+        }else{
+            totalPrice = -1;
+        }
+        if(dateOfPurchase == null){
+            System.out.println("Date is null");
+            dateOfPurchase = new Date(0);
         }
     }
 
