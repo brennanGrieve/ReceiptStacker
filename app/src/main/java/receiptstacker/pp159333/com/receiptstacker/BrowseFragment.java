@@ -30,7 +30,10 @@ public class BrowseFragment extends Fragment {
     int[] arrayOfIds = new int[max];
     String[] allImagePaths;
     LinearLayout[] layouts = new LinearLayout[1000]; // change me
-    int[] layoutIds = new int[(max/3) +1]; // change me defo
+    int[] layoutIds = new int[max/3]; // change me defo
+    ImageView[] imageViews = new ImageView[max]; // change me
+    int numberDisplayed = 0;
+    ImageView[] displayedViews = new ImageView[max];
 
     public static BrowseFragment newInstance() {
         return new BrowseFragment();
@@ -53,14 +56,14 @@ public class BrowseFragment extends Fragment {
 
         File newImage;
 
-        ImageView[] imageViews = new ImageView[1000]; // change me
+
 
         allImagePaths = dbSingleton.loadPhotos();
         LinearLayout verticalLayout = view.findViewById(R.id.verticalLayout);
         Bitmap b = null;
         int layoutId = 0;
 
-        int layoutNumber = 0;
+        int layoutNumber = -1;
         for (int i = 0; i < max; i++) {
             System.out.println(allImagePaths[i]);
             if (allImagePaths[i] != null) {
@@ -78,17 +81,19 @@ public class BrowseFragment extends Fragment {
                 int imageId = imageViews[i].getId();
                 arrayOfIds[i] = imageId;
                 //create a new horizontal layout for every 3 photos
+
                 if (i % 3 == 0) {
                     //add a new layout to the scrollView
+                    layoutNumber++;
                     layouts[layoutNumber] = new LinearLayout(getActivity());
                     verticalLayout.addView(layouts[layoutNumber]);
                     layouts[layoutNumber].setId(View.generateViewId());
                     layoutIds[layoutNumber] = layouts[layoutNumber].getId(); //change me
-                    layoutNumber++;
+
                 }
 
                 //add the image to the layout
-                LinearLayout currentLayout = view.findViewById(layoutIds[i/3]); //change me
+                LinearLayout currentLayout = view.findViewById(layoutIds[layoutNumber]);
                 currentLayout.addView(imageViews[i]);
                 currentLayout.setPadding(0, 5, 0, 5);
                 currentLayout.setY(0);
@@ -146,28 +151,43 @@ public class BrowseFragment extends Fragment {
         }
     }
     public void updatePhotos(String [] arrayOfPaths, View v){
-        int l =0;
-        for(int i =0; i<arrayOfPaths.length; i++){
-            System.out.println(arrayOfPaths[i]);
-        }
+        int l;
         System.out.println("arr of paths = "+arrayOfPaths.length);
         System.out.println("arr of ids = "+arrayOfIds.length);
         System.out.println("arr of layouts= "+layoutIds.length);
-        for(int i =0; i< arrayOfPaths.length-1; i++){
-            l =0;
-            for(int j = 0; j<arrayOfIds.length-1; j++){
-                //System.out.println("NUmber of like searches"+i);
-                if(allImagePaths[j] == arrayOfPaths[i]){
-                    System.out.println("testing");
-                    if(j %3 == 0){ l++;}
-                    ImageView imgV = v.findViewById(arrayOfIds[j]);
+        if(numberDisplayed == 0) {
+            for (int indx = 0; indx < arrayOfIds.length; indx++) {
+                l = indx / 3;
+                System.out.println("indx = " + indx + " l = " + l);
+                System.out.println("lay id = " + layoutIds[l]);
+                layouts[l].removeView(imageViews[indx]);
+            }
+        }else{
+            for (int indx = 0; indx < numberDisplayed; indx++) {
+                l = indx / 3;
+                layouts[l].removeView(displayedViews[indx]);
+            }
+        }
 
-                    LinearLayout layout = v.findViewById(layoutIds[l]); // haha i shouldnt be doing this :P
-                    if(layout != null) {
-                        System.out.println("removing the trash");
-                        layout.removeView(imgV);
-                    }else{
 
+
+
+        numberDisplayed = 0;
+        for(int i =0; i< arrayOfPaths.length; i++){
+            System.out.println("path "+i+arrayOfPaths[i]);
+            for(int j = 0; j<arrayOfIds.length; j++){
+                if(allImagePaths[j].equals(arrayOfPaths[i])){
+                    l = i/3;
+                    //ImageView imgV = v.findViewById(arrayOfIds[j]);
+                    //LinearLayout layout = v.findViewById(layoutIds[l]); // haha i shouldnt be doing this :P
+                    System.out.println("l = "+ l+ " i = "+ i );
+
+                    try {
+                        layouts[l].addView(imageViews[j]);
+                        displayedViews[numberDisplayed] = imageViews[j];
+                        numberDisplayed++;
+                    }catch(Exception e){
+                        System.out.println(e.getMessage());
                     }
                 }
             }

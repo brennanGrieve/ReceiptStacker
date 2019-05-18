@@ -60,7 +60,7 @@ public class dbSingleton {
     public static String [] searchDB(String input){
         // change me later, when ocr is in the database
         int max = getNumberOfPhotos();
-        String [] arrayOfItems = new String[max+1]; //change the size of this
+        String [] arrayOfPaths = new String[max+1]; //change the size of this
         int i =0;
         String sql = "SELECT DISTINCT R.R_IMAGE_PATH  FROM Receipt R, PRODUCT P WHERE P.P_PRODUCT_NAME LIKE '%"+ input +"%' OR P.P_PRODUCT_PRICE LIKE '%"+ input +"%' OR R.R_COMPANY_NAME LIKE '%"+ input +"%' OR R.R_PURCHASE_DATE LIKE '%"+ input +"%'";
         if(receiptDB != null) {
@@ -68,8 +68,7 @@ public class dbSingleton {
             if (c.getCount() > 0) {
                 c.moveToFirst();
                 do {
-                    System.out.println("ROW[" + i + "]: " + c.getString(0));
-                    arrayOfItems[i] = c.getString(0);
+                    arrayOfPaths[i] = c.getString(0);
                     i++;
                 } while (c.moveToNext());
                 c.close();
@@ -78,7 +77,7 @@ public class dbSingleton {
             System.out.println("RECEIPTDB IS NULL");
 
         }
-        return arrayOfItems;
+        return arrayOfPaths;
 
     }
 
@@ -89,7 +88,8 @@ public class dbSingleton {
      * @return arrayOfItems
      */
     public static String [] loadPhotos(){
-        String [] arrayOfItems = new String[50]; //change the size of this
+        int max = getNumberOfPhotos();
+        String [] arrayOfItems = new String[max+1]; //change the size of this
         int i =0;
         String sql = "SELECT R_IMAGE_PATH FROM Receipt WHERE R_IMAGE_PATH = R_IMAGE_PATH";
         if(receiptDB != null) {
@@ -97,7 +97,6 @@ public class dbSingleton {
             if (c.getCount() > 0) {
                 c.moveToFirst();
                 do {
-                    System.out.println("ROW[" + i + "]: " + c.getString(0));
                     arrayOfItems[i] = c.getString(0);
                     i++;
                 } while (c.moveToNext());
