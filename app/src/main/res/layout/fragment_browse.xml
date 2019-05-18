@@ -43,15 +43,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
-            android:windowSoftInputMode="adjustPan"
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="4dp"
             android:layout_marginTop="60dp"
             android:layout_marginEnd="4dp"
-            android:layout_marginBottom="110dp"
+            android:layout_marginBottom="60dp"
             android:background="@color/dark_gray1"
+            android:windowSoftInputMode="adjustPan"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.488"
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:orientation="vertical"/>
+                android:orientation="vertical" />
         </ScrollView>
 
 
