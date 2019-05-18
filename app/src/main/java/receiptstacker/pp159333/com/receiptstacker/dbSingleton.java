@@ -27,12 +27,12 @@ public class dbSingleton {
             receiptDB.execSQL("CREATE TABLE IF NOT EXISTS PRODUCT(" +
                     "P_PRODUCT_NAME varchar(20), " +
                     "P_PRODUCT_PRICE FLOAT, " +
-                    "R_IMAGE_PATH varchar2(100))");
+                    "FOREIGN KEY (R_IMAGE_PATH) REFERENCES RECEIPT(R_IMAGE_PATH))");
         }
     }
 
     public static void commitToDB(Receipt inputReceipt, String imagePath){
-        receiptDB.execSQL("INSERT INTO RECEIPT(R_IMAGE_PATH, R_COMPANY_NAME)VALUES('" + imagePath + "', '"+ inputReceipt.getBussinessName() + "')");
+        receiptDB.execSQL("INSERT INTO RECEIPT VALUES('" + imagePath + "', '"+ inputReceipt.getBussinessName() + "', '"+inputReceipt.getDateOfPurchase()+"')");
 
         //for now just chucking in the "Skateboard" and total price [changes]
         //List<String> namesToInput = inputReceipt.getNameList();
@@ -44,14 +44,7 @@ public class dbSingleton {
         //ListIterator<Float> priceIterator = pricesToInput.listIterator();
         //while(nameIterator.hasNext()){
 
-            receiptDB.execSQL("INSERT INTO PRODUCT(" +
-                    "P_PRODUCT_NAME, " +
-                    "P_PRODUCT_PRICE, " +
-                    "R_IMAGE_PATH) VALUES(" +
-                    "'" + "Skateboard" +
-                    "','" + inputReceipt.getTotalPrice() + "', " +
-                    "'" + imagePath + "')"
-            );
+            receiptDB.execSQL("INSERT INTO PRODUCT VALUES('" + "Skateboard" + "', '" + inputReceipt.getTotalPrice() + "', " + "'" + imagePath + "')");
 
         //}
 
@@ -65,9 +58,9 @@ public class dbSingleton {
     //May require multiple methods when
 
     public static String [] searchDB(String input){
-        System.out.println("CALLING SEARCH DB");
         // change me later, when ocr is in the database
-        String [] arrayOfItems = new String[50]; //change the size of this
+        int max = getNumberOfPhotos();
+        String [] arrayOfItems = new String[max+1]; //change the size of this
         int i =0;
         String sql = "SELECT DISTINCT R.R_IMAGE_PATH  FROM Receipt R, PRODUCT P WHERE P.P_PRODUCT_NAME LIKE '%"+ input +"%' OR P.P_PRODUCT_PRICE LIKE '%"+ input +"%' OR R.R_COMPANY_NAME LIKE '%"+ input +"%' OR R.R_PURCHASE_DATE LIKE '%"+ input +"%'";
         if(receiptDB != null) {
@@ -117,6 +110,20 @@ public class dbSingleton {
     public static int getNumberOfPhotos(){
         int numRows = (int)DatabaseUtils.longForQuery(receiptDB, "SELECT COUNT(*) FROM Receipt", null);
         return numRows;
+    }
+
+    public static String [] getData(String imagePath){
+        String [] arrayOfPhotoInfo = new String [5];
+
+        arrayOfPhotoInfo[0] = DatabaseUtils.stringForQuery(receiptDB, "SELECT R_COMPANY_NAME FROM Receipt WHERE R_IMAGE_PATH = '"+imagePath+"'", null);
+        System.out.println(arrayOfPhotoInfo[0]);
+        //maybe need to change cuz its a date
+        arrayOfPhotoInfo[1] = DatabaseUtils.stringForQuery(receiptDB, "SELECT R_PURCHASE_DATE FROM Receipt WHERE R_IMAGE_PATH = '"+imagePath+"'", null);
+        System.out.println(arrayOfPhotoInfo[1]);
+        arrayOfPhotoInfo[2] = DatabaseUtils.stringForQuery(receiptDB, "SELECT P.P_PRODUCT_NAME FROM PRODUCT P, RECEIPT R WHERE R.R_IMAGE_PATH = '"+imagePath+"'", null);
+        arrayOfPhotoInfo[3] = DatabaseUtils.stringForQuery(receiptDB, "SELECT P.P_PRODUCT_PRICE FROM PRODUCT P, RECEIPT R WHERE R.R_IMAGE_PATH = '"+imagePath+"'", null);
+       // System.out.println(arrayOfPhotoInfo[3]);
+        return arrayOfPhotoInfo;
     }
 
 }

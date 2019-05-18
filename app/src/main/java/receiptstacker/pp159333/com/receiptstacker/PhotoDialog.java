@@ -53,19 +53,42 @@ public class PhotoDialog{
     private void populate(String OCR, String imagePath, int imageId){
         OCR = "";
         // add more to this later
+        String [] arr = dbSingleton.getData(imagePath);
+
         TextView priceView = dialog.findViewById(R.id.textView_Price);
         TextView dopView = dialog.findViewById(R.id.textView_DateOfPurchase);
         TextView productNameView = dialog.findViewById(R.id.textView_ProductName);
         TextView purchaseOriginView = dialog.findViewById(R.id.textView_PurchaseOrigin);
         TextView idView = dialog.findViewById(R.id.textView_Id);
         TextView pathView = dialog.findViewById(R.id.textView_Path);
+        String purchaseOrigin;
+        String price;
+        String dop;
+        String productName;
+        if(arr[0] == null) {
+             purchaseOrigin = "Unknown";
+        }else{
+            purchaseOrigin = arr[0];
+        }
 
-        String price = "Price: $1.00";
-        String dop = "Date of Purchase: 12/05/2018";
-        String productName = "Product Name: KitKat";
-        String purchaseOrigin = "Company Name: The Warehouse";
-        imagePath = "Path: "+imagePath;
-        String id = "Image ID: "+imageId;
+        if(arr[1] == null){
+            dop = "Unknown";
+        }else{
+            dop = arr[1];
+        }
+
+        if(arr[2] == null){
+            productName = "Unknown";
+        }else{
+            productName = arr[2];
+        }
+        if(arr[3] == null){
+            price = "Unknown";
+        }else{
+            price = arr[3];
+        }
+        
+        String id = ""+imageId;
 
         priceView.setText(price);
         dopView.setText(dop);
