@@ -26,14 +26,14 @@ import java.io.FileNotFoundException;
 public class BrowseFragment extends Fragment {
     Button searchButton;
     EditText input;
-    int max = dbSingleton.getNumberOfPhotos();
-    int[] arrayOfIds = new int[max];
+
+    int[] arrayOfIds;
     String[] allImagePaths;
-    LinearLayout[] layouts = new LinearLayout[1000]; // change me
-    int[] layoutIds = new int[max/3]; // change me defo
-    ImageView[] imageViews = new ImageView[max]; // change me
+    LinearLayout[] layouts;
+    int[] layoutIds;
+    ImageView[] imageViews;
     int numberDisplayed = 0;
-    ImageView[] displayedViews = new ImageView[max];
+    ImageView[] displayedViews;
 
     public static BrowseFragment newInstance() {
         return new BrowseFragment();
@@ -55,8 +55,13 @@ public class BrowseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         File newImage;
-
-
+        int max = dbSingleton.getNumberOfPhotos();
+        arrayOfIds  = new int[max];
+        int layoutMax = (max/3)+1;
+        layouts = new LinearLayout[layoutMax];
+        layoutIds = new int[layoutMax];
+        imageViews = new ImageView[max];
+        displayedViews = new ImageView[max];
 
         allImagePaths = dbSingleton.loadPhotos();
         LinearLayout verticalLayout = view.findViewById(R.id.verticalLayout);
