@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".CustomDialog"
+            android:name=".ImageTakenDialog"
             android:label="@string/title_activity_custom_dialog"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity

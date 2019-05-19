@@ -4,12 +4,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
-import android.support.constraint.ConstraintLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,21 +24,18 @@ A dialog that shows a receipt for the user. User can decide weather or not they 
 take another photo. This can be used in the browse menu as well with small changes to the button names.
  */
 
-public class CustomDialog{
+public class ImageTakenDialog {
 
     private Dialog dialog;
     private Context context;
     private Receipt receipt;
-    private Boolean pullDownState;
-    private int defaultHeight;
 
     // Takes a context and a receipt and creates a custom dialog.
-    CustomDialog(Context context, Receipt receipt) {
+    ImageTakenDialog(Context context, Receipt receipt) {
         this.dialog = new Dialog(context);
-        dialog.setContentView(R.layout.activity_custom_dialog);
+        dialog.setContentView(R.layout.activity_image_taken_dialog);
         this.context = context;
         this.receipt = receipt;
-        pullDownState = true;
         populate(receipt);
     }
 
@@ -50,8 +45,7 @@ public class CustomDialog{
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
         dialog.getWindow().setLayout((6 * width)/7, (4 * height)/5);
-        ConstraintLayout inputBox = dialog.findViewById(R.id.constraintLayout_UserInput);
-        defaultHeight = inputBox.getMaxHeight();
+
         Button okaybutton = dialog.findViewById(R.id.button_keep);
         okaybutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,32 +62,8 @@ public class CustomDialog{
                 dialog.dismiss();
             }
         });
-
-        ImageButton pulldown = dialog.findViewById(R.id.imageButton_PullDown);
-        pulldown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pullDownAction();
-            }
-        });
         dialog.show();
     }
-
-    void pullDownAction (){
-        if(pullDownState){
-            pullDownState = false;
-            ConstraintLayout inputBox = dialog.findViewById(R.id.constraintLayout_UserInput);
-            inputBox.setMinHeight(1);
-            //Then Hide
-        } else{
-            pullDownState = true;
-            ConstraintLayout inputBox = dialog.findViewById(R.id.constraintLayout_UserInput);
-            inputBox.setMaxHeight(defaultHeight);
-            //Then Show
-        }
-
-    }
-
 
     void populate(Receipt receipt){
         TextView pdate = dialog.findViewById(R.id.textView_DateOfPurchase);
@@ -105,19 +75,12 @@ public class CustomDialog{
         price = String.format("%.02f", receipt.getTotalPrice());
         price = "$" + price;
 
-<<<<<<< HEAD
-        Date date = receipt.getDateOfPurchase();
-        String place = receipt.getBussinessName();
-
+        //pname.setText(receipt.getProductName());
+        //[changes]
         if(receipt.getDateOfPurchase() != null) {
-            pdate.setText(receipt.getDateOfPurchase().toString());
+            pdate.setText(receipt.getDateOfPurchase().getDay() + "/" + receipt.getDateOfPurchase().getMonth() + "/" + receipt.getDateOfPurchase().getYear());
         }
         pplace.setText(receipt.getBussinessName());
-=======
-        pname.setText(receipt.getProductName());
-        pdate.setText(receipt.getDateOfPurchase().toString());
-        pplace.setText(receipt.getBusinessName());
->>>>>>> 9a2b462e6255cf34d91747d5383ff4a51f8a56ba
         pprice.setText(price);
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(receipt.getImage(), 150, 150, false);
         image.setImageBitmap(scaledBitmap);
@@ -126,13 +89,8 @@ public class CustomDialog{
     private void saveReceiptToStorage(){
         dbSingleton.initDB(context.getApplicationContext());
         String filename = saveImageToFileSystem(receipt.getImage());
-<<<<<<< HEAD
-        //This method will need to be changed once commitToDB handles more then 1 string.
-        //dbSingleton.commitToDB(filename, receipt.getProductName());
-=======
         //This method will need to be changed once saveReceiptToStorage handles more then 1 string.
         dbSingleton.commitToDB(receipt, filename);
->>>>>>> 9a2b462e6255cf34d91747d5383ff4a51f8a56ba
     }
 
     private String saveImageToFileSystem(Bitmap receiptPic){
