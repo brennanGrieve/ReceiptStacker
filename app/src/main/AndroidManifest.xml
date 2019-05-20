@@ -25,12 +25,8 @@
             android:label="@string/title_activity_picture"
             android:theme="@style/FullscreenTheme" />
         <activity
-            android:name=".CustomDialog"
+            android:name=".ImageTakenDialog"
             android:label="@string/title_activity_custom_dialog"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".PhotoActivity"
-            android:label="@string/title_activity_photo"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SettingsActivity"

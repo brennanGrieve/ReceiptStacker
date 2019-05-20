@@ -1,11 +1,9 @@
 package receiptstacker.pp159333.com.receiptstacker;
 import android.Manifest;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -25,15 +23,7 @@ import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
-
-import static android.support.constraint.Constraints.TAG;
 
 public class ScanFragment extends Fragment {
     SurfaceView cameraView;
@@ -91,7 +81,7 @@ public class ScanFragment extends Fragment {
             //Receipt receipt = new Receipt("Shirt", "The Warehouse", 9 , new Date(34439393), pic);
            // Receipt receipt = new Receipt(OCRitems, pic);
             //Show dialog
-//            CustomDialog customDialog = new CustomDialog(getContext(), receipt);
+//            ImageTakenDialog customDialog = new ImageTakenDialog(getContext(), receipt);
   //          customDialog.showDialog();
             //Split the procedure for either Single or Multi-Capture operations
 
@@ -101,8 +91,8 @@ public class ScanFragment extends Fragment {
                 //Receipt receipt = new Receipt("Shirt", "The Warehouse", 9, new Date(34439393), pic);
                 Receipt receipt = new Receipt(OCRitems, pic);
                 //Show dialog
-                CustomDialog customDialog = new CustomDialog(getContext(), receipt);
-                customDialog.showDialog();
+                ImageTakenDialog imageTakenDialog = new ImageTakenDialog(getContext(), receipt);
+                imageTakenDialog.showDialog();
             }
             if(multiCapFlag){
                 //add to the multiCapture object
@@ -142,8 +132,8 @@ public class ScanFragment extends Fragment {
                 //finalize image stitching + commit to db
                 multiCapFlag = false;
                 if(multiCapReceipt != null) {
-                    CustomDialog customDialog = new CustomDialog(getContext(), multiCapReceipt);
-                    customDialog.showDialog();
+                    ImageTakenDialog imageTakenDialog = new ImageTakenDialog(getContext(), multiCapReceipt);
+                    imageTakenDialog.showDialog();
                     multiCapReceipt.reset();
                 }
                 multiCapSequence = 1;

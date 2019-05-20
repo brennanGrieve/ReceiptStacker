@@ -66,7 +66,7 @@ public class PhotoDialog{
         String dop;
         String productName;
         if(arr[0] == null) {
-             purchaseOrigin = "Unknown";
+            purchaseOrigin = "Unknown";
         }else{
             purchaseOrigin = arr[0];
         }
@@ -87,7 +87,7 @@ public class PhotoDialog{
         }else{
             price = arr[3];
         }
-        
+
         String id = ""+imageId;
 
         priceView.setText(price);

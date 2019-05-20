@@ -24,16 +24,16 @@ A dialog that shows a receipt for the user. User can decide weather or not they 
 take another photo. This can be used in the browse menu as well with small changes to the button names.
  */
 
-public class CustomDialog{
+public class ImageTakenDialog {
 
     private Dialog dialog;
     private Context context;
     private Receipt receipt;
 
     // Takes a context and a receipt and creates a custom dialog.
-    CustomDialog(Context context, Receipt receipt) {
+    ImageTakenDialog(Context context, Receipt receipt) {
         this.dialog = new Dialog(context);
-        dialog.setContentView(R.layout.activity_custom_dialog);
+        dialog.setContentView(R.layout.activity_image_taken_dialog);
         this.context = context;
         this.receipt = receipt;
         populate(receipt);
@@ -66,7 +66,6 @@ public class CustomDialog{
     }
 
     void populate(Receipt receipt){
-        TextView pname = dialog.findViewById(R.id.textView_ProudctName);
         TextView pdate = dialog.findViewById(R.id.textView_DateOfPurchase);
         TextView pplace = dialog. findViewById(R.id.textView_PurchaseOrgin);
         TextView pprice = dialog.findViewById(R.id.textview_Price);
@@ -79,7 +78,7 @@ public class CustomDialog{
         //pname.setText(receipt.getProductName());
         //[changes]
         if(receipt.getDateOfPurchase() != null) {
-            pdate.setText(receipt.getDateOfPurchase().toString());
+            pdate.setText(receipt.getDateOfPurchase().getDay() + "/" + receipt.getDateOfPurchase().getMonth() + "/" + receipt.getDateOfPurchase().getYear());
         }
         pplace.setText(receipt.getBussinessName());
         pprice.setText(price);

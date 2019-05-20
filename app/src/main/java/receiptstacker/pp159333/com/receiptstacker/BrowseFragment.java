@@ -130,8 +130,8 @@ public class BrowseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 System.out.println("text is = "+input.getText().toString());
-               String [] allResultingPaths =  dbSingleton.searchDB(input.getText().toString());
-               updatePhotos(allResultingPaths, v);
+                String [] allResultingPaths =  dbSingleton.searchDB(input.getText().toString());
+                updatePhotos(allResultingPaths, v);
             }
         });
 

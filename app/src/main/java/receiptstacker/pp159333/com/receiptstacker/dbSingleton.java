@@ -44,7 +44,7 @@ public class dbSingleton {
         //ListIterator<Float> priceIterator = pricesToInput.listIterator();
         //while(nameIterator.hasNext()){
 
-            receiptDB.execSQL("INSERT INTO PRODUCT VALUES('" + "Skateboard" + "', '" + inputReceipt.getTotalPrice() + "', " + "'" + imagePath + "')");
+        receiptDB.execSQL("INSERT INTO PRODUCT VALUES('" + "Skateboard" + "', '" + inputReceipt.getTotalPrice() + "', " + "'" + imagePath + "')");
 
         //}
 
@@ -121,7 +121,7 @@ public class dbSingleton {
         System.out.println(arrayOfPhotoInfo[1]);
         arrayOfPhotoInfo[2] = DatabaseUtils.stringForQuery(receiptDB, "SELECT P.P_PRODUCT_NAME FROM PRODUCT P, RECEIPT R WHERE R.R_IMAGE_PATH = '"+imagePath+"'", null);
         arrayOfPhotoInfo[3] = DatabaseUtils.stringForQuery(receiptDB, "SELECT P.P_PRODUCT_PRICE FROM PRODUCT P, RECEIPT R WHERE R.R_IMAGE_PATH = '"+imagePath+"'", null);
-       // System.out.println(arrayOfPhotoInfo[3]);
+        // System.out.println(arrayOfPhotoInfo[3]);
         return arrayOfPhotoInfo;
     }
 

@@ -42,46 +42,50 @@ public class Receipt {
         this.image = image;
         int key;
         double maxPrice = -1;
-
+        this.OCR = OCR;
         Date testDate = new Date();
         Boolean dateCheck = true;
         Pattern price = Pattern.compile("\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})");
-        Pattern date = Pattern.compile("^\\d{1,2}[///./:\\s/t/-]\\d{1,2}[///./:\\s/t /-]\\d{1,4}");
+        Pattern date = Pattern.compile("^\\d{1,2}[///.\\s/t/-]\\d{1,2}[///.\\s/t /-]\\d{1,4}");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
         int height = 0;
         int tempHeight = 0;
         int heightkey = -1;
-        System.out.println("OCR SIZE ="+OCR.size());
+        int numberOfLines;
+        double currentPrice;
+        String[] dateArr;
         for(int i = 0; i < OCR.size(); i++) {
             key = OCR.keyAt(i);
             TextBlock element = OCR.get(key);
             String testStr = element.getValue();
             Matcher priceMatcher = price.matcher(testStr);
             if(priceMatcher.find()){
-                System.out.print("Price: ");
-                System.out.print(priceMatcher.group(0)+"\n");
-                double currentPrice = Double.parseDouble(priceMatcher.group(0));
+                currentPrice = Double.parseDouble(priceMatcher.group(0));
                 if(maxPrice<=currentPrice){
                     maxPrice = max(maxPrice, currentPrice);
                 }
             }
-            if(dateCheck) {
-                Matcher dateMatcher = date.matcher(testStr);
-                if (dateMatcher.find()) {
-                    System.out.print("Date: ");
-                    System.out.print(dateMatcher.group(0) + "\n");
-                    try {
-                        testDate = dateFormat.parse(dateMatcher.group(0));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+            Matcher dateMatcher = date.matcher(testStr);
+            if (dateMatcher.find()) {
+                try {
+                    dateArr = dateMatcher.group(0).split("[///.\\s/t/-]");
+                    if(dateArr[2].length()<=2){
+
                     }
-                    if (testDate != null) {
-                        dateOfPurchase = testDate;
-                        dateCheck = false;
-                    }
+                    testDate = dateFormat.parse(dateMatcher.group(0));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if (testDate != null && testDate.getYear() > 2000) {
+                    dateOfPurchase = testDate;
                 }
             }
-            tempHeight = element.getBoundingBox().bottom -  element.getBoundingBox().top ;
+            tempHeight = element.getBoundingBox().bottom -  element.getBoundingBox().top;
+            numberOfLines = element.getValue().split("\n").length ;
+            tempHeight = tempHeight / numberOfLines;
+            if(element.getValue().split(" ").length>5){
+                tempHeight = 0;
+            }
             if (tempHeight > height){
                 height = tempHeight;
                 heightkey = key;
@@ -103,8 +107,6 @@ public class Receipt {
         }
     }
 
-
-
     public Bitmap getImage() {
         return image;
     }
@@ -120,6 +122,7 @@ public class Receipt {
     public Date getDateOfPurchase() {
         return dateOfPurchase;
     }
+
     public SparseArray<TextBlock> getOCR() {
         return OCR;
     }
