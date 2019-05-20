@@ -78,7 +78,7 @@ public class BrowseFragment extends Fragment {
             }
             if (newImage != null) {
                 BitmapFactory.Options o = new BitmapFactory.Options();
-                o.inSampleSize = 8; // scales down the size kinda haha
+                o.inSampleSize = 24; // scales down the size kinda haha
                 b = BitmapFactory.decodeFile(newImage.getAbsolutePath(), o);
                 imageViews[i] = new ImageView(getActivity());
                 imageViews[i].setImageBitmap(b);

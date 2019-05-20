@@ -24,11 +24,11 @@ public class PhotoDialog{
     private String name;
 
     // Takes a context and a receipt and creates a custom dialog.
-    PhotoDialog(Context context, String name, String imagePath, int id) {
+    PhotoDialog(Context context, String imagePath, int id) {
         this.dialog = new Dialog(context);
         dialog.setContentView(R.layout.activity_photo_dialog);
         this.context = context;
-        populate(name, imagePath, id);
+        populate(imagePath, id);
     }
 
 
@@ -50,19 +50,23 @@ public class PhotoDialog{
         dialog.show();
     }
 
-    private void populate(String OCR, String imagePath, int imageId){
-        OCR = "";
+    private void populate(String imagePath, int imageId){
+
         // add more to this later
         String [] arr = dbSingleton.getData(imagePath);
 
-        //TextView priceView = dialog.findViewById(R.id.textView_Price);
+        TextView priceView = dialog.findViewById(R.id.textView_TotalPrice);
         TextView dopView = dialog.findViewById(R.id.textView_DateOfPurchase);
-        //TextView productNameView = dialog.findViewById(R.id.textView_ProductName);
         TextView purchaseOriginView = dialog.findViewById(R.id.textView_PurchaseOrigin);
+        TextView OCRView = dialog.findViewById(R.id.textView_OCR);
         TextView idView = dialog.findViewById(R.id.textView_Id);
         TextView pathView = dialog.findViewById(R.id.textView_Path);
+
         String purchaseOrigin;
         String dop;
+        String totalPrice;
+        String OCRText;
+
         if(arr[0] == null) {
             purchaseOrigin = "Unknown";
         }else{
@@ -75,6 +79,17 @@ public class PhotoDialog{
             dop = arr[1];
         }
 
+        if(arr[2] == null){
+            totalPrice = "Unknown";
+        }else{
+            totalPrice = arr[2];
+        }
+        if(arr[3] == null){
+            OCRText = "Unknown";
+        }else{
+            OCRText = arr[3];
+        }
+
 
 
         String id = ""+imageId;
@@ -83,6 +98,9 @@ public class PhotoDialog{
         purchaseOriginView.setText(purchaseOrigin);
         pathView.setText(imagePath);
         idView.setText(id);
+        priceView.setText(totalPrice);
+        OCRView.setText(OCRText);
+
 
 
     }

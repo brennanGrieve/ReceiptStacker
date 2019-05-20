@@ -18,14 +18,16 @@
 
         <EditText
             android:id="@+id/searchText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="105dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text=""
             android:textColor="@color/silver"
             android:transitionName="@string/searchInput"
+            app:layout_constraintEnd_toStartOf="@+id/searchBtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/searchBtn" />
 
@@ -47,9 +49,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="55dp"
             android:layout_marginEnd="4dp"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="55dp"
             android:background="@color/dark_gray1"
             android:windowSoftInputMode="adjustPan"
             app:layout_constraintBottom_toBottomOf="parent"

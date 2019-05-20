@@ -118,13 +118,9 @@ public class dbSingleton {
         String [] arrayOfPhotoInfo = new String [5];
 
         arrayOfPhotoInfo[0] = DatabaseUtils.stringForQuery(receiptDB, "SELECT R_BUSINESS_NAME FROM Receipt WHERE R_IMAGE_PATH = '"+imagePath+"'", null);
-        System.out.println(arrayOfPhotoInfo[0]);
-        //maybe need to change cuz its a date
         arrayOfPhotoInfo[1] = DatabaseUtils.stringForQuery(receiptDB, "SELECT R_PURCHASE_DATE FROM Receipt WHERE R_IMAGE_PATH = '"+imagePath+"'", null);
-        System.out.println(arrayOfPhotoInfo[1]);
-        //arrayOfPhotoInfo[2] = DatabaseUtils.stringForQuery(receiptDB, "SELECT P.P_PRODUCT_NAME FROM PRODUCT P, RECEIPT R WHERE R.R_IMAGE_PATH = '"+imagePath+"'", null);
-        //arrayOfPhotoInfo[3] = DatabaseUtils.stringForQuery(receiptDB, "SELECT P.P_PRODUCT_PRICE FROM PRODUCT P, RECEIPT R WHERE R.R_IMAGE_PATH = '"+imagePath+"'", null);
-        // System.out.println(arrayOfPhotoInfo[3]);
+        arrayOfPhotoInfo[2] = DatabaseUtils.stringForQuery(receiptDB, "SELECT R_TOTAL_PRICE FROM RECEIPT WHERE R_IMAGE_PATH = '"+imagePath+"'", null);
+        arrayOfPhotoInfo[3] = DatabaseUtils.stringForQuery(receiptDB, "SELECT R_OCR_RAW_DATA FROM RECEIPT WHERE R_IMAGE_PATH = '"+imagePath+"'", null);
         return arrayOfPhotoInfo;
     }
 

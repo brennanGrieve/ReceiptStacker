@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +25,9 @@ public class PictureActivity extends AppCompatActivity {
     String imagePath;
     File newImage;
     int gridId;
+    //rivate ScaleGestureDetector mScaleGestureDetector;
+    //private float mScaleFactor = 1.0f;
+    ImageView imageV;
 
     /**
      * Whether or not the system UI should be auto-hidden after
@@ -62,6 +66,7 @@ public class PictureActivity extends AppCompatActivity {
         }
     };
     private View mControlsView;
+
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
         public void run() {
@@ -80,6 +85,27 @@ public class PictureActivity extends AppCompatActivity {
             hide();
         }
     };
+    //zoom code
+    /*
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        mScaleGestureDetector.onTouchEvent(motionEvent);
+        return true;
+    }
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector scaleGestureDetector){
+            mScaleFactor *= scaleGestureDetector.getScaleFactor();
+            mScaleFactor = Math.max(0.1f,
+                    Math.min(mScaleFactor, 10.0f));
+            imageV.setScaleX(mScaleFactor);
+            imageV.setScaleY(mScaleFactor);
+            return true;
+        }
+    }
+    */
+
+
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -113,12 +139,18 @@ public class PictureActivity extends AppCompatActivity {
             newImage = null;
         }
         Bitmap b = BitmapFactory.decodeFile(newImage.getAbsolutePath());
-        ImageView imageV = new ImageView(this);
+        if( b.getHeight() >4000 ||b.getWidth() >4000){
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inSampleSize = 3;
+            b = BitmapFactory.decodeFile(newImage.getAbsolutePath(), o);
+        }
+        imageV = new ImageView(this);
         imageV.setImageBitmap(b);
         imageV.setId(View.generateViewId());
         //may not need this
         final int imageVId = imageV.getId();
         mContentView.addView(imageV);
+       // mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
 
 
@@ -131,6 +163,7 @@ public class PictureActivity extends AppCompatActivity {
             }
         });
 
+
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
@@ -138,7 +171,7 @@ public class PictureActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoDialog p = new PhotoDialog(PictureActivity.this, "Add stuff here", newImage.getAbsolutePath(), gridId);
+                PhotoDialog p = new PhotoDialog(PictureActivity.this, newImage.getAbsolutePath(), gridId);
                 p.showDialog();
             }
         });
