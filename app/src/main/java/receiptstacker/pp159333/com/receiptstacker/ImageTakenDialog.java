@@ -37,7 +37,6 @@ public class ImageTakenDialog {
         this.context = context;
         this.receipt = receipt;
         populate(receipt);
-        Bitmap exposebmp = receipt.getImage();
     }
 
 
@@ -74,7 +73,7 @@ public class ImageTakenDialog {
         ImageView image = dialog.findViewById(R.id.imageview_ReceiptImage);
 
         String price;
-        price = String.format("%.02f", receipt.getTotalPrice());
+        price = String.format("%.02f", receipt.getHighestPrice());
         price = "$" + price;
 
         //pname.setText(receipt.getProductName());

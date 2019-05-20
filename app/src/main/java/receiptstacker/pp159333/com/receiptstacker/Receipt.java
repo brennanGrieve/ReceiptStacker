@@ -19,7 +19,7 @@ import static android.graphics.Bitmap.createBitmap;
 
 /*
 A class representing a Receipt.
-totalPrice is the highest price on the receipt.
+highestPrice is the highest price on the receipt.
 dateOfPurchase is the first date on the receipt.
 businessName is the largest TextBlock on the receipt.
 OCR is a SparseArray of TextBlocks that we can iterate through when searching for product names.
@@ -28,17 +28,14 @@ image is the same, a the image taken
 
 public class Receipt {
     private String businessName;
-    private double totalPrice;
+    private double highestPrice;
     private Date dateOfPurchase;
     private Bitmap image;
     SparseArray<TextBlock> OCR;
-    private String multiCapString;
 
     //For creation after capture
 
     public Receipt(SparseArray<TextBlock> newOCR, Bitmap image) {
-        //this.price = price;
-        //this.dateOfPurchase = dateOfPurchase;
         this.OCR = newOCR;
         this.image = image;
         updateData();
@@ -52,8 +49,8 @@ public class Receipt {
         return businessName;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
+    public double getHighestPrice() {
+        return highestPrice;
     }
 
     public Date getDateOfPurchase() {
@@ -121,9 +118,9 @@ public class Receipt {
             businessName = "Test name";
         }
         if(maxPrice != -1) {
-            totalPrice = maxPrice;
+            highestPrice = maxPrice;
         }else{
-            totalPrice = -1;
+            highestPrice = -1;
         }
         if(dateOfPurchase == null){
             System.out.println("Date is null");
@@ -131,9 +128,30 @@ public class Receipt {
         }
     }
 
+
     public void reinitialize(SparseArray<TextBlock> newOCR, Bitmap newImage) {
-        OCR = newOCR;
-        image = newImage;
+        this.OCR = newOCR;
+        this.image = newImage;
+        updateData();
+    }
+
+    public void updateDynamicDerivedValues(){
+        int key;
+        double maxPrice = -1;
+        double currentPrice;
+        Pattern price = Pattern.compile("\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})");
+        for(int i = 0; i < OCR.size(); i++) {
+            key = OCR.keyAt(i);
+            TextBlock element = OCR.get(key);
+            String testStr = element.getValue();
+            Matcher priceMatcher = price.matcher(testStr);
+            if(priceMatcher.find()){
+                currentPrice = Double.parseDouble(priceMatcher.group(0));
+                if(maxPrice<=currentPrice){
+                    maxPrice = max(maxPrice, currentPrice);
+                }
+            }
+        }
     }
 
     public void reset(){
@@ -166,7 +184,7 @@ public class Receipt {
                 OCR.put(newKeySequence, newOCR.valueAt(i));
                 newKeySequence++;
             }
-            updateData();
+            updateDynamicDerivedValues();
         }
     }
 

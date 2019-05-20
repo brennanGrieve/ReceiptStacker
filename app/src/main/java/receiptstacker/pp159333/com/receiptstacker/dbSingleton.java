@@ -8,9 +8,6 @@ import android.util.SparseArray;
 
 import com.google.android.gms.vision.text.TextBlock;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-
 public class dbSingleton {
 
     private static SQLiteDatabase receiptDB;
@@ -47,7 +44,7 @@ public class dbSingleton {
             }
         }
 
-        receiptDB.execSQL("INSERT INTO RECEIPT VALUES('" + imagePath + "', '"+ inputReceipt.getBusinessName() + "', '" + inputReceipt.getTotalPrice() + "','" + inputReceipt.getDateOfPurchase() + "','" + rawOCRString + "')");
+        receiptDB.execSQL("INSERT INTO RECEIPT VALUES('" + imagePath + "', '"+ inputReceipt.getBusinessName() + "', '" + inputReceipt.getHighestPrice() + "','" + inputReceipt.getDateOfPurchase() + "','" + rawOCRString + "')");
 
 
         //}
