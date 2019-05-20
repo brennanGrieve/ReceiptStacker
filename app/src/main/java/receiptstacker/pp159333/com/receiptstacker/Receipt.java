@@ -14,7 +14,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.lang.StrictMath.max;
-import java.util.List;
 
 import static android.graphics.Bitmap.createBitmap;
 
@@ -22,27 +21,52 @@ import static android.graphics.Bitmap.createBitmap;
 A class representing a Receipt.
 totalPrice is the highest price on the receipt.
 dateOfPurchase is the first date on the receipt.
-bussinessName is the largest TextBlock on the receipt.
+businessName is the largest TextBlock on the receipt.
 OCR is a SparseArray of TextBlocks that we can iterate through when searching for product names.
 image is the same, a the image taken
  */
 
 public class Receipt {
-    private String bussinessName;
+    private String businessName;
     private double totalPrice;
     private Date dateOfPurchase;
     private Bitmap image;
     SparseArray<TextBlock> OCR;
+    private String multiCapString;
 
     //For creation after capture
 
-    public Receipt(SparseArray<TextBlock> OCR, Bitmap image) {
+    public Receipt(SparseArray<TextBlock> newOCR, Bitmap image) {
         //this.price = price;
         //this.dateOfPurchase = dateOfPurchase;
+        this.OCR = newOCR;
         this.image = image;
+        updateData();
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public Date getDateOfPurchase() {
+        return dateOfPurchase;
+    }
+
+    public SparseArray<TextBlock> getOCR() {
+        return OCR;
+    }
+
+    public void updateData(){
         int key;
         double maxPrice = -1;
-        this.OCR = OCR;
         Date testDate = new Date();
         Boolean dateCheck = true;
         Pattern price = Pattern.compile("\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})");
@@ -92,9 +116,9 @@ public class Receipt {
             }
         }
         if(heightkey != -1) {
-            bussinessName = OCR.get(heightkey).getValue();
+            businessName = OCR.get(heightkey).getValue();
         }else{
-            bussinessName = "Test name";
+            businessName = "Test name";
         }
         if(maxPrice != -1) {
             totalPrice = maxPrice;
@@ -105,26 +129,6 @@ public class Receipt {
             System.out.println("Date is null");
             dateOfPurchase = new Date(0);
         }
-    }
-
-    public Bitmap getImage() {
-        return image;
-    }
-
-    public String getBussinessName() {
-        return bussinessName;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public Date getDateOfPurchase() {
-        return dateOfPurchase;
-    }
-
-    public SparseArray<TextBlock> getOCR() {
-        return OCR;
     }
 
     public void reinitialize(SparseArray<TextBlock> newOCR, Bitmap newImage) {
@@ -151,6 +155,18 @@ public class Receipt {
             merging.drawBitmap(image, null, originalImageBounds, null);
             merging.drawBitmap(newImage, null, mergeIntoBounds, null);
             image = mergedImage;
+        }
+    }
+
+    public void addNewOCR(SparseArray<TextBlock> newOCR){
+        int newKeySequence = OCR.size();
+        newKeySequence++;
+        if(newOCR != null){
+            for(int i=0; i < newOCR.size(); i++){
+                OCR.put(newKeySequence, newOCR.valueAt(i));
+                newKeySequence++;
+            }
+            updateData();
         }
     }
 

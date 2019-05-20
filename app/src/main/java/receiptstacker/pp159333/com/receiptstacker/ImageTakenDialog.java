@@ -28,7 +28,7 @@ public class ImageTakenDialog {
 
     private Dialog dialog;
     private Context context;
-    private Receipt receipt;
+    private final Receipt receipt;
 
     // Takes a context and a receipt and creates a custom dialog.
     ImageTakenDialog(Context context, Receipt receipt) {
@@ -37,6 +37,7 @@ public class ImageTakenDialog {
         this.context = context;
         this.receipt = receipt;
         populate(receipt);
+        Bitmap exposebmp = receipt.getImage();
     }
 
 
@@ -44,13 +45,14 @@ public class ImageTakenDialog {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
+        final Bitmap expose = receipt.getImage();
         dialog.getWindow().setLayout((6 * width)/7, (4 * height)/5);
 
         Button okaybutton = dialog.findViewById(R.id.button_keep);
         okaybutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveReceiptToStorage();
+                saveReceiptToStorage(expose);
 
                 dialog.dismiss();
             }
@@ -80,15 +82,15 @@ public class ImageTakenDialog {
         if(receipt.getDateOfPurchase() != null) {
             pdate.setText(receipt.getDateOfPurchase().getDay() + "/" + receipt.getDateOfPurchase().getMonth() + "/" + receipt.getDateOfPurchase().getYear());
         }
-        pplace.setText(receipt.getBussinessName());
+        pplace.setText(receipt.getBusinessName());
         pprice.setText(price);
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(receipt.getImage(), 150, 150, false);
         image.setImageBitmap(scaledBitmap);
     }
 
-    private void saveReceiptToStorage(){
+    private void saveReceiptToStorage(Bitmap toSave){
         dbSingleton.initDB(context.getApplicationContext());
-        String filename = saveImageToFileSystem(receipt.getImage());
+        String filename = saveImageToFileSystem(toSave);
         //This method will need to be changed once saveReceiptToStorage handles more then 1 string.
         dbSingleton.commitToDB(receipt, filename);
     }

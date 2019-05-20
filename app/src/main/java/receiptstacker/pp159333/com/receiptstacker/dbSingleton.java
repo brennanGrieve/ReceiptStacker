@@ -4,10 +4,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.renderscript.ScriptGroup;
+import android.util.SparseArray;
 
-import java.util.List;
-import java.util.ListIterator;
+import com.google.android.gms.vision.text.TextBlock;
+
+import java.text.Format;
+import java.text.SimpleDateFormat;
 
 public class dbSingleton {
 
@@ -21,38 +23,42 @@ public class dbSingleton {
 
             receiptDB.execSQL("CREATE TABLE IF NOT EXISTS RECEIPT(" +
                     "R_IMAGE_PATH varchar2(100), " +
-                    "R_COMPANY_NAME varchar2(20), " +
-                    "R_PURCHASE_DATE DATE)");
-            //removed foreign key
-            receiptDB.execSQL("CREATE TABLE IF NOT EXISTS PRODUCT(" +
-                    "P_PRODUCT_NAME varchar(20), " +
-                    "P_PRODUCT_PRICE FLOAT, " +
-                    "FOREIGN KEY (R_IMAGE_PATH) REFERENCES RECEIPT(R_IMAGE_PATH))");
+                    "R_BUSINESS_NAME varchar2(20), " +
+                    "R_TOTAL_PRICE REAL," +
+                    "R_PURCHASE_DATE DATE," +
+                    "R_OCR_RAW_DATA varchar2(3000))");
         }
     }
 
     public static void commitToDB(Receipt inputReceipt, String imagePath){
-        receiptDB.execSQL("INSERT INTO RECEIPT VALUES('" + imagePath + "', '"+ inputReceipt.getBussinessName() + "', '"+inputReceipt.getDateOfPurchase()+"')");
 
-        //for now just chucking in the "Skateboard" and total price [changes]
-        //List<String> namesToInput = inputReceipt.getNameList();
-        //List<Float> pricesToInput = inputReceipt.getPriceList();
-        //if(namesToInput == null){
-        //    return;
-        //}
-        //ListIterator<String> nameIterator = namesToInput.listIterator();
-        //ListIterator<Float> priceIterator = pricesToInput.listIterator();
-        //while(nameIterator.hasNext()){
+        String rawOCRString = "";
+        SparseArray<TextBlock> OCRitems;
+        OCRitems = inputReceipt.getOCR();
+        if(OCRitems != null) {
+            if (OCRitems.size() != 0) {
+                StringBuilder ocrBuilder = new StringBuilder();
+                for (int i = 0; i < OCRitems.size(); i++) {
+                    TextBlock item = OCRitems.valueAt(i);
+                    ocrBuilder.append(item.getValue());
+                    ocrBuilder.append(" ");
+                }
+                rawOCRString = ocrBuilder.toString();
+            }
+        }
 
-        receiptDB.execSQL("INSERT INTO PRODUCT VALUES('" + "Skateboard" + "', '" + inputReceipt.getTotalPrice() + "', " + "'" + imagePath + "')");
+        receiptDB.execSQL("INSERT INTO RECEIPT VALUES('" + imagePath + "', '"+ inputReceipt.getBusinessName() + "', '" + inputReceipt.getTotalPrice() + "','" + inputReceipt.getDateOfPurchase() + "','" + rawOCRString + "')");
+
 
         //}
 
     }
 
-    public static void dropFromDB(String imagePath){
-        receiptDB.execSQL("DROP FROM Receipts WHERE R_IMAGE_PATH = " + imagePath);
-    }
+    //Currently Incomplete and unimplemented. May be completed in future
+
+//    public static void dropFromDB(String imagePath){
+//        receiptDB.execSQL("DROP FROM Receipts WHERE R_IMAGE_PATH = " + imagePath);
+//    }
 
     //Change the return value and input parameters of the following methods when the search system is designed
     //May require multiple methods when
@@ -62,7 +68,7 @@ public class dbSingleton {
         int max = getNumberOfPhotos();
         String [] arrayOfPaths = new String[max+1]; //change the size of this
         int i =0;
-        String sql = "SELECT DISTINCT R.R_IMAGE_PATH  FROM Receipt R, PRODUCT P WHERE P.P_PRODUCT_NAME LIKE '%"+ input +"%' OR P.P_PRODUCT_PRICE LIKE '%"+ input +"%' OR R.R_COMPANY_NAME LIKE '%"+ input +"%' OR R.R_PURCHASE_DATE LIKE '%"+ input +"%'";
+        String sql = "SELECT DISTINCT R.R_IMAGE_PATH  FROM Receipt R WHERE  R_BUSINESS_NAME LIKE '%"+ input +"%' OR R_PURCHASE_DATE LIKE '%"+ input +"%'";
         if(receiptDB != null) {
             Cursor c = receiptDB.rawQuery(sql, new String[]{});
             if (c.getCount() > 0) {
@@ -114,13 +120,13 @@ public class dbSingleton {
     public static String [] getData(String imagePath){
         String [] arrayOfPhotoInfo = new String [5];
 
-        arrayOfPhotoInfo[0] = DatabaseUtils.stringForQuery(receiptDB, "SELECT R_COMPANY_NAME FROM Receipt WHERE R_IMAGE_PATH = '"+imagePath+"'", null);
+        arrayOfPhotoInfo[0] = DatabaseUtils.stringForQuery(receiptDB, "SELECT R_BUSINESS_NAME FROM Receipt WHERE R_IMAGE_PATH = '"+imagePath+"'", null);
         System.out.println(arrayOfPhotoInfo[0]);
         //maybe need to change cuz its a date
         arrayOfPhotoInfo[1] = DatabaseUtils.stringForQuery(receiptDB, "SELECT R_PURCHASE_DATE FROM Receipt WHERE R_IMAGE_PATH = '"+imagePath+"'", null);
         System.out.println(arrayOfPhotoInfo[1]);
-        arrayOfPhotoInfo[2] = DatabaseUtils.stringForQuery(receiptDB, "SELECT P.P_PRODUCT_NAME FROM PRODUCT P, RECEIPT R WHERE R.R_IMAGE_PATH = '"+imagePath+"'", null);
-        arrayOfPhotoInfo[3] = DatabaseUtils.stringForQuery(receiptDB, "SELECT P.P_PRODUCT_PRICE FROM PRODUCT P, RECEIPT R WHERE R.R_IMAGE_PATH = '"+imagePath+"'", null);
+        //arrayOfPhotoInfo[2] = DatabaseUtils.stringForQuery(receiptDB, "SELECT P.P_PRODUCT_NAME FROM PRODUCT P, RECEIPT R WHERE R.R_IMAGE_PATH = '"+imagePath+"'", null);
+        //arrayOfPhotoInfo[3] = DatabaseUtils.stringForQuery(receiptDB, "SELECT P.P_PRODUCT_PRICE FROM PRODUCT P, RECEIPT R WHERE R.R_IMAGE_PATH = '"+imagePath+"'", null);
         // System.out.println(arrayOfPhotoInfo[3]);
         return arrayOfPhotoInfo;
     }

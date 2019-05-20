@@ -55,16 +55,14 @@ public class PhotoDialog{
         // add more to this later
         String [] arr = dbSingleton.getData(imagePath);
 
-        TextView priceView = dialog.findViewById(R.id.textView_Price);
+        //TextView priceView = dialog.findViewById(R.id.textView_Price);
         TextView dopView = dialog.findViewById(R.id.textView_DateOfPurchase);
-        TextView productNameView = dialog.findViewById(R.id.textView_ProductName);
+        //TextView productNameView = dialog.findViewById(R.id.textView_ProductName);
         TextView purchaseOriginView = dialog.findViewById(R.id.textView_PurchaseOrigin);
         TextView idView = dialog.findViewById(R.id.textView_Id);
         TextView pathView = dialog.findViewById(R.id.textView_Path);
         String purchaseOrigin;
-        String price;
         String dop;
-        String productName;
         if(arr[0] == null) {
             purchaseOrigin = "Unknown";
         }else{
@@ -77,22 +75,11 @@ public class PhotoDialog{
             dop = arr[1];
         }
 
-        if(arr[2] == null){
-            productName = "Unknown";
-        }else{
-            productName = arr[2];
-        }
-        if(arr[3] == null){
-            price = "Unknown";
-        }else{
-            price = arr[3];
-        }
+
 
         String id = ""+imageId;
 
-        priceView.setText(price);
         dopView.setText(dop);
-        productNameView.setText(productName);
         purchaseOriginView.setText(purchaseOrigin);
         pathView.setText(imagePath);
         idView.setText(id);
