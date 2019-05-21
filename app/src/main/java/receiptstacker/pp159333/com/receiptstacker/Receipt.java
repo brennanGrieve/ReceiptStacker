@@ -81,7 +81,7 @@ public class Receipt {
             String testStr = element.getValue();
             Matcher priceMatcher = price.matcher(testStr);
             if(priceMatcher.find()){
-                currentPrice = Double.parseDouble(priceMatcher.group(0));
+                currentPrice = Double.parseDouble(priceMatcher.group(0).replace(',', '.'));
                 if(maxPrice<=currentPrice){
                     maxPrice = max(maxPrice, currentPrice);
                 }

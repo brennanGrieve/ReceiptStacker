@@ -53,107 +53,7 @@ public class BrowseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        File newImage;
-        int max = dbSingleton.getNumberOfPhotos();
-        arrayOfIds  = new int[max];
-        int layoutMax = (max/3)+1;
-        layouts = new LinearLayout[layoutMax];
-        layoutIds = new int[layoutMax];
-        imageViews = new ImageView[max];
-        displayedViews = new ImageView[max];
-
-        allImagePaths = dbSingleton.loadPhotos();
-        LinearLayout verticalLayout = view.findViewById(R.id.verticalLayout);
-        Bitmap b = null;
-        int layoutId = 0;
-
-        int layoutNumber = -1;
-        for (int i = 0; i < max; i++) {
-            System.out.println(allImagePaths[i]);
-            if (allImagePaths[i] != null) {
-                newImage = new File(allImagePaths[i]);
-            } else {
-                newImage = null;
-            }
-            if (newImage != null) {
-                BitmapFactory.Options o = new BitmapFactory.Options();
-                o.inSampleSize = 24; // scales down the size kinda haha
-                b = BitmapFactory.decodeFile(newImage.getAbsolutePath(), o);
-                imageViews[i] = new ImageView(getActivity());
-                imageViews[i].setImageBitmap(b);
-                imageViews[i].setId(View.generateViewId());
-                int imageId = imageViews[i].getId();
-                arrayOfIds[i] = imageId;
-                //create a new horizontal layout for every 3 photos
-
-                if (i % 3 == 0) {
-                    //add a new layout to the scrollView
-                    layoutNumber++;
-                    layouts[layoutNumber] = new LinearLayout(getActivity());
-                    verticalLayout.addView(layouts[layoutNumber]);
-                    layouts[layoutNumber].setId(View.generateViewId());
-                    layoutIds[layoutNumber] = layouts[layoutNumber].getId(); //change me
-
-                }
-
-                //add the image to the layout
-                LinearLayout currentLayout = view.findViewById(layoutIds[layoutNumber]);
-                currentLayout.addView(imageViews[i]);
-                currentLayout.setPadding(0, 5, 0, 5);
-                currentLayout.setY(0);
-                currentLayout.setX(0);
-
-                //resize the image
-                ImageView currentImage = view.findViewById(imageId);
-                //currently 3:4
-                DisplayMetrics dm = new DisplayMetrics();
-                getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-                currentImage.getLayoutParams().width = dm.widthPixels/3; //change me
-                currentImage.getLayoutParams().height = 150; // change me
-
-                //currentImage.setRotation(90);
-                currentImage.setY(0);
-                currentImage.setX(0);
-                //currentImage.setPadding(0, 25, 0, 25);
-            } else {
-                System.out.println("Cant load image " + i);
-            }
-        }
-
-
-        searchButton = (Button) view.findViewById(R.id.searchBtn);
-        input = view.findViewById(R.id.searchText);
-
-
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("text is = "+input.getText().toString());
-                String [] allResultingPaths =  dbSingleton.searchDB(input.getText().toString());
-                updatePhotos(allResultingPaths, v);
-            }
-        });
-
-        ImageView []allImages = new ImageView[max];
-        for (int indx = 0; indx < max; indx++) {
-            allImages[indx] = (ImageView) view.findViewById(arrayOfIds[indx]);
-            final int finalIndx = indx;
-            allImages[indx].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Intent photoIntent = new Intent(getActivity(), PictureActivity.class);
-                    // this may work haha
-                    // this could be used to send across OCR data
-                    photoIntent.putExtra("path",allImagePaths[finalIndx]);
-                    photoIntent.putExtra("id",arrayOfIds[finalIndx]);
-                    startActivity(photoIntent);
-                    // add the image to the activity
-
-                }
-            });
-        }
+        imageThread();
     }
     public void updatePhotos(String [] arrayOfPaths, View v){
         int l;
@@ -197,6 +97,134 @@ public class BrowseFragment extends Fragment {
                 }
             }
         }
+    }
+    void imageThread(){
+        int max = dbSingleton.getNumberOfPhotos();
+        arrayOfIds  = new int[max];
+        int layoutMax = (max/3)+1;
+        File[] newImage = new File[max];
+        layouts = new LinearLayout[layoutMax];
+        layoutIds = new int[layoutMax];
+        imageViews = new ImageView[max];
+        displayedViews = new ImageView[max];
+
+        allImagePaths = dbSingleton.loadPhotos();
+        LinearLayout verticalLayout = getView().findViewById(R.id.verticalLayout);
+        final Bitmap[] b = new Bitmap[max];
+        int layoutId = 0;
+        int layoutNumber = -1;
+
+        for (int i = 0; i < max; i++) {
+            if (allImagePaths[i] != null) {
+                newImage[i] = new File(allImagePaths[i]);
+            } else {
+                newImage[i] = null;
+            }
+        }
+        for (int i = 0; i < max; i++) {
+            System.out.println(allImagePaths[i]);
+            if (newImage != null) {
+                final BitmapFactory.Options o = new BitmapFactory.Options();
+                o.inSampleSize = 24; // scales down the size kinda haha
+
+                imageViews[i] = new ImageView(getActivity());
+
+
+                final File[] finalNewImage = newImage;
+                final int finalIndex = i;
+                final int finalMax = max;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int index = 0; index < finalMax; index++) {
+                            b[index] = BitmapFactory.decodeFile(finalNewImage[index].getAbsolutePath(), o);
+                        }
+                        imageViews[finalIndex].post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                imageViews[finalIndex].setImageBitmap(b[finalIndex]);
+                            }
+                        });
+                    }
+                }).start();
+                //b = BitmapFactory.decodeFile(newImage.getAbsolutePath(), o);
+                //imageViews[i].setImageBitmap(b[0]);
+
+
+                imageViews[i].setId(View.generateViewId());
+                int imageId = imageViews[i].getId();
+                arrayOfIds[i] = imageId;
+                //create a new horizontal layout for every 3 photos
+
+                if (i % 3 == 0) {
+                    //add a new layout to the scrollView
+                    layoutNumber++;
+                    layouts[layoutNumber] = new LinearLayout(getActivity());
+                    verticalLayout.addView(layouts[layoutNumber]);
+                    layouts[layoutNumber].setId(View.generateViewId());
+                    layoutIds[layoutNumber] = layouts[layoutNumber].getId(); //change me
+
+                }
+
+                //add the image to the layout
+                LinearLayout currentLayout = getView().findViewById(layoutIds[layoutNumber]);
+                currentLayout.addView(imageViews[i]);
+                currentLayout.setPadding(0, 5, 0, 5);
+                currentLayout.setY(0);
+                currentLayout.setX(0);
+
+                //resize the image
+                ImageView currentImage = getView().findViewById(imageId);
+                //currently 3:4
+                DisplayMetrics dm = new DisplayMetrics();
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+                currentImage.getLayoutParams().width = dm.widthPixels/3; //change me
+                currentImage.getLayoutParams().height = 150; // change me
+
+                //currentImage.setRotation(90);
+                currentImage.setY(0);
+                currentImage.setX(0);
+                //currentImage.setPadding(0, 25, 0, 25);
+            } else {
+                System.out.println("Cant load image " + i);
+            }
+        }
+
+
+        searchButton = (Button) getView().findViewById(R.id.searchBtn);
+        input = getView().findViewById(R.id.searchText);
+
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("text is = "+input.getText().toString());
+                String [] allResultingPaths =  dbSingleton.searchDB(input.getText().toString());
+                updatePhotos(allResultingPaths, v);
+            }
+        });
+
+        ImageView []allImages = new ImageView[max];
+        for (int indx = 0; indx < max; indx++) {
+            allImages[indx] = (ImageView) getView().findViewById(arrayOfIds[indx]);
+            final int finalIndx = indx;
+            allImages[indx].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent photoIntent = new Intent(getActivity(), PictureActivity.class);
+                    // this may work haha
+                    // this could be used to send across OCR data
+                    photoIntent.putExtra("path",allImagePaths[finalIndx]);
+                    photoIntent.putExtra("id",arrayOfIds[finalIndx]);
+                    startActivity(photoIntent);
+                    // add the image to the activity
+
+                }
+            });
+        }
+
     }
 
 }
