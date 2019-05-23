@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,6 +35,8 @@ public class BrowseFragment extends Fragment {
     ImageView[] imageViews;
     int numberDisplayed = 0;
     ImageView[] displayedViews;
+    int amount = 0;
+    TextView loadingText;
 
     public static BrowseFragment newInstance() {
         return new BrowseFragment();
@@ -99,7 +102,7 @@ public class BrowseFragment extends Fragment {
         }
     }
     void imageThread(){
-        int max = dbSingleton.getNumberOfPhotos();
+        final int max = dbSingleton.getNumberOfPhotos();
         arrayOfIds  = new int[max];
         int layoutMax = (max/3)+1;
         File[] newImage = new File[max];
@@ -113,6 +116,8 @@ public class BrowseFragment extends Fragment {
         final Bitmap[] b = new Bitmap[max];
         int layoutId = 0;
         int layoutNumber = -1;
+        loadingText = getView().findViewById(R.id.loadingText);
+        loadingText.setText("LOADING: "+1+"/"+max);
 
         for (int i = 0; i < max; i++) {
             if (allImagePaths[i] != null) {
@@ -134,24 +139,38 @@ public class BrowseFragment extends Fragment {
                 final int finalIndex = i;
                 final int finalMax = max;
                 new Thread(new Runnable() {
+
                     @Override
                     public void run() {
+
                         for (int index = 0; index < finalMax; index++) {
                             b[index] = BitmapFactory.decodeFile(finalNewImage[index].getAbsolutePath(), o);
+                            //loadingText.setText("LOADING: "+amount+"/"+max);
+
                         }
                         imageViews[finalIndex].post(new Runnable() {
                             @Override
                             public void run() {
-
                                 imageViews[finalIndex].setImageBitmap(b[finalIndex]);
+                                amount+=1;
+                                if(amount == max){
+                                    try {
+                                        wait(max*100);
+                                    }catch(Exception e){
+                                        System.out.println(e.getMessage());
+                                    }
+                                    loadingText.setText("");
+                                }else {
+                                    loadingText.setText("LOADING: " + amount + "/" + max);
+                                }
+
+
                             }
                         });
                     }
                 }).start();
                 //b = BitmapFactory.decodeFile(newImage.getAbsolutePath(), o);
                 //imageViews[i].setImageBitmap(b[0]);
-
-
                 imageViews[i].setId(View.generateViewId());
                 int imageId = imageViews[i].getId();
                 arrayOfIds[i] = imageId;
@@ -172,7 +191,7 @@ public class BrowseFragment extends Fragment {
                 currentLayout.addView(imageViews[i]);
                 currentLayout.setPadding(0, 5, 0, 5);
                 currentLayout.setY(0);
-                currentLayout.setX(0);
+                currentLayout.setX(-10);
 
                 //resize the image
                 ImageView currentImage = getView().findViewById(imageId);
@@ -204,7 +223,7 @@ public class BrowseFragment extends Fragment {
                 updatePhotos(allResultingPaths, v);
             }
         });
-
+        //loadingText.setText("");
         ImageView []allImages = new ImageView[max];
         for (int indx = 0; indx < max; indx++) {
             allImages[indx] = (ImageView) getView().findViewById(arrayOfIds[indx]);
@@ -226,5 +245,6 @@ public class BrowseFragment extends Fragment {
         }
 
     }
+
 
 }
