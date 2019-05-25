@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,27 +74,38 @@ public class ImageTakenDialog{
         okaybutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveReceiptToStorage(expose, receiptFinal);
-                /*if(dateChange){
+
+                if(pdate.getText() != null){
                     try {
-                        receipt.setDateOfPurchase(new Date(String.valueOf(pdate.getText())));
+                        SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
+                        Date date = format.parse(String.valueOf(pdate.getText()));
+                        receiptFinal.setDateOfPurchase(date);
                     }catch (Exception e){
                         //Deal with wrong date format
                     }
                 }
-                if(priceChange){
+                if(pprice.getText() != null){
+                    //System.out.println("price = "+Double.parseDouble(String.valueOf(pprice.getText())));
                     try{
-                       receipt.setHighestPrice(Double.parseDouble(String.valueOf(pprice.getText())));
+                        double amount = Double.parseDouble(String.valueOf(pprice.getText()));
+                        receiptFinal.setHighestPrice(amount);
                     } catch (Exception e) {
 
                     }
                 }
-                if(bussinessChange){
-                    receipt.setBusinessName(String.valueOf(pplace.getText()));
+                if(pplace.getText() != null){
+                    try{
+                        receiptFinal.setBusinessName(String.valueOf(pplace.getText()));
+                    } catch (Exception e) {
+
+                    }
                 }
+                /*
                 if(descriptionChange){
 
-                }*/
+                }
+                */
+                saveReceiptToStorage(expose, receiptFinal);
                 dialog.dismiss();
             }
         });
