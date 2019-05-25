@@ -64,7 +64,7 @@ public class BrowseFragment extends Fragment {
         System.out.println("arr of layouts= "+layoutIds.length);
         if(numberDisplayed == 0) {
             for (int indx = 0; indx < arrayOfIds.length; indx++) {
-                l = indx / 3;
+                l = indx / 4;
                 System.out.println("indx = " + indx + " l = " + l);
                 System.out.println("lay id = " + layoutIds[l]);
                 layouts[l].removeView(imageViews[indx]);
@@ -84,7 +84,7 @@ public class BrowseFragment extends Fragment {
             System.out.println("path "+i+arrayOfPaths[i]);
             for(int j = 0; j<arrayOfIds.length; j++){
                 if(allImagePaths[j].equals(arrayOfPaths[i])){
-                    l = i/3;
+                    l = i/4;
                     //ImageView imgV = v.findViewById(arrayOfIds[j]);
                     //LinearLayout layout = v.findViewById(layoutIds[l]); // haha i shouldnt be doing this :P
                     System.out.println("l = "+ l+ " i = "+ i );
@@ -159,7 +159,7 @@ public class BrowseFragment extends Fragment {
                 arrayOfIds[i] = imageId;
                 //create a new horizontal layout for every 3 photos
 
-                if (i % 3 == 0) {
+                if (i % 4 == 0) {
                     //add a new layout to the scrollView
                     layoutNumber++;
                     layouts[layoutNumber] = new LinearLayout(getActivity());
@@ -181,7 +181,7 @@ public class BrowseFragment extends Fragment {
                 //currently 3:4
                 DisplayMetrics dm = new DisplayMetrics();
                 getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-                currentImage.getLayoutParams().width = dm.widthPixels/3; //change me
+                currentImage.getLayoutParams().width = dm.widthPixels/4; //change me
                 currentImage.getLayoutParams().height = 150; // change me
 
                 //currentImage.setRotation(90);
