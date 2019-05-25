@@ -2,6 +2,7 @@ package receiptstacker.pp159333.com.receiptstacker;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -143,7 +144,7 @@ public class BrowseFragment extends Fragment {
                         imageViews[finalIndex].post(new Runnable() {
                             @Override
                             public void run() {
-
+                                //imageViews[finalIndex].setBackgroundColor(Color.rgb(0, 0, 0));
                                 imageViews[finalIndex].setImageBitmap(b[finalIndex]);
                             }
                         });
@@ -173,7 +174,7 @@ public class BrowseFragment extends Fragment {
                 currentLayout.addView(imageViews[i]);
                 currentLayout.setPadding(0, 5, 0, 5);
                 currentLayout.setY(0);
-                currentLayout.setX(0);
+                currentLayout.setX(-16);
 
                 //resize the image
                 ImageView currentImage = getView().findViewById(imageId);
@@ -186,7 +187,7 @@ public class BrowseFragment extends Fragment {
                 //currentImage.setRotation(90);
                 currentImage.setY(0);
                 currentImage.setX(0);
-                //currentImage.setPadding(0, 25, 0, 25);
+                //currentImage.setPadding(80, 0, 0, 0);
             } else {
                 System.out.println("Cant load image " + i);
             }

@@ -66,7 +66,8 @@ public class ImageTakenDialog{
         int height = metrics.heightPixels;
         final Bitmap expose = receipt.getImage();
         final Receipt receiptFinal = receipt;
-        dialog.getWindow().setLayout((6 * width)/7, (4 * height)/5);
+        //dialog.getWindow().setLayout((6 * width)/7, (4 * height)/5);
+        dialog.getWindow().setLayout(width-74, height-100);
 
         Button okaybutton = dialog.findViewById(R.id.button_keep);
         okaybutton.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +114,7 @@ public class ImageTakenDialog{
         pprice = dialog.findViewById(R.id.textview_Price);
         ptags = dialog.findViewById(R.id.textView_Tags);
         ImageView image = dialog.findViewById(R.id.imageview_ReceiptImage);
+        ConstraintLayout c = dialog.findViewById(R.id.ConstraintLayout_Main);
 
         String price;
         price = String.format("%.02f", receipt.getHighestPrice());
@@ -156,8 +158,9 @@ public class ImageTakenDialog{
 
 
 
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(receipt.getImage(), 1080, 1920, false);
-        image.setImageBitmap(scaledBitmap);
+        //Bitmap scaledBitmap = Bitmap.createScaledBitmap(receipt.getImage(), 1080, 1920, false);
+        Bitmap test = receipt.getImage();
+        image.setImageBitmap(test);
     }
 
     private void saveReceiptToStorage(Bitmap toSave, Receipt receiptFinal){
