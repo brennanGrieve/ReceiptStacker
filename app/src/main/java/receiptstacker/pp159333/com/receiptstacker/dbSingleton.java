@@ -31,7 +31,7 @@ public class dbSingleton {
 
         String rawOCRString = "";
         SparseArray<TextBlock> OCRitems;
-        OCRitems = inputReceipt.getOCR();
+        OCRitems = inputReceipt.getTextBlockOCR();
         if(OCRitems != null) {
             if (OCRitems.size() != 0) {
                 StringBuilder ocrBuilder = new StringBuilder();

@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.Layout;
@@ -215,7 +216,7 @@ public class BrowseFragment extends Fragment {
 
                     Intent photoIntent = new Intent(getActivity(), PictureActivity.class);
                     // this may work haha
-                    // this could be used to send across OCR data
+                    // this could be used to send across textBlockOCR data
                     photoIntent.putExtra("path",allImagePaths[finalIndx]);
                     photoIntent.putExtra("id",arrayOfIds[finalIndx]);
                     startActivity(photoIntent);

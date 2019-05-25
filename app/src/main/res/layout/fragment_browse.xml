@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:windowSoftInputMode="stateVisible|adjustResize"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:windowSoftInputMode="stateVisible|adjustResize"
     tools:context=".BrowseFragment">
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,7 +14,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/dark_gray1"
+        android:background="@color/colorPrimary"
         tools:context=".BrowseActivity">
 
         <EditText
@@ -52,7 +53,6 @@
             android:layout_marginTop="55dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="55dp"
-            android:background="@color/dark_gray1"
             android:windowSoftInputMode="adjustPan"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
