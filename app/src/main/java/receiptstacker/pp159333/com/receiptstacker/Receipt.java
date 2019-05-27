@@ -17,13 +17,13 @@ import static java.lang.StrictMath.max;
 
 import static android.graphics.Bitmap.createBitmap;
 
-/*
-A class representing a Receipt.
-highestPrice is the highest price on the receipt.
-dateOfPurchase is the first date on the receipt.
-businessName is the largest TextBlock on the receipt.
-textBlockOCR is a SparseArray of TextBlocks that we can iterate through when searching for product names.
-image is the same, a the image taken
+/**
+ * A class representing a Receipt.
+ * highestPrice is the highest price on the receipt.
+ * dateOfPurchase is the first date on the receipt.
+ * businessName is the largest TextBlock on the receipt.
+ * OCR is a SparseArray of TextBlocks that we can iterate through when searching for product names.
+ * image is the same, a the image taken
  */
 
 public class Receipt {
@@ -37,7 +37,11 @@ public class Receipt {
     SparseArray<String> stringOCR;
 
 
-    //For creation after capture
+    /**
+     * Public Constructor for Receipt Object. Takes Parameters to assign to Receipt Attributes.
+     * @param newOCR New array of OCR TextBlocks
+     * @param image New Bitmap image of Receipt
+     */
 
     public Receipt(SparseArray<TextBlock> newOCR, Bitmap image) {
         this.textBlockOCR = newOCR;
@@ -45,45 +49,102 @@ public class Receipt {
         updateData();
     }
 
+    /**
+     * Image Getter.
+     * @return Bitmap image of Receipt
+     */
+
     public Bitmap getImage() {
         return image;
     }
+
+    /**
+     * Business Name Getter
+     * @return Receipt Business Name
+     */
 
     public String getBusinessName() {
         return businessName;
     }
 
+    /**
+     * Highest Price Getter
+     * @return Receipt Highest Price
+     */
+
     public double getHighestPrice() {
         return highestPrice;
     }
+
+    /**
+     * Date of Purchase Getter
+     * @return Receipt Date of Purchase
+     */
 
     public Date getDateOfPurchase() {
         return dateOfPurchase;
     }
 
+    /**
+     * OCR Array Getter
+     * @return Receipt OCR Array
+     */
+
     public SparseArray<TextBlock> getTextBlockOCR() {
         return textBlockOCR;
     }
+
+    /**
+     * BusinessName Setter.
+     * @param businessName New value for businessName
+     */
 
     public void setBusinessName(String businessName) {
         this.businessName = businessName;
     }
 
+    /**
+     * Highest Price Setter
+     * @param highestPrice New value for highestPrice
+     */
+
     public void setHighestPrice(double highestPrice) {
         this.highestPrice = highestPrice;
     }
+
+    /**
+     * Date of Purchase Setter
+     * @param dateOfPurchase New value for dateOfPurchase
+     */
 
     public void setDateOfPurchase(Date dateOfPurchase) {
         this.dateOfPurchase = dateOfPurchase;
     }
 
+    /**
+     * Image Setter
+     * @param image New Receipt Image to be stored.
+     */
+
     public void setImage(Bitmap image) {
         this.image = image;
     }
 
+    /**
+     * OCR Setter.
+     * @param textBlockOCR New SparseArray of TextBlocks to be stored.
+     */
+
     public void setTextBlockOCR(SparseArray<TextBlock> textBlockOCR) {
         this.textBlockOCR = textBlockOCR;
     }
+
+    /**
+     * Function to derive metadata from OCR readings.
+     * This is run during the Constructor in order to parse the OCR string for data of interest
+     * Such as Date of Purchase and Business Name.
+     * Takes no Parameters and returns no values.
+     */
 
     public void updateData(){
         int key;
@@ -153,12 +214,25 @@ public class Receipt {
         }
     }
 
+    /**
+     * Called as a Surrogate Constructor of sorts to reinitialize the multi-capture object
+     * For when a new multi-capture is begun.
+     * @param newOCR New OCR Data to initialize the Multi-Capture Receipt with
+     * @param newImage New Receipt Image bitmap to initialize the Multi-Capture Receipt with
+     */
+
 
     public void reinitialize(SparseArray<TextBlock> newOCR, Bitmap newImage) {
         this.textBlockOCR = newOCR;
         this.image = newImage;
         updateData();
     }
+
+    /**
+     * Method to update stored Receipt attributes derived from OCR data when extra OCR data is added
+     * to a Multi-Capture Receipt.
+     * Takes no Parameters, Returns no Values.
+     */
 
     public void updateDynamicDerivedValues(){
         int key;
@@ -179,11 +253,23 @@ public class Receipt {
         }
     }
 
+    /**
+     * Reset method for use with the fragment-level Multi-Capture Receipt object.
+     * Sets Receipt.OCR and Receipt.image to null.
+     * Takes no Parameters, Returns no values.
+     */
+
     public void reset(){
         //like this ?
         textBlockOCR = null;
         image = null;
     }
+
+    /**
+     * Takes a captured bitmap image and concatenates it onto the existing bitmap in the Receipt object.
+     * This is done by taking the bounds of the 2 bitmaps, and creating a canvas to draw both bitmaps onto.
+     * @param newImage Bitmap image of subsequent camera capture to be concatenated to the existing Receipt Bitmap
+     */
 
     public void mergeBitmaps(Bitmap newImage){
         if(image == null){
@@ -200,6 +286,11 @@ public class Receipt {
             image = mergedImage;
         }
     }
+
+    /**
+     * Concatenates OCR Data taken from subsequent shots in a multi-capture.
+     * @param newOCR Subsequent Capture OCR Data to be concatenated to existing Receipt OCR Data
+     */
 
     public void addNewOCR(SparseArray<TextBlock> newOCR){
         int newKeySequence = textBlockOCR.size();
@@ -220,6 +311,7 @@ public class Receipt {
             stringOCR.put(i,textBlockOCR.valueAt(i).getValue());
         }
     }
+
     public void addTag(String tag){
         stringOCR.put(stringOCR.size()+1,tag);
     }

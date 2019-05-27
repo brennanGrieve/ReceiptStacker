@@ -8,11 +8,29 @@ import android.util.SparseArray;
 
 import com.google.android.gms.vision.text.TextBlock;
 
+/**
+ * Singleton class providing code for Database interaction.
+ */
+
 public class dbSingleton {
+
+    /**
+     * Private static SQLiteDatabase object. Only ever exists once, in line with the Singleton design pattern.
+     */
 
     private static SQLiteDatabase receiptDB;
 
+    /**
+     * Private Singleton Constructor. Called by initDB if the database is not yet opened.
+     */
+
     private dbSingleton(){}
+
+    /**
+     * Opens an instance of the database if one does not already exists.
+     * Also uses an SQLQuery to create the database schema, if it doesn't already exist.
+     * @param appContext Application context, required to open Database.
+     */
 
     public static void initDB(Context appContext){
         if(receiptDB == null){
@@ -26,6 +44,13 @@ public class dbSingleton {
                     "R_OCR_RAW_DATA varchar2(3000))");
         }
     }
+
+    /**
+     * Method to commit a new Receipt to the database.
+     * Takes in a Receipt object, and the file path of the Receipt image now saved to the Filesystem.
+     * @param inputReceipt Receipt containing data to be stored in Database.
+     * @param imagePath File Path of the Receipt image that has been stored on the filesystem.
+     */
 
     public static void commitToDB(Receipt inputReceipt, String imagePath){
 
@@ -46,16 +71,13 @@ public class dbSingleton {
 
         receiptDB.execSQL("INSERT INTO RECEIPT VALUES('" + imagePath + "', '"+ inputReceipt.getBusinessName() + "', '" + inputReceipt.getHighestPrice() + "','" + inputReceipt.getDateOfPurchase() + "','" + rawOCRString + "')");
 
-
-        //}
-
     }
 
-    //Currently Incomplete and unimplemented. May be completed in future
-
-//    public static void dropFromDB(String imagePath){
-//        receiptDB.execSQL("DROP FROM Receipts WHERE R_IMAGE_PATH = " + imagePath);
-//    }
+    /**
+     * Function to Search through the Database.
+     * @param input
+     * @return
+     */
 
     //Change the return value and input parameters of the following methods when the search system is designed
     //May require multiple methods when
@@ -85,9 +107,8 @@ public class dbSingleton {
     }
 
 
-    /***************************************
-     * loadPhotos
-     * gathers all the paths to the photos and returns them as an array of strings
+    /**
+     * Method that Gathers all the paths to the photos and returns them as an Array of Strings.
      * @return arrayOfItems
      */
     public static String [] loadPhotos(){
@@ -109,10 +130,21 @@ public class dbSingleton {
         return arrayOfItems;
     }
 
+    /**
+     * Function to return the number of photos stored in the Database.
+     * @return Number of photos to existing in the database to be read.
+     */
+
     public static int getNumberOfPhotos(){
         int numRows = (int)DatabaseUtils.longForQuery(receiptDB, "SELECT COUNT(*) FROM Receipt", null);
         return numRows;
     }
+
+    /**
+     * Function to fetch data from the database.
+     * @param imagePath Used as the primary key to fetch a specific set of data from the Database.
+     * @return arrayOfPhotoInfo Array of Strings representing information about the Receipt stored in the database.
+     */
 
     public static String [] getData(String imagePath){
         String [] arrayOfPhotoInfo = new String [5];
