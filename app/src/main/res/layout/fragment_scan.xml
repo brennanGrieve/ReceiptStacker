@@ -88,11 +88,11 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="@color/colorAccent"
-            tools:layout_editor_absoluteX="169dp"
-            tools:layout_editor_absoluteY="533dp"
-            tools:text="OCRTEST" />
+            android:layout_marginTop="55dp"
+            android:background="@color/black_overlay"
+            android:textColor="#99ffffff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageViewMulticapActiveIndicator"

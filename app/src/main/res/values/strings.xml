@@ -90,4 +90,7 @@
     <string name="activity_custom_keep">Keep</string>
 
     <string name="title_activity_picture">My Receipts</string>
+    <string name="description_optional">Description (Optional)</string>
+    <string name="date">dd/mm/yyyy</string>
+    <string name="purchase_origin">Purchase Origin</string>
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -83,13 +84,19 @@ public class ScanFragment extends Fragment {
             //Show dialog
 //            ImageTakenDialog customDialog = new ImageTakenDialog(getContext(), receipt);
   //          customDialog.showDialog();
-            //Split the procedure for either Single or Multi-Capture operations
-
+            //Split the procedure for either Single or Multi-Capture operation
             if(!multiCapFlag) {
                 Bitmap pic = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
+                Bitmap rotatedPic;
+                if (pic.getWidth()>pic.getHeight()){
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(90);
+                    rotatedPic = Bitmap.createBitmap(pic, 0, 0, pic.getWidth(), pic.getHeight(), matrix, true);
+                } else {
+                    rotatedPic = pic;
+                }
                 //Receipt receipt = new Receipt("Shirt", "The Warehouse", 9, new Date(34439393), pic);
-                Receipt receipt = new Receipt(OCRItems, pic);
+                Receipt receipt = new Receipt(OCRItems, rotatedPic);
                 //Show dialog
                 ImageTakenDialog imageTakenDialog = new ImageTakenDialog(getContext(), receipt);
                 imageTakenDialog.showDialog();
@@ -97,21 +104,29 @@ public class ScanFragment extends Fragment {
             if(multiCapFlag){
                 //add to the multiCapture object
                 Bitmap multiPic = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                Bitmap rotatedPic;
+                if (multiPic.getWidth()>multiPic.getHeight()){
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(90);
+                    rotatedPic = Bitmap.createBitmap(multiPic, 0, 0, multiPic.getWidth(), multiPic.getHeight(), matrix, true);
+                } else {
+                    rotatedPic = multiPic;
+                }
                 if(multiCapSequence == 1) {
                     ++multiCapSequence;
                     if(multiCapReceipt == null) {
                         //this might need to be changed
-                        multiCapReceipt = new Receipt(OCRItems, multiPic);
+                        multiCapReceipt = new Receipt(OCRItems, rotatedPic);
                     }else{
                         //this could be wrong
                         //the changes in Receipt could have caused this
-                        multiCapReceipt.reinitialize(OCRItems, multiPic);
+                        multiCapReceipt.reinitialize(OCRItems, rotatedPic);
                     }
                 }
                 else{
                     ++multiCapSequence;
                     //add to lists
-                    multiCapReceipt.mergeBitmaps(multiPic);
+                    multiCapReceipt.mergeBitmaps(rotatedPic);
                     // dont know if you still want this
                     multiCapReceipt.addNewOCR(OCRItems);
                 }
@@ -159,7 +174,7 @@ public class ScanFragment extends Fragment {
         } else {
             cameraSource = new CameraSource.Builder(appContext, textRecognizer)
                     .setFacing(CameraSource.CAMERA_FACING_BACK)
-                    .setRequestedPreviewSize(1080, 1920)
+                    .setRequestedPreviewSize(1920, 1080)
                     .setRequestedFps(30)
                     .setAutoFocusEnabled(true)
                     .build();
