@@ -26,6 +26,10 @@ import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.IOException;
 
+/**
+ * Fragment Class that handles the Camera Capture Fragment Display and underlying logic.
+ */
+
 public class ScanFragment extends Fragment {
     SurfaceView cameraView;
     static Context appContext;
@@ -40,11 +44,24 @@ public class ScanFragment extends Fragment {
     private Receipt multiCapReceipt;
 
 
+    /**
+     * Method to Create and return an instance of the ScanFragment class for use.
+     * @param context Application Context to create Fragment With
+     * @return Fragment instance to be used.
+     */
+
     public static ScanFragment newInstance(Context context) {
         ScanFragment fragment = new ScanFragment();
         appContext = context;
         return fragment;
     }
+
+    /**
+     * Method Executed whenever the Scan Fragment is created.
+     * Also initializes the Database for use.
+     * @param savedInstanceState Saved state of the Fragments Predecessor for use in restoring the last state
+     *                           the fragment was in.
+     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,12 +70,26 @@ public class ScanFragment extends Fragment {
 
     }
 
+    /**
+     * Method Executed whenever a View is constructed for the Fragment.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_scan, container, false);
     }
 
+
+    /**
+     * Method executed when a fragment View is created. Populates view and fetches the Device Camera for use.
+     * @param view View that Android has created.
+     * @param savedInstanceState State of the last Instance of the fragment.
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -77,13 +108,6 @@ public class ScanFragment extends Fragment {
     CameraSource.PictureCallback pCallBack = new CameraSource.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] bytes) {
-            //handle loading the image into the receipt here
-
-            //Receipt receipt = new Receipt("Shirt", "The Warehouse", 9 , new Date(34439393), pic);
-           // Receipt receipt = new Receipt(OCRItems, pic);
-            //Show dialog
-//            ImageTakenDialog customDialog = new ImageTakenDialog(getContext(), receipt);
-  //          customDialog.showDialog();
             //Split the procedure for either Single or Multi-Capture operation
             if(!multiCapFlag) {
                 Bitmap pic = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -132,11 +156,18 @@ public class ScanFragment extends Fragment {
                 }
             }
 
-
         }
     };
 
+    /**
+     * Action Listener for the Multi-Capture Button.
+     */
+
     private ImageView.OnClickListener mMultiCapOnClickListener = new ImageView.OnClickListener(){
+        /**
+         * On Click Listener to fire Logic for the MultiCap button. Behavior depends on current MultiCap state.
+         * @param v View Required for Listener to function/
+         */
         @Override
         public void onClick(View v){
             if(!multiCapFlag) {
@@ -157,6 +188,10 @@ public class ScanFragment extends Fragment {
         }
     };
 
+
+    /**
+     * Event Listener for the Camera Capture Button.
+     */
     private ImageView.OnClickListener mOnClickListener = new ImageView.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -164,6 +199,11 @@ public class ScanFragment extends Fragment {
             cameraSource.takePicture(null, pCallBack);
         }
     };
+
+    /**
+     * Function to retrieve the device Camera for image capture.
+     * @param v View object required for Library function to work properly.
+     */
 
     public void getCamera(View v) {
         cameraView = v.findViewById(R.id.surfaceView_Camera);
