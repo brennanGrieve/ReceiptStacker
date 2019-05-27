@@ -189,15 +189,15 @@ public class BrowseFragment extends Fragment {
                         public void run() {
                             imageViews[finalIndex].setImageBitmap(arrayOfBitmaps[finalIndex]);
                             amount+=1;
-                            if(amount == max){
+                            if(amount == finalMax){
                                 try {
-                                    wait(max*100);
+                                    wait(finalMax*100);
                                 }catch(Exception e){
                                     System.out.println(e.getMessage());
                                 }
                                 loadingText.setText("");
                             }else {
-                                loadingText.setText("LOADING: " + amount + "/" + max);
+                                loadingText.setText("LOADING: " + amount + "/" + finalMax);
                             }
                         }
                     });
