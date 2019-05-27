@@ -26,6 +26,10 @@ import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.IOException;
 
+/**
+ * Fragment Class that handles the Camera Capture Fragment Display and underlying logic.
+ */
+
 public class ScanFragment extends Fragment {
     SurfaceView cameraView;
     static Context appContext;
@@ -40,11 +44,24 @@ public class ScanFragment extends Fragment {
     private Receipt multiCapReceipt;
 
 
+    /**
+     * Method to Create and return an instance of the ScanFragment class for use.
+     * @param context Application Context to create Fragment With
+     * @return Fragment instance to be used.
+     */
+
     public static ScanFragment newInstance(Context context) {
         ScanFragment fragment = new ScanFragment();
         appContext = context;
         return fragment;
     }
+
+    /**
+     * Method Executed whenever the Scan Fragment is created.
+     * Also initializes the Database for use.
+     * @param savedInstanceState Saved state of the Fragments Predecessor for use in restoring the last state
+     *                           the fragment was in.
+     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,12 +70,26 @@ public class ScanFragment extends Fragment {
 
     }
 
+    /**
+     * Method Executed whenever a View is constructed for the Fragment.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_scan, container, false);
     }
 
+
+    /**
+     * Method executed when a fragment View is created. Populates view and fetches the Device Camera for use.
+     * @param view View that Android has created.
+     * @param savedInstanceState State of the last Instance of the fragment.
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -74,69 +105,67 @@ public class ScanFragment extends Fragment {
     }
 
 
-    CameraSource.PictureCallback pCallBack = new CameraSource.PictureCallback() {
+    CameraSource.PictureCallback pMultiCallBack = new CameraSource.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] bytes) {
-            //handle loading the image into the receipt here
-
-            //Receipt receipt = new Receipt("Shirt", "The Warehouse", 9 , new Date(34439393), pic);
-           // Receipt receipt = new Receipt(OCRItems, pic);
-            //Show dialog
-//            ImageTakenDialog customDialog = new ImageTakenDialog(getContext(), receipt);
-  //          customDialog.showDialog();
-            //Split the procedure for either Single or Multi-Capture operation
-            if(!multiCapFlag) {
-                Bitmap pic = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                Bitmap rotatedPic;
-                if (pic.getWidth()>pic.getHeight()){
-                    Matrix matrix = new Matrix();
-                    matrix.postRotate(90);
-                    rotatedPic = Bitmap.createBitmap(pic, 0, 0, pic.getWidth(), pic.getHeight(), matrix, true);
-                } else {
-                    rotatedPic = pic;
-                }
-                //Receipt receipt = new Receipt("Shirt", "The Warehouse", 9, new Date(34439393), pic);
-                Receipt receipt = new Receipt(OCRItems, rotatedPic);
-                //Show dialog
-                ImageTakenDialog imageTakenDialog = new ImageTakenDialog(getContext(), receipt);
-                imageTakenDialog.showDialog();
+            //add to the multiCapture object
+            Bitmap multiPic = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            Bitmap rotatedPic;
+            if (multiPic.getWidth()>multiPic.getHeight()){
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+                rotatedPic = Bitmap.createBitmap(multiPic, 0, 0, multiPic.getWidth(), multiPic.getHeight(), matrix, true);
+            } else {
+                rotatedPic = multiPic;
             }
-            if(multiCapFlag){
-                //add to the multiCapture object
-                Bitmap multiPic = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                Bitmap rotatedPic;
-                if (multiPic.getWidth()>multiPic.getHeight()){
-                    Matrix matrix = new Matrix();
-                    matrix.postRotate(90);
-                    rotatedPic = Bitmap.createBitmap(multiPic, 0, 0, multiPic.getWidth(), multiPic.getHeight(), matrix, true);
-                } else {
-                    rotatedPic = multiPic;
-                }
-                if(multiCapSequence == 1) {
-                    ++multiCapSequence;
-                    if(multiCapReceipt == null) {
-                        //this might need to be changed
-                        multiCapReceipt = new Receipt(OCRItems, rotatedPic);
-                    }else{
-                        //this could be wrong
-                        //the changes in Receipt could have caused this
-                        multiCapReceipt.reinitialize(OCRItems, rotatedPic);
-                    }
-                }
-                else{
-                    ++multiCapSequence;
-                    //add to lists
-                    multiCapReceipt.mergeBitmaps(rotatedPic);
-                    // dont know if you still want this
-                    multiCapReceipt.addNewOCR(OCRItems);
+            if(multiCapSequence == 1) {
+                ++multiCapSequence;
+                if(multiCapReceipt == null) {
+                    //this might need to be changed
+                    multiCapReceipt = new Receipt(OCRItems, rotatedPic);
+                }else{
+                    //this could be wrong
+                    //the changes in Receipt could have caused this
+                    multiCapReceipt.reinitialize(OCRItems, rotatedPic);
                 }
             }
-
-
+            else{
+                ++multiCapSequence;
+                multiCapReceipt.mergeBitmaps(rotatedPic);
+                multiCapReceipt.addNewOCR(OCRItems);
+            }
         }
     };
 
+    CameraSource.PictureCallback pCallBack = new CameraSource.PictureCallback() {
+        @Override
+        public void onPictureTaken(byte[] bytes) {
+            Bitmap pic = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            Bitmap rotatedPic;
+            if (pic.getWidth()>pic.getHeight()){
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+                rotatedPic = Bitmap.createBitmap(pic, 0, 0, pic.getWidth(), pic.getHeight(), matrix, true);
+            } else {
+                rotatedPic = pic;
+            }
+            //Receipt receipt = new Receipt("Shirt", "The Warehouse", 9, new Date(34439393), pic);
+            Receipt receipt = new Receipt(OCRItems, rotatedPic);
+            //Show dialog
+            ImageTakenDialog imageTakenDialog = new ImageTakenDialog(getContext(), receipt);
+            imageTakenDialog.showDialog();
+        }
+    };
+
+    /**
+     * Action Listener for the Multi-Capture Button.
+     */
+
     private ImageView.OnClickListener mMultiCapOnClickListener = new ImageView.OnClickListener(){
+        /**
+         * On Click Listener to fire Logic for the MultiCap button. Behavior depends on current MultiCap state.
+         * @param v View Required for Listener to function/
+         */
         @Override
         public void onClick(View v){
             if(!multiCapFlag) {
@@ -157,19 +186,33 @@ public class ScanFragment extends Fragment {
         }
     };
 
+
+    /**
+     * Event Listener for the Camera Capture Button.
+     */
     private ImageView.OnClickListener mOnClickListener = new ImageView.OnClickListener() {
         @Override
         public void onClick(View v) {
             //Camera takes a picture here
-            cameraSource.takePicture(null, pCallBack);
+            if(!multiCapFlag) {
+                cameraSource.takePicture(null, pCallBack);
+            }
+            else if(multiCapFlag){
+                cameraSource.takePicture(null, pMultiCallBack);
+            }
         }
     };
+
+    /**
+     * Function to retrieve the device Camera for image capture.
+     * @param v View object required for Library function to work properly.
+     */
 
     public void getCamera(View v) {
         cameraView = v.findViewById(R.id.surfaceView_Camera);
         textView = v.findViewById(R.id.textView);
         TextRecognizer textRecognizer = new TextRecognizer.Builder(appContext).build();
-    if (!textRecognizer.isOperational()) {
+        if (!textRecognizer.isOperational()) {
             Log.w("MainActivity", "Dependencies are not available");
         } else {
             cameraSource = new CameraSource.Builder(appContext, textRecognizer)
@@ -212,22 +255,22 @@ public class ScanFragment extends Fragment {
 
                 @Override
                 public void receiveDetections(Detector.Detections<TextBlock> detections) {
-                     OCRItems = detections.getDetectedItems();
-                        if (OCRItems.size() != 0) {
-                            textView.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    StringBuilder stringBuilder = new StringBuilder();
-                                    for (int i = 0; (i < OCRItems.size()); i++) {
-                                        TextBlock item = OCRItems.valueAt(i);
-                                        stringBuilder.append(item.getValue());
-                                        stringBuilder.append(" ");
-                                    }
-                                    rawOCRString = stringBuilder.toString();
-                                    textView.setText(rawOCRString);
+                    OCRItems = detections.getDetectedItems();
+                    if (OCRItems.size() != 0) {
+                        textView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                StringBuilder stringBuilder = new StringBuilder();
+                                for (int i = 0; (i < OCRItems.size()); i++) {
+                                    TextBlock item = OCRItems.valueAt(i);
+                                    stringBuilder.append(item.getValue());
+                                    stringBuilder.append(" ");
                                 }
-                            });
-                        }
+                                rawOCRString = stringBuilder.toString();
+                                textView.setText(rawOCRString);
+                            }
+                        });
+                    }
                 }
             });
         }
