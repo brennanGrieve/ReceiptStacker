@@ -24,35 +24,64 @@
         android:layout_height="match_parent">
 
 
+        <LinearLayout
+            style="?metaButtonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="-1dp">
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="?metaButtonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="84dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="55dp"
+            android:background="@color/black_overlay"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView"
+            app:layout_constraintVertical_bias="1.0"
+            tools:ignore="UselessParent"
+            tools:layout_editor_absoluteX="0dp">
+
+        </LinearLayout>
+
         <ImageView
             android:id="@+id/imageViewCameraShutter"
             android:layout_width="@android:dimen/notification_large_icon_width"
             android:layout_height="@android:dimen/notification_large_icon_height"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="8dp"
-            android:contentDescription="@string/capButton"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="65dp"
+            android:background="@null"
+            android:windowSoftInputMode="adjustPan"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.488"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.88"
             app:srcCompat="@drawable/ic_camerashutter" />
 
         <ImageButton
             android:id="@+id/settingButton"
             android:layout_width="38dp"
             android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:adjustViewBounds="false"
             android:background="@null"
             android:contentDescription="@string/optionbutton"
             android:onClick="openSettingsActivity"
             android:scaleType="fitEnd"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.94"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.01999998"
             app:srcCompat="@drawable/ic_options" />
 
         <TextView
@@ -85,6 +114,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageViewCameraShutter"
             app:layout_constraintStart_toEndOf="@+id/imageViewCameraShutter"
             app:layout_constraintTop_toTopOf="@+id/imageViewCameraShutter" />
+
 
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

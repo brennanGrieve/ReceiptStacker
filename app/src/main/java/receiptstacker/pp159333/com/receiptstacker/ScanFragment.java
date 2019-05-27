@@ -32,7 +32,7 @@ public class ScanFragment extends Fragment {
     TextView textView;
     static CameraSource cameraSource;
     private String rawOCRString;
-    private SparseArray<TextBlock> OCRitems;
+    private SparseArray<TextBlock> OCRItems;
     private boolean multiCapFlag = false;
     private int multiCapSequence = 1;
     ImageView multiCapIndicator;
@@ -79,7 +79,7 @@ public class ScanFragment extends Fragment {
             //handle loading the image into the receipt here
 
             //Receipt receipt = new Receipt("Shirt", "The Warehouse", 9 , new Date(34439393), pic);
-           // Receipt receipt = new Receipt(OCRitems, pic);
+           // Receipt receipt = new Receipt(OCRItems, pic);
             //Show dialog
 //            ImageTakenDialog customDialog = new ImageTakenDialog(getContext(), receipt);
   //          customDialog.showDialog();
@@ -89,7 +89,7 @@ public class ScanFragment extends Fragment {
                 Bitmap pic = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
                 //Receipt receipt = new Receipt("Shirt", "The Warehouse", 9, new Date(34439393), pic);
-                Receipt receipt = new Receipt(OCRitems, pic);
+                Receipt receipt = new Receipt(OCRItems, pic);
                 //Show dialog
                 ImageTakenDialog imageTakenDialog = new ImageTakenDialog(getContext(), receipt);
                 imageTakenDialog.showDialog();
@@ -101,11 +101,11 @@ public class ScanFragment extends Fragment {
                     ++multiCapSequence;
                     if(multiCapReceipt == null) {
                         //this might need to be changed
-                        multiCapReceipt = new Receipt(OCRitems, multiPic);
+                        multiCapReceipt = new Receipt(OCRItems, multiPic);
                     }else{
                         //this could be wrong
                         //the changes in Receipt could have caused this
-                        multiCapReceipt.reinitialize(OCRitems, multiPic);
+                        multiCapReceipt.reinitialize(OCRItems, multiPic);
                     }
                 }
                 else{
@@ -113,7 +113,7 @@ public class ScanFragment extends Fragment {
                     //add to lists
                     multiCapReceipt.mergeBitmaps(multiPic);
                     // dont know if you still want this
-                    //multiCapReceipt.addTags();
+                    multiCapReceipt.addNewOCR(OCRItems);
                 }
             }
 
@@ -197,14 +197,14 @@ public class ScanFragment extends Fragment {
 
                 @Override
                 public void receiveDetections(Detector.Detections<TextBlock> detections) {
-                     OCRitems = detections.getDetectedItems();
-                        if (OCRitems.size() != 0) {
+                     OCRItems = detections.getDetectedItems();
+                        if (OCRItems.size() != 0) {
                             textView.post(new Runnable() {
                                 @Override
                                 public void run() {
                                     StringBuilder stringBuilder = new StringBuilder();
-                                    for (int i = 0; (i < OCRitems.size()); i++) {
-                                        TextBlock item = OCRitems.valueAt(i);
+                                    for (int i = 0; (i < OCRItems.size()); i++) {
+                                        TextBlock item = OCRItems.valueAt(i);
                                         stringBuilder.append(item.getValue());
                                         stringBuilder.append(" ");
                                     }

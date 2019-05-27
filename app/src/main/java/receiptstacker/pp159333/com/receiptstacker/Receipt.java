@@ -14,35 +14,56 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.lang.StrictMath.max;
-import java.util.List;
 
 import static android.graphics.Bitmap.createBitmap;
 
 /*
 A class representing a Receipt.
-totalPrice is the highest price on the receipt.
+highestPrice is the highest price on the receipt.
 dateOfPurchase is the first date on the receipt.
-bussinessName is the largest TextBlock on the receipt.
+businessName is the largest TextBlock on the receipt.
 OCR is a SparseArray of TextBlocks that we can iterate through when searching for product names.
 image is the same, a the image taken
  */
 
 public class Receipt {
-    private String bussinessName;
-    private double totalPrice;
+    private String businessName;
+    private double highestPrice;
     private Date dateOfPurchase;
     private Bitmap image;
     SparseArray<TextBlock> OCR;
 
     //For creation after capture
 
-    public Receipt(SparseArray<TextBlock> OCR, Bitmap image) {
-        //this.price = price;
-        //this.dateOfPurchase = dateOfPurchase;
+    public Receipt(SparseArray<TextBlock> newOCR, Bitmap image) {
+        this.OCR = newOCR;
         this.image = image;
+        updateData();
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public double getHighestPrice() {
+        return highestPrice;
+    }
+
+    public Date getDateOfPurchase() {
+        return dateOfPurchase;
+    }
+
+    public SparseArray<TextBlock> getOCR() {
+        return OCR;
+    }
+
+    public void updateData(){
         int key;
         double maxPrice = -1;
-        this.OCR = OCR;
         Date testDate = new Date();
         Boolean dateCheck = true;
         Pattern price = Pattern.compile("\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})");
@@ -60,7 +81,7 @@ public class Receipt {
             String testStr = element.getValue();
             Matcher priceMatcher = price.matcher(testStr);
             if(priceMatcher.find()){
-                currentPrice = Double.parseDouble(priceMatcher.group(0));
+                currentPrice = Double.parseDouble(priceMatcher.group(0).replace(',', '.'));
                 if(maxPrice<=currentPrice){
                     maxPrice = max(maxPrice, currentPrice);
                 }
@@ -92,14 +113,14 @@ public class Receipt {
             }
         }
         if(heightkey != -1) {
-            bussinessName = OCR.get(heightkey).getValue();
+            businessName = OCR.get(heightkey).getValue();
         }else{
-            bussinessName = "Test name";
+            businessName = "Test name";
         }
         if(maxPrice != -1) {
-            totalPrice = maxPrice;
+            highestPrice = maxPrice;
         }else{
-            totalPrice = -1;
+            highestPrice = -1;
         }
         if(dateOfPurchase == null){
             System.out.println("Date is null");
@@ -107,29 +128,30 @@ public class Receipt {
         }
     }
 
-    public Bitmap getImage() {
-        return image;
-    }
-
-    public String getBussinessName() {
-        return bussinessName;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public Date getDateOfPurchase() {
-        return dateOfPurchase;
-    }
-
-    public SparseArray<TextBlock> getOCR() {
-        return OCR;
-    }
 
     public void reinitialize(SparseArray<TextBlock> newOCR, Bitmap newImage) {
-        OCR = newOCR;
-        image = newImage;
+        this.OCR = newOCR;
+        this.image = newImage;
+        updateData();
+    }
+
+    public void updateDynamicDerivedValues(){
+        int key;
+        double maxPrice = -1;
+        double currentPrice;
+        Pattern price = Pattern.compile("\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})");
+        for(int i = 0; i < OCR.size(); i++) {
+            key = OCR.keyAt(i);
+            TextBlock element = OCR.get(key);
+            String testStr = element.getValue();
+            Matcher priceMatcher = price.matcher(testStr);
+            if(priceMatcher.find()){
+                currentPrice = Double.parseDouble(priceMatcher.group(0));
+                if(maxPrice<=currentPrice){
+                    maxPrice = max(maxPrice, currentPrice);
+                }
+            }
+        }
     }
 
     public void reset(){
@@ -151,6 +173,18 @@ public class Receipt {
             merging.drawBitmap(image, null, originalImageBounds, null);
             merging.drawBitmap(newImage, null, mergeIntoBounds, null);
             image = mergedImage;
+        }
+    }
+
+    public void addNewOCR(SparseArray<TextBlock> newOCR){
+        int newKeySequence = OCR.size();
+        newKeySequence++;
+        if(newOCR != null){
+            for(int i=0; i < newOCR.size(); i++){
+                OCR.put(newKeySequence, newOCR.valueAt(i));
+                newKeySequence++;
+            }
+            updateDynamicDerivedValues();
         }
     }
 
