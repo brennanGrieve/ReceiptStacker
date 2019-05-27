@@ -212,7 +212,7 @@ public class ScanFragment extends Fragment {
         cameraView = v.findViewById(R.id.surfaceView_Camera);
         textView = v.findViewById(R.id.textView);
         TextRecognizer textRecognizer = new TextRecognizer.Builder(appContext).build();
-    if (!textRecognizer.isOperational()) {
+        if (!textRecognizer.isOperational()) {
             Log.w("MainActivity", "Dependencies are not available");
         } else {
             cameraSource = new CameraSource.Builder(appContext, textRecognizer)
@@ -255,22 +255,22 @@ public class ScanFragment extends Fragment {
 
                 @Override
                 public void receiveDetections(Detector.Detections<TextBlock> detections) {
-                     OCRItems = detections.getDetectedItems();
-                        if (OCRItems.size() != 0) {
-                            textView.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    StringBuilder stringBuilder = new StringBuilder();
-                                    for (int i = 0; (i < OCRItems.size()); i++) {
-                                        TextBlock item = OCRItems.valueAt(i);
-                                        stringBuilder.append(item.getValue());
-                                        stringBuilder.append(" ");
-                                    }
-                                    rawOCRString = stringBuilder.toString();
-                                    textView.setText(rawOCRString);
+                    OCRItems = detections.getDetectedItems();
+                    if (OCRItems.size() != 0) {
+                        textView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                StringBuilder stringBuilder = new StringBuilder();
+                                for (int i = 0; (i < OCRItems.size()); i++) {
+                                    TextBlock item = OCRItems.valueAt(i);
+                                    stringBuilder.append(item.getValue());
+                                    stringBuilder.append(" ");
                                 }
-                            });
-                        }
+                                rawOCRString = stringBuilder.toString();
+                                textView.setText(rawOCRString);
+                            }
+                        });
+                    }
                 }
             });
         }
