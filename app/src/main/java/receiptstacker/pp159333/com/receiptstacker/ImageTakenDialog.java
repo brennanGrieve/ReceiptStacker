@@ -126,8 +126,6 @@ public class ImageTakenDialog{
         pprice = dialog.findViewById(R.id.textview_Price);
         ptags = dialog.findViewById(R.id.textView_Tags);
         ImageView image = dialog.findViewById(R.id.imageview_ReceiptImage);
-        ConstraintLayout c = dialog.findViewById(R.id.ConstraintLayout_Main);
-
         String price;
         price = String.format("%.02f", receipt.getHighestPrice());
         price = "$" + price;
@@ -142,37 +140,9 @@ public class ImageTakenDialog{
         if (receipt.getHighestPrice()!=-1) {
             pprice.setText(price);
         }
-        /*
-        pdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dateChange = true;
-            }
-        });
-        pprice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                priceChange = true;
-            }
-        });
-        pplace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bussinessChange = true;
-            }
-        });
-        ptags.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                 descriptionChange = true;
-            }
-        });*/
 
-
-
-        //Bitmap scaledBitmap = Bitmap.createScaledBitmap(receipt.getImage(), 1080, 1920, false);
-        Bitmap test = receipt.getImage();
-        image.setImageBitmap(test);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(receipt.getImage(), 1080, 1920, false);
+        image.setImageBitmap(scaledBitmap);
     }
 
     private void saveReceiptToStorage(Bitmap toSave, Receipt receiptFinal){

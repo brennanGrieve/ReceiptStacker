@@ -10,20 +10,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-
-/*
-A dialog that shows a receipt for the user. User can decide weather or not they want to
-take another photo. This can be used in the browse menu as well with small changes to the button names.
+/**
+ * Photo Dialog
+ * a class that displays a photo dialog for receipts
  */
-
 public class PhotoDialog{
+    private Dialog dialog;      // the dialog
+    private Context context;    // the current context
 
-    private Dialog dialog;
-    private Context context;
-    // could send receipt if you wanted to
-    private String name;
-
-    // Takes a context and a receipt and creates a custom dialog.
+    /**
+     * PhotoDialog constructor
+     * @param context the context
+     * @param imagePath the receipts image path
+     * @param id the id of the image
+     */
     PhotoDialog(Context context, String imagePath, int id) {
         this.dialog = new Dialog(context);
         dialog.setContentView(R.layout.activity_photo_dialog);
@@ -31,7 +31,10 @@ public class PhotoDialog{
         populate(imagePath, id);
     }
 
-
+    /**
+     * showDialog
+     * a function used to create the dialog box and the close dialog button
+     */
     void showDialog() {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
@@ -50,23 +53,24 @@ public class PhotoDialog{
         dialog.show();
     }
 
+    /**
+     * populate
+     * a function used to populate all the information for the dialog box.
+     * @param imagePath the image path
+     * @param imageId the image id
+     */
     private void populate(String imagePath, int imageId){
-
-        // add more to this later
         String [] arr = dbSingleton.getData(imagePath);
-
         TextView priceView = dialog.findViewById(R.id.textView_TotalPrice);
         TextView dopView = dialog.findViewById(R.id.textView_DateOfPurchase);
         TextView purchaseOriginView = dialog.findViewById(R.id.textView_PurchaseOrigin);
         TextView OCRView = dialog.findViewById(R.id.textView_OCR);
         TextView idView = dialog.findViewById(R.id.textView_Id);
         TextView pathView = dialog.findViewById(R.id.textView_Path);
-
         String purchaseOrigin;
         String dop;
         String totalPrice;
         String OCRText;
-
         if(arr[0] == null) {
             purchaseOrigin = "Unknown";
         }else{
@@ -89,20 +93,12 @@ public class PhotoDialog{
         }else{
             OCRText = arr[3];
         }
-
-
-
         String id = ""+imageId;
-
         dopView.setText(dop);
         purchaseOriginView.setText(purchaseOrigin);
         pathView.setText(imagePath);
         idView.setText(id);
         priceView.setText(totalPrice);
         OCRView.setText(OCRText);
-
-
-
     }
-
 }
