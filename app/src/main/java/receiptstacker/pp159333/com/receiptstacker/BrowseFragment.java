@@ -1,5 +1,6 @@
 package receiptstacker.pp159333.com.receiptstacker;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -22,13 +23,13 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class BrowseFragment extends Fragment {
     Button searchButton;
     EditText input;
-
     int[] arrayOfIds;
     String[] allImagePaths;
     LinearLayout[] layouts;
@@ -36,6 +37,7 @@ public class BrowseFragment extends Fragment {
     ImageView[] imageViews;
     int numberDisplayed = 0;
     ImageView[] displayedViews;
+    Bitmap [] arrayOfBitmaps;
 
     public static BrowseFragment newInstance() {
         return new BrowseFragment();
@@ -44,6 +46,7 @@ public class BrowseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -59,9 +62,6 @@ public class BrowseFragment extends Fragment {
     }
     public void updatePhotos(String [] arrayOfPaths, View v){
         int l;
-        System.out.println("arr of paths = "+arrayOfPaths.length);
-        System.out.println("arr of ids = "+arrayOfIds.length);
-        System.out.println("arr of layouts= "+layoutIds.length);
         if(numberDisplayed == 0) {
             for (int indx = 0; indx < arrayOfIds.length; indx++) {
                 l = indx / 4;
@@ -100,11 +100,58 @@ public class BrowseFragment extends Fragment {
             }
         }
     }
+
+
+    //[CHANGE ME]
+    //https://developer.android.com/topic/performance/graphics/load-bitmap#java
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    //[CHANGE ME]
+    // https://developer.android.com/topic/performance/graphics/load-bitmap#java
+    public static Bitmap decodeSampledBitmapFromFile(String file,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(file, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(file, options);
+    }
+
     void imageThread(){
+
         int max = dbSingleton.getNumberOfPhotos();
+        arrayOfBitmaps = new Bitmap[max];
         arrayOfIds  = new int[max];
         int layoutMax = (max/3)+1;
-        File[] newImage = new File[max];
+        final File[] newImage = new File[max];
         layouts = new LinearLayout[layoutMax];
         layoutIds = new int[layoutMax];
         imageViews = new ImageView[max];
@@ -112,8 +159,6 @@ public class BrowseFragment extends Fragment {
 
         allImagePaths = dbSingleton.loadPhotos();
         LinearLayout verticalLayout = getView().findViewById(R.id.verticalLayout);
-        final Bitmap[] b = new Bitmap[max];
-        int layoutId = 0;
         int layoutNumber = -1;
 
         for (int i = 0; i < max; i++) {
@@ -123,37 +168,35 @@ public class BrowseFragment extends Fragment {
                 newImage[i] = null;
             }
         }
+
+        final File[] finalNewImage = newImage;
+        //final int finalIndex = i;
+        final int finalMax = max;
+        final BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inSampleSize = 24;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(int i = 0; i< finalMax; i++) {
+                    arrayOfBitmaps[i] = decodeSampledBitmapFromFile(finalNewImage[i].getAbsolutePath(), 100, 100);
+                    //arrayOfBitmaps[i] = BitmapFactory.decodeFile(finalNewImage[i].getAbsolutePath(), o);
+                    final int finalIndex = i;
+                    imageViews[i].post(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageViews[finalIndex].setImageBitmap(arrayOfBitmaps[finalIndex]);
+                        }
+                    });
+                }
+
+
+            }
+        }).start();
+
         for (int i = 0; i < max; i++) {
             System.out.println(allImagePaths[i]);
             if (newImage != null) {
-                final BitmapFactory.Options o = new BitmapFactory.Options();
-                o.inSampleSize = 24; // scales down the size kinda haha
-
                 imageViews[i] = new ImageView(getActivity());
-
-
-                final File[] finalNewImage = newImage;
-                final int finalIndex = i;
-                final int finalMax = max;
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (int index = 0; index < finalMax; index++) {
-                            b[index] = BitmapFactory.decodeFile(finalNewImage[index].getAbsolutePath(), o);
-                        }
-                        imageViews[finalIndex].post(new Runnable() {
-                            @Override
-                            public void run() {
-                                //imageViews[finalIndex].setBackgroundColor(Color.rgb(0, 0, 0));
-                                imageViews[finalIndex].setImageBitmap(b[finalIndex]);
-                            }
-                        });
-                    }
-                }).start();
-                //b = BitmapFactory.decodeFile(newImage.getAbsolutePath(), o);
-                //imageViews[i].setImageBitmap(b[0]);
-
-
                 imageViews[i].setId(View.generateViewId());
                 int imageId = imageViews[i].getId();
                 arrayOfIds[i] = imageId;
@@ -197,7 +240,6 @@ public class BrowseFragment extends Fragment {
         searchButton = (Button) getView().findViewById(R.id.searchBtn);
         input = getView().findViewById(R.id.searchText);
 
-
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,15 +256,10 @@ public class BrowseFragment extends Fragment {
             allImages[indx].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     Intent photoIntent = new Intent(getActivity(), PictureActivity.class);
-                    // this may work haha
-                    // this could be used to send across textBlockOCR data
                     photoIntent.putExtra("path",allImagePaths[finalIndx]);
                     photoIntent.putExtra("id",arrayOfIds[finalIndx]);
                     startActivity(photoIntent);
-                    // add the image to the activity
-
                 }
             });
         }

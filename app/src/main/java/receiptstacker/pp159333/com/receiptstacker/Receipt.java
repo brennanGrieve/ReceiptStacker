@@ -99,41 +99,43 @@ public class Receipt {
         int numberOfLines;
         double currentPrice;
         String[] dateArr;
-        for(int i = 0; i < textBlockOCR.size(); i++) {
-            key = textBlockOCR.keyAt(i);
-            TextBlock element = textBlockOCR.get(key);
-            String testStr = element.getValue();
-            Matcher priceMatcher = price.matcher(testStr);
-            if(priceMatcher.find()){
-                currentPrice = Double.parseDouble(priceMatcher.group(0).replace(',', '.'));
-                if(maxPrice<=currentPrice){
-                    maxPrice = max(maxPrice, currentPrice);
-                }
-            }
-            Matcher dateMatcher = date.matcher(testStr);
-            if (dateMatcher.find()) {
-                try {
-                    dateArr = dateMatcher.group(0).split("[///.\\s/t/-]");
-                    if(dateArr[2].length()<=2){
-
+        if(textBlockOCR != null) {
+            for (int i = 0; i < textBlockOCR.size(); i++) {
+                key = textBlockOCR.keyAt(i);
+                TextBlock element = textBlockOCR.get(key);
+                String testStr = element.getValue();
+                Matcher priceMatcher = price.matcher(testStr);
+                if (priceMatcher.find()) {
+                    currentPrice = Double.parseDouble(priceMatcher.group(0).replace(',', '.'));
+                    if (maxPrice <= currentPrice) {
+                        maxPrice = max(maxPrice, currentPrice);
                     }
-                    testDate = dateFormat.parse(dateMatcher.group(0));
-                } catch (ParseException e) {
-                    e.printStackTrace();
                 }
-                if (testDate != null && testDate.getYear() > 2000) {
-                    dateOfPurchase = testDate;
+                Matcher dateMatcher = date.matcher(testStr);
+                if (dateMatcher.find()) {
+                    try {
+                        dateArr = dateMatcher.group(0).split("[///.\\s/t/-]");
+                        if (dateArr[2].length() <= 2) {
+
+                        }
+                        testDate = dateFormat.parse(dateMatcher.group(0));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    if (testDate != null && testDate.getYear() > 2000) {
+                        dateOfPurchase = testDate;
+                    }
                 }
-            }
-            tempHeight = element.getBoundingBox().bottom -  element.getBoundingBox().top;
-            numberOfLines = element.getValue().split("\n").length ;
-            tempHeight = tempHeight / numberOfLines;
-            if(element.getValue().split(" ").length>5){
-                tempHeight = 0;
-            }
-            if (tempHeight > height){
-                height = tempHeight;
-                heightkey = key;
+                tempHeight = element.getBoundingBox().bottom - element.getBoundingBox().top;
+                numberOfLines = element.getValue().split("\n").length;
+                tempHeight = tempHeight / numberOfLines;
+                if (element.getValue().split(" ").length > 5) {
+                    tempHeight = 0;
+                }
+                if (tempHeight > height) {
+                    height = tempHeight;
+                    heightkey = key;
+                }
             }
         }
         if(heightkey != -1) {
