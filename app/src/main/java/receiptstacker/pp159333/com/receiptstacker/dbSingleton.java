@@ -55,22 +55,7 @@ public class dbSingleton {
 
     public static void commitToDB(Receipt inputReceipt, String imagePath){
 
-        String rawOCRString = "";
-        SparseArray<TextBlock> OCRitems;
-        OCRitems = inputReceipt.getTextBlockOCR();
-        if(OCRitems != null) {
-            if (OCRitems.size() != 0) {
-                StringBuilder ocrBuilder = new StringBuilder();
-                for (int i = 0; i < OCRitems.size(); i++) {
-                    TextBlock item = OCRitems.valueAt(i);
-                    ocrBuilder.append(item.getValue());
-                    ocrBuilder.append(" ");
-                }
-                rawOCRString = ocrBuilder.toString();
-            }
-        }
-
-        receiptDB.execSQL("INSERT INTO RECEIPT VALUES('" + imagePath + "', '"+ inputReceipt.getBusinessName() + "', '" + inputReceipt.getHighestPrice() + "','" + inputReceipt.getDateOfPurchase() + "','" + rawOCRString + "')");
+        receiptDB.execSQL("INSERT INTO RECEIPT VALUES('" + imagePath + "', '"+ inputReceipt.getBusinessName() + "', '" + inputReceipt.getHighestPrice() + "','" + inputReceipt.getDateOfPurchase() + "','" + inputReceipt.getStringOCR() + "')");
 
     }
 

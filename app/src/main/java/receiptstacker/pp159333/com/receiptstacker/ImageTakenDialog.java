@@ -41,7 +41,7 @@ public class ImageTakenDialog{
     }
 
     /**
-     * used to create and display the dialog box
+     * Method to create and display the dialog box
      */
     void showDialog() {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -97,7 +97,7 @@ public class ImageTakenDialog{
     }
 
     /**
-     * used to populate the dialog box
+     * Method to populate the dialog box
      * @param receipt a receipt
      */
     void populate(Receipt receipt){
@@ -124,21 +124,22 @@ public class ImageTakenDialog{
     }
 
     /**
-     * initializes the database if not already done and saves bitmap to storage
+     * Method that initializes the database if not already done and saves bitmap to storage
      * and the receipt to the database
-     * @param b a bitmap
-     * @param receiptFinal a receipt
+     * @param b Bitmap to be saved
+     * @param receiptFinal Receipt Object to be saved
      */
     private void saveReceiptToStorage(Bitmap b, Receipt receiptFinal){
         dbSingleton.initDB(context.getApplicationContext());
+        receiptFinal.parseOCRToString();
         String filename = saveImageToFileSystem(b);
         dbSingleton.commitToDB(receiptFinal, filename);
     }
 
     /**
-     * saves the bitmap to a file as a JPEG
+     * Method that saves the bitmap to a file as a JPEG
      * @param receiptPic a bitmap
-     * @return the path of the file
+     * @return String Filepath
      */
     private String saveImageToFileSystem(Bitmap receiptPic){
         ContextWrapper appWrap = new ContextWrapper(context.getApplicationContext());
@@ -163,8 +164,8 @@ public class ImageTakenDialog{
     }
 
     /**
-     * returns the current time stamp
-     * @return a time stamp
+     * Method that returns the current time stamp
+     * @return String timeStamp
      */
     private String getCurrentTimeStamp(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");

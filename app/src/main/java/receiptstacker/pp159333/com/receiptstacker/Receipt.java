@@ -34,7 +34,7 @@ public class Receipt {
     private Date dateOfPurchase;
     private Bitmap image;
     SparseArray<TextBlock> textBlockOCR;
-    SparseArray<String> stringOCR;
+    String stringOCR;
 
 
     /**
@@ -296,7 +296,32 @@ public class Receipt {
                 newKeySequence++;
             }
             updateDynamicDerivedValues();
-            //resetStringOCR();
+        }
+    }
+
+    /**
+     * Getter for stringOCR attribute.
+     * @return stringOCR - Receipt OCR Data in String Form.
+     */
+
+    public String getStringOCR(){return stringOCR;}
+
+    /**
+     * Method that parses the textBlockOCR attribute into the stringOCR attribute by means of a StringBuilder.
+     * Takes no Parameters, has no return value.
+     */
+
+    public void parseOCRToString(){
+        if(textBlockOCR != null) {
+            if (textBlockOCR.size() != 0) {
+                StringBuilder ocrBuilder = new StringBuilder();
+                for (int i = 0; i < textBlockOCR.size(); i++) {
+                    TextBlock item = textBlockOCR.valueAt(i);
+                    ocrBuilder.append(item.getValue());
+                    ocrBuilder.append(" ");
+                }
+                stringOCR = ocrBuilder.toString();
+            }
         }
     }
 /*
