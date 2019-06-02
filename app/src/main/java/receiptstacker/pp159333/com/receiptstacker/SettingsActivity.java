@@ -51,10 +51,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     /**
-     * Method fired on creation of Settings Activity
-     * @param savedInstanceState Saved state of the last known Instance of the Activity.
+     * onCreate
+     * @param savedInstanceState saved state of the last known instance of the activity.
      */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -106,9 +105,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     /**
-     * Method fired when a Menu Item is selected
+     * when a menu item is selected
+     * @param featureId the feature id
+     * @param item  a menu item
+     * @return superclass handling of selected item.
      */
-
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         int id = item.getItemId();
@@ -155,6 +156,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class ScanSettingsPreferenceFragment extends PreferenceFragment {
+        /**
+         * onCreate
+         * @param savedInstanceState saved state of the last known instance of the activity.
+         */
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -165,9 +170,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
 
         /**
-         * Method fired when an options item is selected.
-         * @param item The Selected Item.
-         * @return Superclass handling of Selected item.
+         * when an options item is selected.
+         * @param item the selected item.
+         * @return superclass handling of selected item.
          */
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
@@ -181,18 +186,26 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     /**
-     * This Placeholder settings fragment is not currently utilized. It is kept in case it is needed. If unused, will be removed before release.
+     * This placeholder settings fragment is not currently utilized. It is kept in case it is needed. If unused, will be removed before release.
      */
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class PlaceholderPreferenceFragment extends PreferenceFragment {
+        /**
+         * onCreate
+         * @param savedInstanceState saved state of the last known instance of the activity.
+         */
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_placeholder_settings);
             setHasOptionsMenu(true);
         }
-
+        /**
+         * when an options item is selected.
+         * @param item a menu item
+         * @return superclass handling of selected item.
+         */
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
@@ -211,6 +224,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class PersonalizationPreferenceFragment extends PreferenceFragment {
+        /**
+         * onCreate
+         * @param savedInstanceState saved state of the last known instance of the activity.
+         */
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -218,6 +235,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             setHasOptionsMenu(true);
         }
 
+        /**
+         * when an options item is selected.
+         * @param item a menu item
+         * @return superclass handling of selected item.
+         */
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();

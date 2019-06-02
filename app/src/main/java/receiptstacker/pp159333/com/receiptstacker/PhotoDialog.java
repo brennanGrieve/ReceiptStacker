@@ -11,8 +11,7 @@ import android.widget.TextView;
 
 
 /**
- * Photo Dialog
- * a class that displays a photo dialog for receipts
+ * class that displays a photo dialog for receipts
  */
 public class PhotoDialog{
     private Dialog dialog;      // the dialog
@@ -32,8 +31,7 @@ public class PhotoDialog{
     }
 
     /**
-     * showDialog
-     * a function used to create the dialog box and the close dialog button
+     * function used to create the dialog box and the close dialog button
      */
     void showDialog() {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -45,6 +43,10 @@ public class PhotoDialog{
 
         Button closeButton = dialog.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * onClick
+             * @param v the current view
+             */
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -54,8 +56,7 @@ public class PhotoDialog{
     }
 
     /**
-     * populate
-     * a function used to populate all the information for the dialog box.
+     * function used to populate all the information for the dialog box.
      * @param imagePath the image path
      * @param imageId the image id
      */

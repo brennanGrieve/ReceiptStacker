@@ -9,25 +9,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import java.io.File;
 
 /**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
+ * class used to display a receipt full screen
  */
 public class PictureActivity extends AppCompatActivity {
-    String imagePath;
-    File newImage;
-    int gridId;
-    //rivate ScaleGestureDetector mScaleGestureDetector;
-    //private float mScaleFactor = 1.0f;
-    ImageView imageV;
+    private String imagePath;      // the image path
+    private File newImage;         // the image file
+    private int imageId;   // the image id
 
     /**
      * Whether or not the system UI should be auto-hidden after
@@ -45,15 +39,14 @@ public class PictureActivity extends AppCompatActivity {
      * Some older devices needs a small delay between UI widget updates
      * and a change of the status and navigation bar.
      */
-    private static final int UI_ANIMATION_DELAY = 300;
-    private final Handler mHideHandler = new Handler();
-    private LinearLayout mContentView;
+    private static final int UI_ANIMATION_DELAY = 300;  // an animation delay
+    private final Handler mHideHandler = new Handler(); // the hind handler
+    private LinearLayout mContentView;                  // the content view
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
         public void run() {
             // Delayed removal of status and navigation bar
-
             // Note that some of these constants are new as of API 16 (Jelly Bean)
             // and API 19 (KitKat). It is safe to use them, as they are inlined
             // at compile-time and do nothing on earlier devices.
@@ -65,8 +58,7 @@ public class PictureActivity extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
     };
-    private View mControlsView;
-
+    private View mControlsView; // controls view
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
         public void run() {
@@ -78,105 +70,78 @@ public class PictureActivity extends AppCompatActivity {
             mControlsView.setVisibility(View.VISIBLE);
         }
     };
-    private boolean mVisible;
+    private boolean mVisible; // used to check the details button is visible
     private final Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
             hide();
         }
     };
-    //zoom code
-    /*
-    @Override
-    public boolean onTouchEvent(MotionEvent motionEvent) {
-        mScaleGestureDetector.onTouchEvent(motionEvent);
-        return true;
-    }
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-        @Override
-        public boolean onScale(ScaleGestureDetector scaleGestureDetector){
-            mScaleFactor *= scaleGestureDetector.getScaleFactor();
-            mScaleFactor = Math.max(0.1f,
-                    Math.min(mScaleFactor, 10.0f));
-            imageV.setScaleX(mScaleFactor);
-            imageV.setScaleY(mScaleFactor);
-            return true;
-        }
-    }
-    */
-
 
     /**
-     * Touch listener to use for in-layout UI controls to delay hiding the
-     * system UI. This is to prevent the jarring behavior of controls going away
-     * while interacting with activity UI.
+     * onCreate
+     * @param savedInstanceState saved state of the last known instance of the activity.
      */
-    private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (AUTO_HIDE) {
-                delayedHide(AUTO_HIDE_DELAY_MILLIS);
-            }
-            return false;
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_picture);
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
-        //LinearLayout l = findViewById(R.id.fullscreen_content_controls);
         Intent picIntent = getIntent();
         imagePath = picIntent.getStringExtra("path");
-        gridId = picIntent.getIntExtra("id", 0);
+        imageId = picIntent.getIntExtra("id", 0);
         if (imagePath != null) {
             newImage = new File(imagePath);
         } else {
             newImage = null;
         }
         Bitmap b = BitmapFactory.decodeFile(newImage.getAbsolutePath());
-        if( b.getHeight() >4000 ||b.getWidth() >4000){
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inSampleSize = 3;
-            b = BitmapFactory.decodeFile(newImage.getAbsolutePath(), o);
-        }
-        imageV = new ImageView(this);
-        imageV.setImageBitmap(b);
-        imageV.setId(View.generateViewId());
-        //may not need this
-        final int imageVId = imageV.getId();
-        mContentView.addView(imageV);
-       // mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
-
-
-
-
-        // Set up the user interaction to manually show or hide the system UI.
-        mContentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggle();
+        if( b != null) {
+            if (b.getHeight() > 4000 || b.getWidth() > 4000) { //this is for multi-capture images
+                BitmapFactory.Options o = new BitmapFactory.Options();
+                o.inSampleSize = 3;
+                b = BitmapFactory.decodeFile(newImage.getAbsolutePath(), o);
             }
-        });
-
+            ImageView imageV = new ImageView(this);
+            imageV.setImageBitmap(b);
+            imageV.setId(View.generateViewId());
+            mContentView.addView(imageV);
+            // Set up the user interaction to manually show or hide the system UI.
+            mContentView.setOnClickListener(new View.OnClickListener() {
+                /**
+                 * onClick
+                 * @param view the current view
+                 */
+                @Override
+                public void onClick(View view) {
+                    toggle();
+                }
+            });
+        }
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         Button btn = findViewById(R.id.dummy_button);
         btn.setOnClickListener(new View.OnClickListener() {
+            /**
+             * onClick
+             * @param v the current view
+             */
             @Override
             public void onClick(View v) {
-                PhotoDialog p = new PhotoDialog(PictureActivity.this, newImage.getAbsolutePath(), gridId);
+                PhotoDialog p = new PhotoDialog(PictureActivity.this, newImage.getAbsolutePath(), imageId);
                 p.showDialog();
             }
         });
     }
 
+    /**
+     * onPostCreate
+     * @param savedInstanceState saved state of the last known instance of the activity.
+     */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -187,6 +152,9 @@ public class PictureActivity extends AppCompatActivity {
         delayedHide(100);
     }
 
+    /**
+     * used to hide and show the some UI components
+     */
     private void toggle() {
         if (mVisible) {
             hide();
@@ -195,7 +163,9 @@ public class PictureActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * hide UI components
+     */
     private void hide() {
         // Hide UI first
         ActionBar actionBar = getSupportActionBar();
@@ -209,7 +179,9 @@ public class PictureActivity extends AppCompatActivity {
         mHideHandler.removeCallbacks(mShowPart2Runnable);
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
     }
-
+    /**
+     * show UI components
+     */
     @SuppressLint("InlinedApi")
     private void show() {
         // Show the system bar

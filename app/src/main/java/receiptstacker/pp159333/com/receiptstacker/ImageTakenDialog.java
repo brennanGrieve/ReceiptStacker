@@ -1,110 +1,87 @@
 package receiptstacker.pp159333.com.receiptstacker;
-
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static android.support.constraint.Constraints.TAG;
-
-/*
-A dialog that shows a receipt for the user. User can decide weather or not they want to
-take another photo. This can be used in the browse menu as well with small changes to the button names.
+/**
+ * A dialog that shows a receipt for the user.
+ * User can decide weather or not they want to take another photo.
+ * This can be used in the browse menu as well with small changes to the button names.
  */
-
 public class ImageTakenDialog{
-
     private Dialog dialog;
     private Context context;
     private Receipt receipt;
-
-    Boolean priceChange;
-    Boolean dateChange;
-    Boolean bussinessChange;
-    Boolean descriptionChange;
-
-    EditText pdate;
-    EditText pplace;
-    EditText pprice;
-    EditText ptags;
-    ImageView pimage;
-
-    // Takes a context and a receipt and creates a custom dialog.
+    private EditText pdate;
+    private EditText pplace;
+    private EditText pprice;
+    //private EditText ptags;
+    /**
+     * Takes a context and a receipt and creates a custom dialog.
+     * @param context the current context
+     * @param receipt a receipt
+     */
     ImageTakenDialog(Context context, Receipt receipt) {
         this.dialog = new Dialog(context);
         dialog.setContentView(R.layout.activity_image_taken_dialog);
         this.context = context;
         this.receipt = receipt;
-        priceChange = false;
-        dateChange = false;
-        bussinessChange = false;
-        descriptionChange = false;
         populate(receipt);
     }
 
-
+    /**
+     * used to create and display the dialog box
+     */
     void showDialog() {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
         final Bitmap expose = receipt.getImage();
         final Receipt receiptFinal = receipt;
-        //dialog.getWindow().setLayout((6 * width)/7, (4 * height)/5);
         dialog.getWindow().setLayout(width-74, height-100);
-
         Button okaybutton = dialog.findViewById(R.id.button_keep);
         okaybutton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * onClick
+             * @param v the view
+             */
             @Override
             public void onClick(View v) {
-
                 if(pdate.getText() != null){
                     try {
                         SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
                         Date date = format.parse(String.valueOf(pdate.getText()));
                         receiptFinal.setDateOfPurchase(date);
                     }catch (Exception e){
-                        //Deal with wrong date format
+                        System.out.println(e.getMessage());
                     }
                 }
                 if(pprice.getText() != null){
-                    //System.out.println("price = "+Double.parseDouble(String.valueOf(pprice.getText())));
                     try{
                         double amount = Double.parseDouble(String.valueOf(pprice.getText()));
                         receiptFinal.setHighestPrice(amount);
                     } catch (Exception e) {
-
+                        System.out.println(e.getMessage());
                     }
                 }
                 if(pplace.getText() != null){
                     try{
                         receiptFinal.setBusinessName(String.valueOf(pplace.getText()));
                     } catch (Exception e) {
-
+                        System.out.println(e.getMessage());
                     }
                 }
-                /*
-                if(descriptionChange){
-
-                }
-                */
                 saveReceiptToStorage(expose, receiptFinal);
                 dialog.dismiss();
             }
@@ -119,18 +96,20 @@ public class ImageTakenDialog{
         dialog.show();
     }
 
+    /**
+     * used to populate the dialog box
+     * @param receipt a receipt
+     */
     void populate(Receipt receipt){
         this.receipt = receipt;
         pdate = dialog.findViewById(R.id.textView_DateOfPurchase);
         pplace = dialog. findViewById(R.id.textView_PurchaseOrgin);
         pprice = dialog.findViewById(R.id.textview_Price);
-        ptags = dialog.findViewById(R.id.textView_Tags);
+        //ptags = dialog.findViewById(R.id.textView_Tags);
         ImageView image = dialog.findViewById(R.id.imageview_ReceiptImage);
         String price;
         price = String.format("%.02f", receipt.getHighestPrice());
         price = "$" + price;
-
-
         if(receipt.getDateOfPurchase() != null && !receipt.getDateOfPurchase().equals(new Date(0))) {
             pdate.setText(receipt.getDateOfPurchase().getDay() + "/" + receipt.getDateOfPurchase().getMonth() + "/" + receipt.getDateOfPurchase().getYear());
         }
@@ -140,18 +119,27 @@ public class ImageTakenDialog{
         if (receipt.getHighestPrice()!=-1) {
             pprice.setText(price);
         }
-
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(receipt.getImage(), 1080, 1920, false);
         image.setImageBitmap(scaledBitmap);
     }
 
-    private void saveReceiptToStorage(Bitmap toSave, Receipt receiptFinal){
+    /**
+     * initializes the database if not already done and saves bitmap to storage
+     * and the receipt to the database
+     * @param b a bitmap
+     * @param receiptFinal a receipt
+     */
+    private void saveReceiptToStorage(Bitmap b, Receipt receiptFinal){
         dbSingleton.initDB(context.getApplicationContext());
-        String filename = saveImageToFileSystem(toSave);
-        //This method will need to be changed once saveReceiptToStorage handles more then 1 string.
+        String filename = saveImageToFileSystem(b);
         dbSingleton.commitToDB(receiptFinal, filename);
     }
 
+    /**
+     * saves the bitmap to a file as a JPEG
+     * @param receiptPic a bitmap
+     * @return the path of the file
+     */
     private String saveImageToFileSystem(Bitmap receiptPic){
         ContextWrapper appWrap = new ContextWrapper(context.getApplicationContext());
         FileOutputStream receiptStream = null;
@@ -171,12 +159,13 @@ public class ImageTakenDialog{
                 fileCloseException.printStackTrace();
             }
         }
-        Log.d(TAG, "saveImageToFileSystem: File Path is:" + newReceiptImage.getAbsolutePath());
         return newReceiptImage.getAbsolutePath();
     }
 
-
-
+    /**
+     * returns the current time stamp
+     * @return a time stamp
+     */
     private String getCurrentTimeStamp(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
         String timeStamp = simpleDateFormat.format(new Date());

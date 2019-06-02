@@ -28,92 +28,112 @@ public class BrowseFragment extends Fragment {
     int[] layoutIds;            // an array of layout ids
     ImageView[] imageViews;     // an array of image views
     int numberDisplayed = 0;    // the current number of images displayed
-    ImageView[] displayedViews; // the current number of image views displayed
+    ImageView[] displayedViews; // an array of image views gathered from a search
     int numOfPhotos = 0;        // the number of photos loaded
     TextView loadingText;       // text view used with loading photos
     Bitmap [] arrayOfBitmaps;   // an array of bitmaps
-
     public static BrowseFragment newInstance() {
         return new BrowseFragment();
     }
 
+    /**
+     * onCreate
+     * @param savedInstanceState saved state of the last known instance of the activity.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
 
+    /**
+     * onViewCreate
+     * @param inflater a layout inflater
+     * @param container a view group
+     * @param savedInstanceState saved state of the last known instance of the activity.
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_browse, container, false);
     }
 
+    /**
+     * onViewCreated
+     * @param view the current view
+     * @param savedInstanceState saved state of the last known instance of the activity.
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         imageThread();
     }
-    public void updatePhotos(String [] arrayOfPaths, View v){
+
+    /**
+     * updatePhotos
+     * updates the images displayed after a search has been completed
+     * @param arrayOfImagePaths an array of image paths
+     */
+    public void updatePhotos(String [] arrayOfImagePaths){
         int l;
-        if(numberDisplayed == 0) {
+        if(numberDisplayed == 0) { //on the first search remove all the views
             for (int indx = 0; indx < arrayOfIds.length; indx++) {
                 l = indx / 4;
                 layouts[l].removeView(imageViews[indx]);
             }
-        }else{
+        }else{ //only remove the views from the last search
             for (int indx = 0; indx < numberDisplayed; indx++) {
                 l = indx / 4;
                 layouts[l].removeView(displayedViews[indx]);
             }
         }
-        numberDisplayed = 0;
-        for(int i =0; i< arrayOfPaths.length; i++){
+        numberDisplayed = 0; //reset number displayed to 0
+        for(int i =0; i< arrayOfImagePaths.length; i++){
             for(int j = 0; j<arrayOfIds.length; j++){
-                if(allImagePaths[j].equals(arrayOfPaths[i])){
+                if(allImagePaths[j].equals(arrayOfImagePaths[i])){
                     l = i/4;
-
-                    try {
-                        layouts[l].addView(imageViews[j]);
-                        displayedViews[numberDisplayed] = imageViews[j];
-                        numberDisplayed++;
-                    }catch(Exception e){
-                        System.out.println(e.getMessage());
-                    }
+                    layouts[l].addView(imageViews[j]);
+                    displayedViews[numberDisplayed] = imageViews[j];
+                    numberDisplayed++;
                 }
             }
         }
     }
 
+    /**
+     * imageThread
+     * a function that loads the images on a separate thread
+     */
     void imageThread(){
-        final int max = dbSingleton.getNumberOfPhotos();
-        final int layoutMax = (max/3)+1;
-        arrayOfBitmaps = new Bitmap[max];
-        arrayOfIds  = new int[max];
-        layouts = new LinearLayout[layoutMax];
-        layoutIds = new int[layoutMax];
-        imageViews = new ImageView[max];
-        displayedViews = new ImageView[max];
+        final int numberOfPhotos = dbSingleton.getNumberOfPhotos();  // the number of photos
+        final int numberOfLayouts = (numberOfPhotos/3)+1;            // the number of layouts
+        arrayOfBitmaps = new Bitmap[numberOfPhotos];
+        arrayOfIds  = new int[numberOfPhotos];
+        layouts = new LinearLayout[numberOfLayouts];
+        layoutIds = new int[numberOfLayouts];
+        imageViews = new ImageView[numberOfPhotos];
+        displayedViews = new ImageView[numberOfPhotos];
         allImagePaths = dbSingleton.loadPhotos();
         loadingText = getView().findViewById(R.id.loadingText);
-        String loadingStr = "LOADING: "+0+"/"+max;
-        loadingText.setText(loadingStr);
-        final File[] imageFiles = new File[max];
-        for (int i = 0; i < max; i++) {
+        String loadingStr = "LOADING: "+0+"/"+numberOfPhotos;
+        if(loadingText != null) {
+            loadingText.setText(loadingStr);
+        }
+        final File[] imageFiles = new File[numberOfPhotos];
+        for (int i = 0; i < numberOfPhotos; i++) {
             if (allImagePaths[i] != null) {
                 imageFiles[i] = new File(allImagePaths[i]);
             } else {
                 imageFiles[i] = null;
             }
         }
-        //final int finalMax = max;
         final BitmapFactory.Options o = new BitmapFactory.Options();
-        o.inSampleSize = 16;        // change me to adjust how much the images are scaled down
-
+        o.inSampleSize = 16;
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for(int i = 0; i< max; i++) {
+                for(int i = 0; i< numberOfPhotos; i++) {
                     arrayOfBitmaps[i] = BitmapFactory.decodeFile(imageFiles[i].getAbsolutePath(), o);
                     final int finalIndex = i;
                     imageViews[i].post(new Runnable() {
@@ -121,15 +141,15 @@ public class BrowseFragment extends Fragment {
                         public void run() {
                             imageViews[finalIndex].setImageBitmap(arrayOfBitmaps[finalIndex]);
                             numOfPhotos+=1;
-                            if(numOfPhotos == max){
+                            if(numOfPhotos == numberOfPhotos){
                                 try {
                                     wait(500);
                                 }catch(Exception e){
                                     System.out.println(e.getMessage());
                                 }
-                                loadingText.setText("");
+                                loadingText.setText(""); //Clear the loading text
                             }else {
-                                loadingText.setText("LOADING: " + numOfPhotos + "/" + max);
+                                loadingText.setText("LOADING: " + numOfPhotos + "/" + numberOfPhotos);
                             }
                         }
                     });
@@ -140,14 +160,12 @@ public class BrowseFragment extends Fragment {
         }).start();
         LinearLayout verticalLayout = getView().findViewById(R.id.verticalLayout);
         int layoutNumber = -1;
-        for (int i = 0; i < max; i++) {
-            System.out.println(allImagePaths[i]);
+        for (int i = 0; i < numberOfPhotos; i++) {
             if (imageFiles != null) {
                 imageViews[i] = new ImageView(getActivity());
                 imageViews[i].setId(View.generateViewId());
                 int imageId = imageViews[i].getId();
                 arrayOfIds[i] = imageId;
-                //create a new horizontal layout for every 3 photos
                 if (i % 4 == 0) {
                     layoutNumber++;
                     layouts[layoutNumber] = new LinearLayout(getActivity());
@@ -155,14 +173,11 @@ public class BrowseFragment extends Fragment {
                     layouts[layoutNumber].setId(View.generateViewId());
                     layoutIds[layoutNumber] = layouts[layoutNumber].getId(); //change me
                 }
-                //add the image to the layout
                 LinearLayout currentLayout = getView().findViewById(layoutIds[layoutNumber]);
                 currentLayout.addView(imageViews[i]);
                 currentLayout.setPadding(0, 5, 0, 5);
                 currentLayout.setY(0);
                 currentLayout.setX(-16); // shifts to center the layout
-
-                //resize the image
                 ImageView currentImage = getView().findViewById(imageId);
                 DisplayMetrics dm = new DisplayMetrics();
                 getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -180,14 +195,18 @@ public class BrowseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String [] allResultingPaths =  dbSingleton.searchDB(input.getText().toString());
-                updatePhotos(allResultingPaths, v);
+                updatePhotos(allResultingPaths);
             }
         });
-        ImageView []allImages = new ImageView[max];
-        for (int indx = 0; indx < max; indx++) {
+        ImageView []allImages = new ImageView[numberOfPhotos];
+        for (int indx = 0; indx < numberOfPhotos; indx++) {
             allImages[indx] = getView().findViewById(arrayOfIds[indx]);
             final int finalIndx = indx;
             allImages[indx].setOnClickListener(new View.OnClickListener() {
+                /**
+                 * onClick
+                 * @param v the current view
+                 */
                 @Override
                 public void onClick(View v) {
                     Intent photoIntent = new Intent(getActivity(), PictureActivity.class);

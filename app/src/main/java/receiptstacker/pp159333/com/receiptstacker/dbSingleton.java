@@ -15,13 +15,14 @@ import com.google.android.gms.vision.text.TextBlock;
 public class dbSingleton {
 
     /**
-     * Private static SQLiteDatabase object. Only ever exists once, in line with the Singleton design pattern.
+     * Private static SQLiteDatabase object.
+     * Only ever exists once, in line with the Singleton design pattern.
      */
-
     private static SQLiteDatabase receiptDB;
 
     /**
-     * Private Singleton Constructor. Called by initDB if the database is not yet opened.
+     * Private Singleton Constructor.
+     * Called by initDB if the database is not yet opened.
      */
 
     private dbSingleton(){}
@@ -74,7 +75,7 @@ public class dbSingleton {
     }
 
     /**
-     * Function to Search through the Database.
+     * Function to search through the database.
      * @param input
      * @return
      */
@@ -83,7 +84,6 @@ public class dbSingleton {
     //May require multiple methods when
 
     public static String [] searchDB(String input){
-        // change me later, when ocr is in the database
         int max = getNumberOfPhotos();
         String [] arrayOfPaths = new String[max+1]; //change the size of this
         int i =0;
@@ -108,7 +108,7 @@ public class dbSingleton {
 
 
     /**
-     * Method that Gathers all the paths to the photos and returns them as an Array of Strings.
+     * Method that gathers all the paths to the photos and returns them as an array of strings.
      * @return arrayOfItems
      */
     public static String [] loadPhotos(){
@@ -131,7 +131,7 @@ public class dbSingleton {
     }
 
     /**
-     * Function to return the number of photos stored in the Database.
+     * Function to return the number of photos stored in the database.
      * @return Number of photos to existing in the database to be read.
      */
 

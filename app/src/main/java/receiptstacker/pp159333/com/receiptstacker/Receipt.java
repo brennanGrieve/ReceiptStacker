@@ -126,31 +126,29 @@ public class Receipt {
      * @param image New Receipt Image to be stored.
      */
 
-    public void setImage(Bitmap image) {
-        this.image = image;
-    }
+   // public void setImage(Bitmap image) {
+    //    this.image = image;
+    //}
 
     /**
      * OCR Setter.
      * @param textBlockOCR New SparseArray of TextBlocks to be stored.
      */
 
-    public void setTextBlockOCR(SparseArray<TextBlock> textBlockOCR) {
-        this.textBlockOCR = textBlockOCR;
-    }
+    //public void setTextBlockOCR(SparseArray<TextBlock> textBlockOCR) {
+    //    this.textBlockOCR = textBlockOCR;
+    //}
 
     /**
      * Function to derive metadata from OCR readings.
      * This is run during the Constructor in order to parse the OCR string for data of interest
      * Such as Date of Purchase and Business Name.
-     * Takes no Parameters and returns no values.
      */
 
     public void updateData(){
         int key;
         double maxPrice = -1;
         Date testDate = new Date();
-        Boolean dateCheck = true;
         Pattern price = Pattern.compile("\\d{1,3}(?:[.,]\\d{3})*(?:[.,]\\d{2})");
         Pattern date = Pattern.compile("^\\d{1,2}[///.\\s/t/-]\\d{1,2}[///.\\s/t /-]\\d{1,4}");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
@@ -231,7 +229,6 @@ public class Receipt {
     /**
      * Method to update stored Receipt attributes derived from OCR data when extra OCR data is added
      * to a Multi-Capture Receipt.
-     * Takes no Parameters, Returns no Values.
      */
 
     public void updateDynamicDerivedValues(){
@@ -254,9 +251,7 @@ public class Receipt {
     }
 
     /**
-     * Reset method for use with the fragment-level Multi-Capture Receipt object.
-     * Sets Receipt.OCR and Receipt.image to null.
-     * Takes no Parameters, Returns no values.
+     * Sets Receipt OCR and image to null.
      */
 
     public void reset(){
@@ -304,7 +299,7 @@ public class Receipt {
             //resetStringOCR();
         }
     }
-
+/*
     private void resetStringOCR(){
 
         for (int i = 0; i <textBlockOCR.size() ; i++) {
@@ -315,4 +310,5 @@ public class Receipt {
     public void addTag(String tag){
         stringOCR.put(stringOCR.size()+1,tag);
     }
+    */
 }

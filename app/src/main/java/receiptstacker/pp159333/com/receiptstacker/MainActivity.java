@@ -12,21 +12,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
-
+/**
+ * class for the main activity for the application
+ */
 public class  MainActivity extends AppCompatActivity {
     int  currentFrag; //0 Scan, 1 Browse, 2 GstCalc
-
     private SharedPreferences.OnSharedPreferenceChangeListener sUpdateThemeView = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        /**
+         * onSharedPreferenceChanged
+         * @param sharedPreferences the shared preferences
+         * @param key a key
+         */
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             recreate();
         }
     };
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
+        /**
+         * onNavigationItemSelected
+         * @param item a menu item
+         * @return weather successful
+         */
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
@@ -71,6 +79,10 @@ public class  MainActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * onCreate
+     * @param savedInstanceState saved state of the last known instance of the activity.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,8 +99,9 @@ public class  MainActivity extends AppCompatActivity {
 
     }
 
-    /*
-    Changes theme to the preferred user theme
+    /**
+     * Changes theme to the preferred user theme
+     * @param navigation a bottom navigation view
      */
     void changeTheme (BottomNavigationView navigation) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -159,6 +172,10 @@ public class  MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * opens the settings activity
+     * @param v the current view
+     */
     public void openSettingsActivity(View v){
         Intent settingIntent = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(settingIntent);

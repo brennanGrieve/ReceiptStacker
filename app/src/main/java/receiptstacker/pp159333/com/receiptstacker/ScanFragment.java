@@ -59,8 +59,7 @@ public class ScanFragment extends Fragment {
     /**
      * Method Executed whenever the Scan Fragment is created.
      * Also initializes the Database for use.
-     * @param savedInstanceState Saved state of the Fragments Predecessor for use in restoring the last state
-     *                           the fragment was in.
+     * @param savedInstanceState saved state of the last known instance of the activity.
      */
 
     @Override
@@ -106,9 +105,12 @@ public class ScanFragment extends Fragment {
 
 
     CameraSource.PictureCallback pMultiCallBack = new CameraSource.PictureCallback() {
+        /**
+         * onPictureTaken
+         * @param bytes the bytes
+         */
         @Override
         public void onPictureTaken(byte[] bytes) {
-            //add to the multiCapture object
             Bitmap multiPic = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             Bitmap rotatedPic;
             if (multiPic.getWidth()>multiPic.getHeight()){
@@ -125,7 +127,6 @@ public class ScanFragment extends Fragment {
                     multiCapReceipt = new Receipt(OCRItems, rotatedPic);
                 }else{
                     //this could be wrong
-                    //the changes in Receipt could have caused this
                     multiCapReceipt.reinitialize(OCRItems, rotatedPic);
                 }
             }
@@ -138,6 +139,10 @@ public class ScanFragment extends Fragment {
     };
 
     CameraSource.PictureCallback pCallBack = new CameraSource.PictureCallback() {
+        /**
+         * onPictureTaken
+         * @param bytes the bytes
+         */
         @Override
         public void onPictureTaken(byte[] bytes) {
             Bitmap pic = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -149,9 +154,7 @@ public class ScanFragment extends Fragment {
             } else {
                 rotatedPic = pic;
             }
-            //Receipt receipt = new Receipt("Shirt", "The Warehouse", 9, new Date(34439393), pic);
             Receipt receipt = new Receipt(OCRItems, rotatedPic);
-            //Show dialog
             ImageTakenDialog imageTakenDialog = new ImageTakenDialog(getContext(), receipt);
             imageTakenDialog.showDialog();
         }
@@ -160,11 +163,10 @@ public class ScanFragment extends Fragment {
     /**
      * Action Listener for the Multi-Capture Button.
      */
-
     private ImageView.OnClickListener mMultiCapOnClickListener = new ImageView.OnClickListener(){
         /**
          * On Click Listener to fire Logic for the MultiCap button. Behavior depends on current MultiCap state.
-         * @param v View Required for Listener to function/
+         * @param v the current view
          */
         @Override
         public void onClick(View v){
@@ -191,6 +193,10 @@ public class ScanFragment extends Fragment {
      * Event Listener for the Camera Capture Button.
      */
     private ImageView.OnClickListener mOnClickListener = new ImageView.OnClickListener() {
+        /**
+         * onClick
+         * @param v the current view
+         */
         @Override
         public void onClick(View v) {
             //Camera takes a picture here
@@ -205,9 +211,8 @@ public class ScanFragment extends Fragment {
 
     /**
      * Function to retrieve the device Camera for image capture.
-     * @param v View object required for Library function to work properly.
+     * @param v the current view
      */
-
     public void getCamera(View v) {
         cameraView = v.findViewById(R.id.surfaceView_Camera);
         textView = v.findViewById(R.id.textView);
@@ -224,6 +229,10 @@ public class ScanFragment extends Fragment {
 
 
             cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
+                /**
+                 * surfaceCreated
+                 * @param surfaceHolder the surface holder
+                 */
                 @Override
                 public void surfaceCreated(SurfaceHolder surfaceHolder) {
                     if (ActivityCompat.checkSelfPermission(appContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -253,6 +262,10 @@ public class ScanFragment extends Fragment {
 
                 }
 
+                /**
+                 * gathers the detections for the raw OCR string
+                 * @param detections the detections
+                 */
                 @Override
                 public void receiveDetections(Detector.Detections<TextBlock> detections) {
                     OCRItems = detections.getDetectedItems();
