@@ -112,12 +112,12 @@ public class  MainActivity extends AppCompatActivity {
                 setTheme(R.style.pinkTheme);
                 break;
 
-            case "silverTheme":
-                setTheme(R.style.SilverTheme);
+            case "titaniumTheme":
+                setTheme(R.style.titaniumTheme);
                 break;
 
             case "snowTheme":
-                setTheme(R.style.snowTheme);
+                setTheme(R.style.crystalTheme);
                 break;
 
             case "greenTheme":
@@ -139,16 +139,16 @@ public class  MainActivity extends AppCompatActivity {
                 navigation.setItemBackgroundResource(R.color.pink);
                 break;
 
-            case "silverTheme":
+            case "titaniumTheme":
                 navigation.setBackgroundResource(0);
-                navigation.setBackgroundResource(R.color.silver);
-                navigation.setItemBackgroundResource(R.color.silver);
+                navigation.setBackgroundResource(R.color.titanium);
+                navigation.setItemBackgroundResource(R.color.titanium);
                 break;
 
-            case "snowTheme":
+            case "crystalTheme":
                 navigation.setBackgroundResource(0);
-                navigation.setBackgroundResource(R.color.snow);
-                navigation.setItemBackgroundResource(R.color.snow);
+                navigation.setBackgroundResource(R.color.crystal);
+                navigation.setItemBackgroundResource(R.color.crystal);
                 break;
 
             case "greenTheme":

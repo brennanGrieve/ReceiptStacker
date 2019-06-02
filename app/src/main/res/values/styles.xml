@@ -14,16 +14,16 @@
         <item name="colorAccent">@color/pinkAccent</item>
     </style>
 
-    <style name="SilverTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
-        <item name="colorPrimary">@color/silver</item>
-        <item name="colorPrimaryDark">@color/silverDark</item>
-        <item name="colorAccent">@color/silverAccent</item>
+    <style name="titaniumTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/titanium</item>
+        <item name="colorPrimaryDark">@color/titaniumDark</item>
+        <item name="colorAccent">@color/titaniumAccent</item>
     </style>
 
-    <style name="snowTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
-        <item name="colorPrimary">@color/snow</item>
-        <item name="colorPrimaryDark">@color/snowDark</item>
-        <item name="colorAccent">@color/snowAccent</item>
+    <style name="crystalTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/crystal</item>
+        <item name="colorPrimaryDark">@color/crystalDark</item>
+        <item name="colorAccent">@color/crystalAccent</item>
     </style>
 
     <style name="greenTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">

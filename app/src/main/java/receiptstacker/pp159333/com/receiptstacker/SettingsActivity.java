@@ -68,13 +68,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                 break;
 
-            case "silverTheme":
-                setTheme(R.style.SilverTheme);
+            case "titaniumTheme":
+                setTheme(R.style.titaniumTheme);
 
                 break;
 
-            case "snowTheme":
-                setTheme(R.style.snowTheme);
+            case "crystalTheme":
+                setTheme(R.style.crystalTheme);
                 break;
 
             case "greenTheme":
