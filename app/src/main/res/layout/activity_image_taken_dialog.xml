@@ -30,7 +30,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout_Text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="240dp"
         android:background="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:context=".ImageTakenDialog"
@@ -38,52 +38,58 @@
 
         <EditText
             android:id="@+id/textView_PurchaseOrgin"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:hint="@string/purchase_origin"
+            android:inputType="textPersonName"
             android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/textView_DateOfPurchase"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="100dp"
             android:hint="@string/date"
+            android:inputType="textPersonName"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView_PurchaseOrgin"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Tags" />
 
         <EditText
             android:id="@+id/textView_Tags"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:hint="@string/description_optional"
+            android:inputType="textPersonName"
             android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_DateOfPurchase" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_PurchaseOrgin" />
 
         <EditText
             android:id="@+id/textview_Price"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:hint="Price"
+            android:inputType="textPersonName"
             android:textAllCaps="false"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/button_TryAgain"
-            app:layout_constraintEnd_toEndOf="@+id/textView_DateOfPurchase"
-            app:layout_constraintTop_toBottomOf="@+id/textView_DateOfPurchase" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Tags" />
 
         <TextView
             android:id="@+id/textView2"
@@ -100,25 +106,21 @@
             android:id="@+id/button_TryAgain"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:text="@android:string/cancel"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_Tags" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
             android:id="@+id/button_keep"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/activity_custom_keep"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_Tags" />
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </android.support.constraint.ConstraintLayout>
