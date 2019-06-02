@@ -74,7 +74,7 @@ public class ScanFragment extends Fragment {
      * @param inflater
      * @param container
      * @param savedInstanceState
-     * @return
+     * @return View
      */
 
     @Override
@@ -127,6 +127,7 @@ public class ScanFragment extends Fragment {
                     multiCapReceipt = new Receipt(OCRItems, rotatedPic);
                 }else{
                     //this could be wrong
+                    multiCapReceipt.reset();
                     multiCapReceipt.reinitialize(OCRItems, rotatedPic);
                 }
             }
@@ -134,6 +135,7 @@ public class ScanFragment extends Fragment {
                 ++multiCapSequence;
                 multiCapReceipt.mergeBitmaps(rotatedPic);
                 multiCapReceipt.addNewOCR(OCRItems);
+                multiCapReceipt.updateDynamicDerivedValues();
             }
         }
     };
@@ -180,7 +182,7 @@ public class ScanFragment extends Fragment {
                 if(multiCapReceipt != null) {
                     ImageTakenDialog imageTakenDialog = new ImageTakenDialog(getContext(), multiCapReceipt);
                     imageTakenDialog.showDialog();
-                    multiCapReceipt.reset();
+                    //multiCapReceipt.reset();
                 }
                 multiCapSequence = 1;
                 multiCapIndicator.setVisibility(View.INVISIBLE);
