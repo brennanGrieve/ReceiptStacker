@@ -32,17 +32,17 @@
     <string-array name="pref_sync_color_scheme_titles">
         <item>Basic Blue</item>
         <item>Bubblegum Pink</item>
-        <item>Speedy Silver</item>
-        <item>Powder Snow</item>
+        <item>Tempered Titanium</item>
+        <item>Crystal Ice</item>
         <item>Gleeful Green</item>
-        <item>Righteous Red</item>
-        <item>Glamorous Gold</item>
+        <item>Ruby Red</item>
+        <item>Glimmering Gold</item>
     </string-array>
     <string-array name="pref_color_scheme_values">
         <item>default</item>
         <item>pinkTheme</item>
-        <item>silverTheme</item>
-        <item>snowTheme</item>
+        <item>titaniumTheme</item>
+        <item>crystalTheme</item>
         <item>greenTheme</item>
         <item>redTheme</item>
         <item>goldTheme</item>
