@@ -257,7 +257,6 @@ public class Receipt {
      */
 
     public void reset(){
-        //like this ?
         textBlockOCR = null;
         image = null;
     }
@@ -339,7 +338,7 @@ public class Receipt {
      * @param tag new value of customTag.
      */
 
-    public void setcustomTag(String tag){
+    public void setCustomTag(String tag){
         customTag = tag;
     }
 }

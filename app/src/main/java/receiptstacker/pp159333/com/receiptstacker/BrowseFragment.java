@@ -171,7 +171,7 @@ public class BrowseFragment extends Fragment {
                     layouts[layoutNumber] = new LinearLayout(getActivity());
                     verticalLayout.addView(layouts[layoutNumber]);
                     layouts[layoutNumber].setId(View.generateViewId());
-                    layoutIds[layoutNumber] = layouts[layoutNumber].getId(); //change me
+                    layoutIds[layoutNumber] = layouts[layoutNumber].getId();
                 }
                 LinearLayout currentLayout = getView().findViewById(layoutIds[layoutNumber]);
                 currentLayout.addView(imageViews[i]);
@@ -181,8 +181,8 @@ public class BrowseFragment extends Fragment {
                 ImageView currentImage = getView().findViewById(imageId);
                 DisplayMetrics dm = new DisplayMetrics();
                 getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-                currentImage.getLayoutParams().width = dm.widthPixels/4; //change me
-                currentImage.getLayoutParams().height = 150;            // change me
+                currentImage.getLayoutParams().width = dm.widthPixels/4;
+                currentImage.getLayoutParams().height = 150;
                 currentImage.setY(0);
                 currentImage.setX(0);
             } else {

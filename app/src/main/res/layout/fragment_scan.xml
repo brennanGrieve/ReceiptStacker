@@ -25,15 +25,17 @@
 
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             style="?metaButtonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_gravity="bottom|center_horizontal"
             android:background="@color/black_overlay"
             android:orientation="horizontal"
-            tools:ignore="UselessParent"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="-1dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UselessParent">
 
         </LinearLayout>
 
@@ -75,11 +77,13 @@
             android:layout_height="40dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:adjustViewBounds="false"
             android:background="@null"
             android:contentDescription="@string/optionbutton"
             android:onClick="openSettingsActivity"
             android:scaleType="fitEnd"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_options" />

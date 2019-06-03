@@ -123,10 +123,8 @@ public class ScanFragment extends Fragment {
             if(multiCapSequence == 1) {
                 ++multiCapSequence;
                 if(multiCapReceipt == null) {
-                    //this might need to be changed
                     multiCapReceipt = new Receipt(OCRItems, rotatedPic);
                 }else{
-                    //this could be wrong
                     multiCapReceipt.reset();
                     multiCapReceipt.reinitialize(OCRItems, rotatedPic);
                 }
@@ -177,12 +175,11 @@ public class ScanFragment extends Fragment {
                 multiCapIndicator.setVisibility(View.VISIBLE);
             }
             else{
-                //finalize image stitching + commit to db
+                //finalize image stitching and commit to db
                 multiCapFlag = false;
                 if(multiCapReceipt != null) {
                     ImageTakenDialog imageTakenDialog = new ImageTakenDialog(getContext(), multiCapReceipt);
                     imageTakenDialog.showDialog();
-                    //multiCapReceipt.reset();
                 }
                 multiCapSequence = 1;
                 multiCapIndicator.setVisibility(View.INVISIBLE);

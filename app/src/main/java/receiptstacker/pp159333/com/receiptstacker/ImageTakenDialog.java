@@ -86,7 +86,7 @@ public class ImageTakenDialog{
                 if(pTags.getText() != null){
                     try{
                         String tag = String.valueOf(pTags.getText());
-                        receiptFinal.setcustomTag(tag);
+                        receiptFinal.setCustomTag(tag);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }

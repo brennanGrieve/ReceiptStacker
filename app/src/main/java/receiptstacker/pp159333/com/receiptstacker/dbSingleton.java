@@ -64,10 +64,6 @@ public class dbSingleton {
      * @param input
      * @return
      */
-
-    //Change the return value and input parameters of the following methods when the search system is designed
-    //May require multiple methods when
-
     public static String [] searchDB(String input){
         int max = getNumberOfPhotos();
         String [] arrayOfPaths = new String[max+1]; //change the size of this
@@ -119,7 +115,6 @@ public class dbSingleton {
      * Function to return the number of photos stored in the database.
      * @return Number of photos to existing in the database to be read.
      */
-
     public static int getNumberOfPhotos(){
         int numRows = (int)DatabaseUtils.longForQuery(receiptDB, "SELECT COUNT(*) FROM Receipt", null);
         return numRows;
@@ -130,7 +125,6 @@ public class dbSingleton {
      * @param imagePath Used as the primary key to fetch a specific set of data from the Database.
      * @return arrayOfPhotoInfo Array of Strings representing information about the Receipt stored in the database.
      */
-
     public static String [] getData(String imagePath){
         String [] arrayOfPhotoInfo = new String [5];
 
