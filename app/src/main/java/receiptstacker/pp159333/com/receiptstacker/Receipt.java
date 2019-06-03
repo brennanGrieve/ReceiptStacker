@@ -338,7 +338,7 @@ public class Receipt {
      * customTag Setter.
      * @param tag new value of customTag.
      */
-    
+
     public void setcustomTag(String tag){
         customTag = tag;
     }

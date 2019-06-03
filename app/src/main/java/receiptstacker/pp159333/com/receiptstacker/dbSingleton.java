@@ -72,7 +72,7 @@ public class dbSingleton {
         int max = getNumberOfPhotos();
         String [] arrayOfPaths = new String[max+1]; //change the size of this
         int i =0;
-        String sql = "SELECT DISTINCT R.R_IMAGE_PATH  FROM Receipt R WHERE  R_BUSINESS_NAME LIKE '%"+ input +"%' OR R_PURCHASE_DATE LIKE '%"+ input +"%'";
+        String sql = "SELECT DISTINCT R.R_IMAGE_PATH  FROM Receipt R WHERE  R_BUSINESS_NAME LIKE '%"+ input +"%' OR R_PURCHASE_DATE LIKE '%"+ input +"%' OR R_OCR_RAW_DATA LIKE '%"+ input +"%'";
         if(receiptDB != null) {
             Cursor c = receiptDB.rawQuery(sql, new String[]{});
             if (c.getCount() > 0) {
