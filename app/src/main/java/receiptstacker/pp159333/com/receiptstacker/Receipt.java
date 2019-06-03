@@ -273,7 +273,6 @@ public class Receipt {
         }
         else{
             Bitmap mergedImage = createBitmap(image.getWidth(), image.getHeight() + newImage.getHeight(), image.getConfig());
-            //merge the images here
             Rect originalImageBounds = new Rect(0, 0, image.getWidth(), image.getHeight());
             Rect mergeIntoBounds = new Rect(0, image.getHeight(), image.getWidth(), image.getHeight() + newImage.getHeight());
             Canvas merging = new Canvas(mergedImage);

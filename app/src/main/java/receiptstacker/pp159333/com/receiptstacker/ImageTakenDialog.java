@@ -115,7 +115,6 @@ public class ImageTakenDialog{
         pplace = dialog. findViewById(R.id.textView_PurchaseOrgin);
         pprice = dialog.findViewById(R.id.textview_Price);
         pTags = dialog.findViewById(R.id.textView_Tags);
-        //ptags = dialog.findViewById(R.id.textView_Tags);
         ImageView image = dialog.findViewById(R.id.imageview_ReceiptImage);
         String price;
         price = String.format("%.02f", receipt.getHighestPrice());
