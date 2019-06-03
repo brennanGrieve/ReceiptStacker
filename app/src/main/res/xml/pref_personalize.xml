@@ -17,7 +17,7 @@
         android:summaryOn="@string/pref_summary_enabled"
         android:switchTextOff="@string/pref_summary_disabled"
         android:switchTextOn="@string/pref_summary_enabled"
-        android:title="Night Mode Switch" />
+        android:title="@string/pref_dark_mode_title" />
 
     <!-- This preference simply launches an intent when selected. Use this UI sparingly, per
          design guidelines. -->

@@ -19,8 +19,9 @@
     <!-- Strings related to Scan Settings-->
 
     <string name="pref_header_scanSettings">Scan Settings</string>
-    <string name="pref_title_toggle_duplicate_readings">Enable Record Redundancy Prevention</string>
-    <string name="pref_description_toggle_duplicate_readings">Prevents Receipt Stacker from recording
+    <string name="pref_dark_mode_title">Night Mode Switch (To be implemented)</string>
+    <string name="pref_title_toggle_duplicate_readings">Record Redundancy Prevention</string>
+    <string name="pref_description_toggle_duplicate_readings">(To be implemented) Prevents Receipt Stacker from recording
         a transaction twice while in multi-capture mode.
     </string>
 

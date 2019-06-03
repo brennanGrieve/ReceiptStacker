@@ -11,9 +11,5 @@
         android:fragment="receiptstacker.pp159333.com.receiptstacker.SettingsActivity$PersonalizationPreferenceFragment"
         android:icon="@drawable/ic_baseline_color_lens_24px"
         android:title="@string/pref_header_personalization" />
-    <header
-        android:fragment="receiptstacker.pp159333.com.receiptstacker.SettingsActivity$PlaceholderPreferenceFragment"
-        android:icon="@drawable/ic_sync_black_24dp"
-        android:title="Placeholder"/>
 
 </preference-headers>
