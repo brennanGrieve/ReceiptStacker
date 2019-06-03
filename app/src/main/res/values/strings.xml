@@ -93,4 +93,27 @@
     <string name="addInfo">Extra Info</string>
     <string name="date">dd/mm/yyyy</string>
     <string name="purchase_origin">Purchase Origin</string>
+
+    <string name="shutter">shutter btn</string>
+    <string name="multicap">multi-cap btn</string>
+    <string name="record">recording symbol</string>
+
+    <string name="search">Search</string>
+    <string name="details_btn">Details</string>
+
+    <string name="close_btn">Close</string>
+    <string name="total_price_h">TOTAL PRICE:</string>
+    <string name="purchase_origin_h">PURCHASE ORIGIN:</string>
+    <string name="dob_h">DATE OF PURCHASE:</string>
+    <string name="image_id_h">IMAGE ID:</string>
+    <string name="OCR_h">FULL OCR STRING:</string>
+    <string name="image_path_h">IMAGE PATH:</string>
+
+    <string name="new_image">the new image taken</string>
+
+    <string name="price_hint">Price</string>
+    <string name="dollar_sign">$</string>
+    <string name="image_btn">view image btn</string>
+
+
 </resources>

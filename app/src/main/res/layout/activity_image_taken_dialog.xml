@@ -25,7 +25,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/colorPrimary" />
+        app:srcCompat="@color/colorPrimary"
+        android:contentDescription="@string/new_image" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout_Text"
@@ -58,7 +59,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="100dp"
             android:hint="@string/date"
-            android:inputType="textPersonName"
+            android:inputType="date"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:hint="Price"
+            android:hint="@string/price_hint"
             android:inputType="textPersonName"
             android:textAllCaps="false"
             android:textSize="20sp"
@@ -96,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="$"
+            android:text="@string/dollar_sign"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/textview_Price"
             app:layout_constraintEnd_toStartOf="@+id/textview_Price"
@@ -134,6 +135,7 @@
         app:layout_constraintEnd_toEndOf="@+id/imageview_ReceiptImage"
         app:layout_constraintStart_toStartOf="@+id/imageview_ReceiptImage"
         app:layout_constraintTop_toTopOf="@+id/constraintLayout_Text"
-        app:srcCompat="@android:drawable/arrow_down_float" />
+        app:srcCompat="@android:drawable/arrow_down_float"
+        android:contentDescription="@string/image_btn" />
 
 </android.support.constraint.ConstraintLayout>

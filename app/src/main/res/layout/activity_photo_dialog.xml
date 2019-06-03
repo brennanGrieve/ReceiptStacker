@@ -13,7 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Close"
+        android:text="@string/close_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -29,18 +29,18 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/t6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
-                android:text="TOTAL PRICE:" />
+                android:text="@string/total_price_h"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
             <TextView
                 android:id="@+id/textView_TotalPrice"
@@ -53,11 +53,11 @@
                 android:id="@+id/t2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
-                android:text="PURCHASE ORIGIN:" />
+                android:text="@string/purchase_origin_h"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
             <TextView
                 android:id="@+id/textView_PurchaseOrigin"
@@ -71,11 +71,11 @@
                 android:id="@+id/t1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="8dp"
-                android:text="DATE OF PURCHASE:" />
+                android:text="@string/dob_h"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
             <TextView
                 android:id="@+id/textView_DateOfPurchase"
@@ -89,11 +89,11 @@
                 android:id="@+id/t3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
-                android:text="IMAGE ID:" />
+                android:text="@string/image_id_h"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
             <TextView
                 android:id="@+id/textView_Id"
@@ -110,7 +110,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
-                android:text="FULL OCR TEXT:"
+                android:text="@string/OCR_h"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
             <TextView
@@ -120,17 +120,17 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="TextView" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/t4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
-                android:text="IMAGE PATH:" />
+                android:text="@string/image_path_h"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
             <TextView
                 android:id="@+id/textView_Path"

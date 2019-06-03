@@ -69,7 +69,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.488"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_camerashutter" />
+            app:srcCompat="@drawable/ic_camerashutter"
+            android:contentDescription="@string/shutter" />
 
         <ImageButton
             android:id="@+id/settingButton"
@@ -107,7 +108,8 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/multiCapView"
             app:layout_constraintStart_toEndOf="@+id/multiCapView"
-            app:layout_constraintTop_toTopOf="@+id/multiCapView" />
+            app:layout_constraintTop_toTopOf="@+id/multiCapView"
+            android:contentDescription="@string/record"/>
 
         <ImageView
             android:id="@+id/multiCapView"
@@ -117,7 +119,8 @@
             android:src="@drawable/ic_multicap"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewCameraShutter"
             app:layout_constraintStart_toEndOf="@+id/imageViewCameraShutter"
-            app:layout_constraintTop_toTopOf="@+id/imageViewCameraShutter" />
+            app:layout_constraintTop_toTopOf="@+id/imageViewCameraShutter"
+            android:contentDescription="@string/multicap"/>
 
 
     </android.support.constraint.ConstraintLayout>

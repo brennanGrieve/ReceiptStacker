@@ -28,7 +28,8 @@
             android:transitionName="@string/searchInput"
             app:layout_constraintEnd_toStartOf="@+id/searchBtn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/searchBtn" />
+            app:layout_constraintTop_toTopOf="@+id/searchBtn"
+            />
 
         <Button
             android:id="@+id/searchBtn"
@@ -36,9 +37,8 @@
             android:layout_height="45dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="Search"
+            android:text="@string/search"
             android:textColor="@color/colorPrimary"
-
             android:transitionName="@string/searchButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -75,7 +75,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:background="@color/cardview_dark_background"
-            android:text="TextView"
             android:textColor="@color/titanium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/scrollView"

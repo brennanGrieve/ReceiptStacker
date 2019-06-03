@@ -122,7 +122,7 @@ public class PictureActivity extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        Button btn = findViewById(R.id.dummy_button);
+        Button btn = findViewById(R.id.details_button);
         btn.setOnClickListener(new View.OnClickListener() {
             /**
              * onClick
