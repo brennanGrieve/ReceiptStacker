@@ -26,6 +26,7 @@ public class ImageTakenDialog{
     private EditText pdate;
     private EditText pplace;
     private EditText pprice;
+    private EditText pTags;
     //private EditText ptags;
     /**
      * Takes a context and a receipt and creates a custom dialog.
@@ -82,6 +83,14 @@ public class ImageTakenDialog{
                         System.out.println(e.getMessage());
                     }
                 }
+                if(pTags.getText() != null){
+                    try{
+                        String tag = String.valueOf(pTags.getText());
+                        receiptFinal.setcustomTag(tag);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
                 saveReceiptToStorage(expose, receiptFinal);
                 dialog.dismiss();
             }
@@ -105,6 +114,7 @@ public class ImageTakenDialog{
         pdate = dialog.findViewById(R.id.textView_DateOfPurchase);
         pplace = dialog. findViewById(R.id.textView_PurchaseOrgin);
         pprice = dialog.findViewById(R.id.textview_Price);
+        pTags = dialog.findViewById(R.id.textView_Tags);
         //ptags = dialog.findViewById(R.id.textView_Tags);
         ImageView image = dialog.findViewById(R.id.imageview_ReceiptImage);
         String price;

@@ -24,6 +24,7 @@ import static android.graphics.Bitmap.createBitmap;
  * businessName is the largest TextBlock on the receipt.
  * OCR is a SparseArray of TextBlocks that we can iterate through when searching for product names.
  * image is the same, a the image taken
+ * customTag is a Tag entered in by the user
  */
 
 public class Receipt {
@@ -35,7 +36,7 @@ public class Receipt {
     private Bitmap image;
     SparseArray<TextBlock> textBlockOCR;
     String stringOCR;
-
+    String customTag;
 
     /**
      * Public Constructor for Receipt Object. Takes Parameters to assign to Receipt Attributes.
@@ -46,6 +47,7 @@ public class Receipt {
     public Receipt(SparseArray<TextBlock> newOCR, Bitmap image) {
         this.textBlockOCR = newOCR;
         this.image = image;
+        this.customTag = null;
         updateData();
     }
 
@@ -307,7 +309,7 @@ public class Receipt {
     public String getStringOCR(){return stringOCR;}
 
     /**
-     * Method that parses the textBlockOCR attribute into the stringOCR attribute by means of a StringBuilder.
+     * Method that parses the textBlockOCR and customTag attribute into the stringOCR attribute by means of a StringBuilder.
      * Takes no Parameters, has no return value.
      */
 
@@ -320,20 +322,24 @@ public class Receipt {
                     ocrBuilder.append(item.getValue());
                     ocrBuilder.append(" ");
                 }
+                if(customTag != null){
+                    ocrBuilder.append("\n");
+                    ocrBuilder.append(customTag);
+                }
                 stringOCR = ocrBuilder.toString();
             }
-        }
-    }
-/*
-    private void resetStringOCR(){
-
-        for (int i = 0; i <textBlockOCR.size() ; i++) {
-            stringOCR.put(i,textBlockOCR.valueAt(i).getValue());
+        } else
+            if (customTag != null){
+                stringOCR = customTag;
         }
     }
 
-    public void addTag(String tag){
-        stringOCR.put(stringOCR.size()+1,tag);
+    /**
+     * customTag Setter.
+     * @param tag new value of customTag.
+     */
+    
+    public void setcustomTag(String tag){
+        customTag = tag;
     }
-    */
 }
